@@ -68,11 +68,16 @@ content:
         type: text
         options:
           maxlength: 320
-      - name: image
-        label: Image
+      - name: heroImages
+        label: Hero carousel
         type: image
         options:
+          multiple:
+            max: 12
+          unique: true
           categories: [image]
+          path: public/media
+          rename: safe
       - name: body
         label: Body
         type: rich-text

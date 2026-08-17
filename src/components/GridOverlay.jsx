@@ -12,7 +12,7 @@ const GridContainer = styled.div`
   max-width: 100vw;
   height: 100%;
   pointer-events: none;
-  z-index: -1;
+  z-index: 10000;
   overflow: hidden;
 `
 const GridInner = styled(Grid)`
@@ -24,7 +24,7 @@ const GridInner = styled(Grid)`
 const GridColumn = styled.div`
   box-sizing: border-box;
   min-width: 0;
-  background-color: #f5f5f5;
+  background-color: rgb(245 245 245 / 22%);
   min-height: 100vh;
 `
 

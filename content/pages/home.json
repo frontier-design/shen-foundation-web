@@ -1,5 +1,5 @@
 {
-  "title": "Hello World ",
-  "slug": "home",
-  "body": "<p></p>"
+  "heroImages": [
+    "/media/home-hero-1.png"
+  ]
 }
