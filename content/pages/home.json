@@ -1,6 +1,5 @@
 {
-  "title": "Home",
+  "title": "Hello World ",
   "slug": "home",
-  "description": "",
-  "body": ""
+  "body": "<p></p>"
 }
