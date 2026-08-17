@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import { getPage, mediaList } from '../../content.js'
 import HeroCarousel from './components/HeroCarousel.jsx'
+import HomepageCallout from './components/HomepageCallout.jsx'
 
 const ScreenReaderTitle = styled.h1`
   position: absolute;
@@ -25,6 +26,7 @@ function Home() {
     <main>
       <ScreenReaderTitle>{page.title}</ScreenReaderTitle>
       <HeroCarousel key={images.join('|')} images={images} />
+      {page.callout?.enabled && <HomepageCallout callout={page.callout} />}
     </main>
   )
 }

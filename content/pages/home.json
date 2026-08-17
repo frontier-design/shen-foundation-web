@@ -7,5 +7,14 @@
     "/media/HeroCarousel/carousel-image-2.png",
     "/media/HeroCarousel/carousel-image-3.webp",
     "/media/HeroCarousel/carousel-image-4.jpg"
-  ]
+  ],
+  "callout": {
+    "enabled": true,
+    "title": "Abbas Akhavan",
+    "subtitle": "Curtain Call",
+    "image": "/media/HeroCarousel/carousel-image-1.webp",
+    "captionLabel": "Exhibition",
+    "captionDetail": "05 Jun – 04 Oct 2026\nArt Gallery of Ontario, Toronto",
+    "link": "#"
+  }
 }

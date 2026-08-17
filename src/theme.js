@@ -4,6 +4,7 @@ export const colors = {
   black: "#121212",
   white: "#FFFFFF",
   gray: "#ACACAC",
+  accent: "#5FB926",
 };
 
 export const fonts = {
@@ -34,6 +35,25 @@ export const type = {
     font-size: 14px;
     line-height: 1.5;
     letter-spacing: -0.02em;
+  `,
+  displayLarge: css`
+    font-family: ${fonts.display};
+    font-size: clamp(44px, 7.5vw, 120px);
+    line-height: 0.95;
+    letter-spacing: -0.05em;
+    text-transform: uppercase;
+  `,
+  titleLarge: css`
+    font-family: ${fonts.body};
+    font-size: clamp(30px, 4.4vw, 64px);
+    line-height: 1.1;
+    letter-spacing: -0.05em;
+  `,
+  caption: css`
+    font-family: ${fonts.body};
+    font-size: 20px;
+    line-height: 1.35;
+    letter-spacing: -0.05em;
   `,
 };
 
