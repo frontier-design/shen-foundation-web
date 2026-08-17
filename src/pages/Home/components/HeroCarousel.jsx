@@ -3,10 +3,11 @@ import styled from 'styled-components'
 import gsap from 'gsap'
 import { CustomEase } from 'gsap/CustomEase'
 import { GRID, useMediaQuery } from '../../../grid/index.js'
+import { colors, easing, duration } from '../../../theme.js'
 
 gsap.registerPlugin(CustomEase)
 
-CustomEase.create('reveal', 'M0,0 C0.16,1 0.3,1 1,1')
+CustomEase.create('reveal', easing.gsapReveal)
 
 const HeroSection = styled.section`
   position: relative;
@@ -14,7 +15,7 @@ const HeroSection = styled.section`
   max-width: 100%;
   height: 100vh;
   height: 100svh;
-  background-color: #f0f0f0;
+  background-color: ${colors.black};
   overflow: hidden;
 
   @media ${GRID.MEDIA_MOBILE} {
@@ -36,7 +37,7 @@ const Layer = styled.img`
 `
 
 const HOLD_BEFORE = 2.5
-const WIPE = 0.9
+const WIPE = duration.slow
 const HOLD_HALF = 1.6
 const HOLD_FULL = 2.5
 
