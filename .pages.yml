@@ -105,9 +105,12 @@ content:
           - name: captionLabel
             label: Caption label
             type: string
-          - name: captionDetail
-            label: Caption detail
-            type: text
+          - name: captionDate
+            label: Caption date
+            type: string
+          - name: captionLocation
+            label: Caption location
+            type: string
           - name: link
             label: Button link (URL)
             type: string

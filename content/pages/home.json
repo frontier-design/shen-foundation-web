@@ -14,7 +14,8 @@
     "subtitle": "Curtain Call",
     "image": "/media/abbas-akshavan.jpg",
     "captionLabel": "Exhibition",
-    "captionDetail": "05 Jun – 04 Oct 2026\nArt Gallery of Ontario, Toronto",
+    "captionDate": "05 Jun – 04 Oct 2026",
+    "captionLocation": "Art Gallery of Ontario, Toronto",
     "link": "#"
   }
 }

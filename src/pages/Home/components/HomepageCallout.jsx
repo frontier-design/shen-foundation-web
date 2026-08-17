@@ -3,8 +3,9 @@ import styled from 'styled-components'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { Grid, GridCell, GRID, useMediaQuery } from '../../../grid/index.js'
-import { colors, type } from '../../../theme.js'
+import { colors, type, easing, duration } from '../../../theme.js'
 import { mediaUrl } from '../../../content.js'
+import { useImageAccent } from '../../../hooks/useImageAccent.js'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -46,8 +47,9 @@ const Title = styled.h2`
 
 const Subtitle = styled.p`
   ${type.titleLarge}
-  color: ${colors.accent};
+  color: ${(props) => props.$color || colors.accent};
   margin-top: 0.5rem;
+  transition: color ${duration.base}s ${easing.reveal};
 `
 
 const Caption = styled.div`
@@ -79,6 +81,13 @@ const ArrowButton = styled.a`
   font-family: ${(props) => props.theme.fonts.display};
   font-size: 20px;
   line-height: 1;
+  transition: background-color ${duration.fast}s ${easing.reveal},
+    color ${duration.fast}s ${easing.reveal};
+
+  &:hover {
+    background-color: ${colors.black};
+    color: ${colors.white};
+  }
 
   @media ${GRID.MEDIA_MOBILE} {
     width: 44px;
@@ -127,11 +136,8 @@ function HomepageCallout({ callout }) {
   const reduceMotion = useMediaQuery('(prefers-reduced-motion: reduce)')
 
   const src = mediaUrl(callout?.image)
-  const captionLines = (callout?.captionDetail ?? '')
-    .split('\n')
-    .map((line) => line.trim())
-    .filter(Boolean)
   const link = callout?.link || undefined
+  const accent = useImageAccent(src)
 
   useLayoutEffect(() => {
     if (reduceMotion || !imageRef.current) return undefined
@@ -168,13 +174,12 @@ function HomepageCallout({ callout }) {
                 ))}
               </Title>
             ) : null}
-            {callout?.subtitle ? <Subtitle>{callout.subtitle}</Subtitle> : null}
+            {callout?.subtitle ? <Subtitle $color={accent}>{callout.subtitle}</Subtitle> : null}
           </div>
           <Caption>
             {callout?.captionLabel ? <CaptionLabel>{callout.captionLabel}</CaptionLabel> : null}
-            {captionLines.map((line, i) => (
-              <CaptionLine key={i}>{line}</CaptionLine>
-            ))}
+            {callout?.captionDate ? <CaptionLine>{callout.captionDate}</CaptionLine> : null}
+            {callout?.captionLocation ? <CaptionLine>{callout.captionLocation}</CaptionLine> : null}
             <ArrowButton
               as={link ? 'a' : 'button'}
               href={link}
