@@ -1,9 +1,11 @@
 {
   "title": "Home",
   "slug": "home",
-  "description": "",
-  "body": "",
+  "body": "<p></p>",
   "heroImages": [
-    "/media/home-hero-1.png"
+    "/media/HeroCarousel/carousel-image-1.webp",
+    "/media/HeroCarousel/carousel-image-2.png",
+    "/media/HeroCarousel/carousel-image-3.webp",
+    "/media/HeroCarousel/carousel-image-4.jpg"
   ]
 }
