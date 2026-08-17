@@ -1,4 +1,8 @@
 {
+  "title": "Home",
+  "slug": "home",
+  "description": "",
+  "body": "",
   "heroImages": [
     "/media/home-hero-1.png"
   ]
