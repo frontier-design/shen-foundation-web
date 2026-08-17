@@ -12,15 +12,15 @@ gsap.registerPlugin(ScrollTrigger)
 const Section = styled.section`
   width: 100%;
   height: 100svh;
-
-  @media ${GRID.MEDIA_MOBILE} {
-    height: auto;
-  }
 `
 
 const Layout = styled(Grid)`
   height: 100%;
   row-gap: 0;
+
+  @media ${GRID.MEDIA_MOBILE} {
+    grid-auto-rows: 1fr;
+  }
 `
 
 const TextCell = styled(GridCell)`
@@ -30,8 +30,11 @@ const TextCell = styled(GridCell)`
   padding: clamp(120px, 16vh, 220px) 0 50px;
 
   @media ${GRID.MEDIA_MOBILE} {
-    padding: calc(${GRID.PADDING_MOBILE}px + 88px) 0 48px;
-    gap: clamp(40px, 8vh, 72px);
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: ${GRID.PADDING_MOBILE}px 0;
+    gap: 1.5rem;
   }
 `
 
@@ -90,6 +93,7 @@ const ArrowButton = styled.a`
   }
 
   @media ${GRID.MEDIA_MOBILE} {
+    align-self: center;
     width: 44px;
     font-size: 16px;
   }
@@ -114,10 +118,6 @@ const ImageViewport = styled.div`
   height: 100%;
   overflow: hidden;
   background-color: ${colors.gray};
-
-  @media ${GRID.MEDIA_MOBILE} {
-    height: 100svh;
-  }
 `
 
 const Image = styled.img`

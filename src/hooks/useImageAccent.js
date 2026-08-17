@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 
 const CONTRAST_TARGET = 3.1;
 const SAMPLE = 64;
-const MIN_SATURATION = 0.25;
-const MIN_LIGHTNESS = 0.12;
-const MAX_LIGHTNESS = 0.92;
+const MIN_SATURATION = 0.35;
+const MIN_LIGHTNESS = 0.9;
+const MAX_LIGHTNESS = 0.95;
 const MIN_OUTPUT_SATURATION = 0.85;
-const LIGHTNESS_FLOOR = 0.34;
+const LIGHTNESS_FLOOR = 0.4;
 const HUE_BUCKETS = 12;
 
 const toLinear = (c) => {
