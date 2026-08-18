@@ -78,11 +78,6 @@ content:
           categories: [image]
           path: public/media
           rename: safe
-      - name: body
-        label: Body
-        type: rich-text
-        options:
-          format: html
       - name: callout
         label: Homepage callout
         type: object
