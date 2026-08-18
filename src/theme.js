@@ -65,7 +65,7 @@ export const type = {
   `,
   caption: css`
     font-family: ${fonts.body};
-    font-size: 20px;
+    font-size: 18px;
     line-height: 1.35;
     letter-spacing: -0.05em;
   `,

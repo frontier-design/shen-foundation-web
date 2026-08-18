@@ -132,10 +132,9 @@ content:
           - name: slug
             label: Exhibition page slug (exhibitions only)
             type: string
-            pattern: "^[a-z0-9-]+$"
-            description: "The exhibition/project name (e.g. life-is-cheap). Must match the exhibition doc's Slug. Defaults to the subtitle if left blank."
+            pattern: "^[a-z0-9-]*$"
+            description: "The exhibition/project name (e.g. life-is-cheap). Must match the exhibition doc's Slug. Defaults to the subtitle if left blank. Leave blank for non-exhibitions."
             options:
-              minlength: 1
               maxlength: 80
           - name: captionLabel
             label: Caption label

@@ -1,6 +1,6 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { Grid, GridCell, GRID } from '../../grid'
-import { colors, fonts, type, easing, duration } from '../../theme.js'
+import { colors, type, easing, duration } from '../../theme.js'
 import { getExhibition, mediaUrl } from '../../content.js'
 import { useImageAccent } from '../../hooks/useImageAccent.js'
 
@@ -30,7 +30,7 @@ const Title = styled.h1`
 `
 
 const Subtitle = styled.p`
-  ${type.gridSubtitle}
+  ${type.titleLarge}
   color: ${(props) => props.$color || colors.accent};
   margin: 4px 0 0;
   transition: color ${duration.base}s ${easing.reveal};
@@ -54,12 +54,10 @@ const MetaLine = styled.p`
 `
 
 const Body = styled.p`
-  font-family: ${fonts.body};
-  font-size: clamp(14px, 1vw, 16px);
+  ${type.caption}
   line-height: 1.5;
-  letter-spacing: -0.02em;
   color: ${colors.black};
-  margin: 0;
+  margin: clamp(40px, 5vw, 88px) 0 0;
 `
 
 const ArtistLink = styled.a`
@@ -67,32 +65,49 @@ const ArtistLink = styled.a`
   text-decoration: underline;
 `
 
-const Gallery = styled.section`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  column-gap: ${GRID.GAP}px;
-  row-gap: clamp(56px, 8vw, 140px);
-  align-items: start;
-  padding: clamp(72px, 12vw, 220px) ${GRID.PADDING}px clamp(72px, 10vw, 160px);
-  max-width: ${GRID.MAX_WIDTH}px;
-  margin: 0 auto;
+const bleed = (side, padding) =>
+  side === 'right'
+    ? css`
+        width: calc(100% + ${padding}px);
+        margin-right: -${padding}px;
+      `
+    : css`
+        width: calc(100% + ${padding}px);
+        margin-left: -${padding}px;
+      `
 
-  @media ${GRID.MEDIA_TABLET} {
-    padding-left: ${GRID.PADDING_TABLET}px;
-    padding-right: ${GRID.PADDING_TABLET}px;
-  }
+const bleedBoth = (padding) => css`
+  width: calc(100% + ${padding * 2}px);
+  margin-left: -${padding}px;
+  margin-right: -${padding}px;
+`
+
+const Gallery = styled(Grid).attrs({ as: 'section' })`
+  align-items: start;
+  row-gap: clamp(56px, 8vw, 140px);
+  padding-top: clamp(72px, 12vw, 220px);
+  padding-bottom: clamp(72px, 10vw, 160px);
 
   @media ${GRID.MEDIA_MOBILE} {
-    grid-template-columns: 1fr;
-    row-gap: clamp(40px, 12vw, 72px);
-    padding-left: ${GRID.PADDING_MOBILE}px;
-    padding-right: ${GRID.PADDING_MOBILE}px;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(40px, 12vw, 72px);
   }
 `
 
-const GalleryItem = styled.figure`
+const GalleryFigure = styled.figure`
   margin: 0;
-  ${(props) => props.$full && 'grid-column: 1 / -1;'}
+
+  ${(props) => (props.$side === 'full' ? bleedBoth(GRID.PADDING) : bleed(props.$side, GRID.PADDING))}
+
+  @media ${GRID.MEDIA_TABLET} {
+    ${(props) =>
+      props.$side === 'full' ? bleedBoth(GRID.PADDING_TABLET) : bleed(props.$side, GRID.PADDING_TABLET)}
+  }
+
+  @media ${GRID.MEDIA_MOBILE} {
+    ${bleedBoth(GRID.PADDING_MOBILE)}
+  }
 
   img {
     display: block;
@@ -130,15 +145,12 @@ function Exhibition({ slug }) {
           {item.subtitle ? <Subtitle $color={accent}>{item.subtitle}</Subtitle> : null}
         </GridCell>
 
-        <GridCell $start={7} $span={2} $startTablet={1} $spanTablet={3}>
+        <GridCell $start={7} $span={6} $startTablet={1} $spanTablet={8}>
           <Meta>
             {item.captionLabel ? <MetaLabel>{item.captionLabel}</MetaLabel> : null}
             {item.captionDate ? <MetaLine>{item.captionDate}</MetaLine> : null}
             {item.captionLocation ? <MetaLine>{item.captionLocation}</MetaLine> : null}
           </Meta>
-        </GridCell>
-
-        <GridCell $start={9} $span={4} $startTablet={4} $spanTablet={5}>
           {item.body ? (
             <Body>
               {item.body}
@@ -155,16 +167,32 @@ function Exhibition({ slug }) {
 
       {gallery.length > 0 ? (
         <Gallery>
-          {gallery.map((entry, index) => {
-            const src = mediaUrl(entry.image)
-            if (!src) return null
-            return (
-              <GalleryItem key={index} $full={entry.fullWidth}>
-                <img src={src} alt={entry.caption || ''} />
-                {entry.caption ? <GalleryCaption>{entry.caption}</GalleryCaption> : null}
-              </GalleryItem>
-            )
-          })}
+          {(() => {
+            let col = 0
+            return gallery.map((entry, index) => {
+              const src = mediaUrl(entry.image)
+              if (!src) return null
+
+              const full = Boolean(entry.fullWidth)
+              const side = full ? 'full' : col % 2 === 0 ? 'left' : 'right'
+              if (!full) col += 1
+
+              const placement = full
+                ? { $start: 1, $end: -1 }
+                : side === 'left'
+                  ? { $start: 1, $span: 6, $startTablet: 1, $spanTablet: 4 }
+                  : { $start: 7, $span: 6, $startTablet: 5, $spanTablet: 4 }
+
+              return (
+                <GridCell key={index} {...placement}>
+                  <GalleryFigure $side={side}>
+                    <img src={src} alt={entry.caption || ''} />
+                    {entry.caption ? <GalleryCaption>{entry.caption}</GalleryCaption> : null}
+                  </GalleryFigure>
+                </GridCell>
+              )
+            })
+          })()}
         </Gallery>
       ) : null}
     </main>
