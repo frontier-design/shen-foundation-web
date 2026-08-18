@@ -105,6 +105,7 @@ const Menu = styled.div`
   height: 50vh;
   z-index: 90;
   background-color: ${colors.black};
+  overflow: hidden;
   transform: translateY(${(props) => (props.$open ? '0' : '-100%')});
   transition: transform ${duration.slow}s ${easing.reveal};
   pointer-events: ${(props) => (props.$open ? 'auto' : 'none')};

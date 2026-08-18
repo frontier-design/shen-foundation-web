@@ -19,6 +19,10 @@ const Section = styled(Grid).attrs({ as: 'section' })`
   row-gap: clamp(96px, 12vw, 200px);
   padding-top: 0;
   padding-bottom: clamp(64px, 10vh, 160px);
+
+  @media ${GRID.MEDIA_MOBILE} {
+    row-gap: clamp(72px, 18vw, 120px);
+  }
 `
 
 const Item = styled(GridCell).attrs({ as: 'article' })``
@@ -31,7 +35,9 @@ const Media = styled.div`
   }
 
   @media ${GRID.MEDIA_MOBILE} {
-    ${(props) => bleed(props.$side, GRID.PADDING_MOBILE)}
+    width: calc(100% + ${GRID.PADDING_MOBILE * 2}px);
+    margin-left: -${GRID.PADDING_MOBILE}px;
+    margin-right: -${GRID.PADDING_MOBILE}px;
   }
 
   img {
@@ -46,6 +52,10 @@ const Title = styled.h3`
   color: ${colors.black};
   margin-top: 24px;
   text-wrap: balance;
+
+  @media ${GRID.MEDIA_MOBILE} {
+    font-size: clamp(41px, 11vw, 52px);
+  }
 `
 
 const Subtitle = styled.p`
@@ -53,6 +63,10 @@ const Subtitle = styled.p`
   color: ${(props) => props.$color || colors.accent};
   margin-top: 6px;
   transition: color ${duration.base}s ${easing.reveal};
+
+  @media ${GRID.MEDIA_MOBILE} {
+    font-size: clamp(26px, 7vw, 34px);
+  }
 `
 
 const Caption = styled.div`
@@ -78,8 +92,8 @@ function GridItem({ item, index }) {
 
   const placement =
     side === 'left'
-      ? { $start: 1, $span: 6, $startTablet: 1, $spanTablet: 4, $startMobile: 1, $spanMobile: 2 }
-      : { $start: 7, $span: 6, $startTablet: 5, $spanTablet: 4, $startMobile: 3, $spanMobile: 2 }
+      ? { $start: 1, $span: 6, $startTablet: 1, $spanTablet: 4 }
+      : { $start: 7, $span: 6, $startTablet: 5, $spanTablet: 4 }
 
   return (
     <Item {...placement}>
