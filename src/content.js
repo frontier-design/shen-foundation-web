@@ -30,3 +30,28 @@ export function mediaList(value) {
   const list = Array.isArray(value) ? value : [value]
   return list.map(mediaUrl).filter(Boolean)
 }
+
+export function slugify(value) {
+  return String(value || '')
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+}
+
+export function isExhibition(item) {
+  return Boolean(item?.subtitle)
+}
+
+export function exhibitionSlug(item) {
+  return item?.slug || slugify(item?.title)
+}
+
+export function getExhibition(slug) {
+  for (const page of pages) {
+    for (const item of page.grid || []) {
+      if (isExhibition(item) && exhibitionSlug(item) === slug) return item
+    }
+  }
+  return null
+}

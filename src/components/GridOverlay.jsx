@@ -15,6 +15,7 @@ const GridContainer = styled.div`
   z-index: 10000;
   overflow: hidden;
 `
+
 const GridInner = styled(Grid)`
   height: 100%;
   display: ${props => (props.$isVisible ? 'grid' : 'none')};

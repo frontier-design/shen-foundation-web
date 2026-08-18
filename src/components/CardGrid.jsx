@@ -1,8 +1,9 @@
 import styled, { css } from 'styled-components'
 import { Grid, GridCell, GRID } from '../grid'
 import { colors, type, easing, duration } from '../theme.js'
-import { mediaUrl } from '../content.js'
+import { mediaUrl, isExhibition, exhibitionSlug } from '../content.js'
 import { useImageAccent } from '../hooks/useImageAccent.js'
+import { linkProps } from '../router.jsx'
 
 const bleed = (side, padding) =>
   side === 'right'
@@ -26,6 +27,12 @@ const Section = styled(Grid).attrs({ as: 'section' })`
 `
 
 const Item = styled(GridCell).attrs({ as: 'article' })``
+
+const CardLink = styled.a`
+  display: block;
+  color: inherit;
+  text-decoration: none;
+`
 
 const Media = styled.div`
   ${(props) => bleed(props.$side, GRID.PADDING)}
@@ -104,14 +111,15 @@ function GridItem({ item, index }) {
   const side = index % 2 === 0 ? 'left' : 'right'
   const src = mediaUrl(item?.image)
   const accent = useImageAccent(src, colors.gray)
+  const exhibition = isExhibition(item)
 
   const placement =
     side === 'left'
       ? { $start: 1, $span: 6, $startTablet: 1, $spanTablet: 4 }
       : { $start: 7, $span: 6, $startTablet: 5, $spanTablet: 4 }
 
-  return (
-    <Item {...placement}>
+  const content = (
+    <>
       {src ? (
         <Media $side={side} $fixed={!item?.subtitle}>
           <img src={src} alt={item?.title || ''} />
@@ -124,6 +132,16 @@ function GridItem({ item, index }) {
         {item?.captionDate ? <CaptionLine>{item.captionDate}</CaptionLine> : null}
         {item?.captionLocation ? <CaptionLine>{item.captionLocation}</CaptionLine> : null}
       </Caption>
+    </>
+  )
+
+  return (
+    <Item {...placement}>
+      {exhibition ? (
+        <CardLink {...linkProps(`/exhibitions/${exhibitionSlug(item)}`)}>{content}</CardLink>
+      ) : (
+        content
+      )}
     </Item>
   )
 }

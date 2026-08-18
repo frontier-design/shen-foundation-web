@@ -129,6 +129,13 @@ content:
           - name: subtitle
             label: Subtitle (exhibitions only)
             type: string
+          - name: slug
+            label: Exhibition page slug (exhibitions only)
+            type: string
+            pattern: "^[a-z0-9-]+$"
+            options:
+              minlength: 1
+              maxlength: 80
           - name: captionLabel
             label: Caption label
             type: string
