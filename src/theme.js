@@ -49,6 +49,20 @@ export const type = {
     line-height: 1.1;
     letter-spacing: -0.05em;
   `,
+  gridTitle: css`
+    font-family: ${fonts.display};
+    font-size: clamp(34px, 4.4vw, 58px);
+    line-height: 0.95;
+    letter-spacing: -0.05em;
+    text-transform: uppercase;
+    line-height: 1.1;
+  `,
+  gridSubtitle: css`
+    font-family: ${fonts.body};
+    font-size: clamp(22px, 2.2vw, 32px);
+    line-height: 1.1;
+    letter-spacing: -0.05em;
+  `,
   caption: css`
     font-family: ${fonts.body};
     font-size: 20px;

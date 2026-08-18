@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 
-const CONTRAST_TARGET = 3.1;
+const CONTRAST_TARGET = 2.6;
 const SAMPLE = 64;
 const MIN_SATURATION = 0.35;
-const MIN_LIGHTNESS = 0.9;
-const MAX_LIGHTNESS = 0.95;
+const MIN_LIGHTNESS = 0.12;
+const MAX_LIGHTNESS = 0.92;
 const MIN_OUTPUT_SATURATION = 0.85;
-const LIGHTNESS_FLOOR = 0.4;
+const LIGHTNESS_FLOOR = 0.48;
 const HUE_BUCKETS = 12;
 
 const toLinear = (c) => {
@@ -108,7 +108,7 @@ function ensureContrast([r, g, b]) {
   return `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
 }
 
-export function useImageAccent(src) {
+export function useImageAccent(src, fallback = null) {
   const [accent, setAccent] = useState(null);
 
   useEffect(() => {
@@ -142,7 +142,7 @@ export function useImageAccent(src) {
       }
 
       const vibrant = extractVibrant(data);
-      setAccent(vibrant ? ensureContrast(vibrant) : null);
+      setAccent(vibrant ? ensureContrast(vibrant) : fallback);
     };
 
     img.src = src;
@@ -151,7 +151,7 @@ export function useImageAccent(src) {
       cancelled = true;
       img.onload = null;
     };
-  }, [src]);
+  }, [src, fallback]);
 
   return accent;
 }

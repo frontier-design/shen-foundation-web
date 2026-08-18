@@ -137,7 +137,7 @@ function HomepageCallout({ callout }) {
 
   const src = mediaUrl(callout?.image)
   const link = callout?.link || undefined
-  const accent = useImageAccent(src)
+  const accent = useImageAccent(src, colors.gray)
 
   useLayoutEffect(() => {
     if (reduceMotion || !imageRef.current) return undefined

@@ -114,6 +114,32 @@ content:
           - name: link
             label: Button link (URL)
             type: string
+      - name: grid
+        label: Grid
+        type: object
+        list: true
+        fields:
+          - name: image
+            label: Image
+            type: image
+            options:
+              categories: [image]
+              path: public/media
+          - name: title
+            label: Title
+            type: string
+          - name: subtitle
+            label: Subtitle (exhibitions only)
+            type: string
+          - name: captionLabel
+            label: Caption label
+            type: string
+          - name: captionDate
+            label: Caption date
+            type: string
+          - name: captionLocation
+            label: Caption location
+            type: string
 
 settings:
   content:
