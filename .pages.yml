@@ -133,6 +133,7 @@ content:
             label: Exhibition page slug (exhibitions only)
             type: string
             pattern: "^[a-z0-9-]+$"
+            description: "The exhibition/project name (e.g. life-is-cheap). Must match the exhibition doc's Slug. Defaults to the subtitle if left blank."
             options:
               minlength: 1
               maxlength: 80

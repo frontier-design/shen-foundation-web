@@ -51,7 +51,7 @@ export function isExhibition(item) {
 }
 
 export function exhibitionSlug(item) {
-  return item?.slug || slugify(item?.title)
+  return item?.slug || slugify(item?.subtitle)
 }
 
 export function getExhibition(slug) {
