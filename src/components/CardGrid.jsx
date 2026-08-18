@@ -40,10 +40,25 @@ const Media = styled.div`
     margin-right: -${GRID.PADDING_MOBILE}px;
   }
 
+  ${(props) =>
+    props.$fixed &&
+    css`
+      height: clamp(350px, 38vw, 530px);
+
+      @media ${GRID.MEDIA_MOBILE} {
+        height: auto;
+      }
+    `}
+
   img {
     display: block;
     width: 100%;
-    height: auto;
+    height: ${(props) => (props.$fixed ? '100%' : 'auto')};
+    object-fit: cover;
+
+    @media ${GRID.MEDIA_MOBILE} {
+      height: auto;
+    }
   }
 `
 
@@ -98,7 +113,7 @@ function GridItem({ item, index }) {
   return (
     <Item {...placement}>
       {src ? (
-        <Media $side={side}>
+        <Media $side={side} $fixed={!item?.subtitle}>
           <img src={src} alt={item?.title || ''} />
         </Media>
       ) : null}
