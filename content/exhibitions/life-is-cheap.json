@@ -2,7 +2,7 @@
   "title": "Anicka Yi",
   "slug": "life-is-cheap",
   "subtitle": "Life is Cheap",
-  "heroImage": "/media/carousel-image-1.webp",
+  "heroImage": "/media/anicka-yi-life-is-cheap.jpeg",
   "captionLabel": "Exhibition",
   "captionDate": "05 Jun – 04 Oct 2026",
   "captionLocation": "Art Gallery of Ontario, Toronto",
@@ -12,27 +12,27 @@
   "gallery": [
     {
       "image": "/media/HeroCarousel/carousel-image-2.png",
-      "caption": ""
+      "fullWidth": false
     },
     {
       "image": "/media/carousel-image-3.webp",
-      "caption": ""
+      "fullWidth": false
     },
     {
       "image": "/media/Test/florian-luthi.jpg",
-      "caption": ""
+      "fullWidth": false
     },
     {
       "image": "/media/abbas-akshavan-1.jpg",
-      "caption": ""
+      "fullWidth": false
     },
     {
       "image": "/media/carousel-image-1.webp",
-      "caption": ""
+      "fullWidth": false
     },
     {
       "image": "/media/HeroCarousel/carousel-image-4.jpg",
-      "caption": ""
+      "fullWidth": false
     }
   ]
 }
