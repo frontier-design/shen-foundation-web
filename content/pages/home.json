@@ -9,7 +9,7 @@
     "/media/HeroCarousel/carousel-image-4.jpg"
   ],
   "callout": {
-    "enabled": true,
+    "enabled": false,
     "title": "Abbas Akhavan",
     "subtitle": "Curtain Call",
     "image": "/media/abbas-akshavan-1.jpg",
