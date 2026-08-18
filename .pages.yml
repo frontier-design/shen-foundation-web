@@ -117,7 +117,10 @@ content:
       - name: grid
         label: Grid
         type: object
-        list: true
+        list:
+          collapsible:
+            collapsed: true
+            summary: "{title}"
         fields:
           - name: image
             label: Image
