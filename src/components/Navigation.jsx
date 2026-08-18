@@ -3,17 +3,92 @@ import styled from 'styled-components'
 import { Grid, GridCell, GRID } from '../grid'
 import { colors, type, easing, duration } from '../theme.js'
 
+const LUMA_THRESHOLD = 140
+const SAMPLE = 8
+
 const iconColor = (tone) => (tone === 'dark' ? colors.white : colors.black)
 
-const toneAtPoint = (x, y, corner) => {
-  let node = document.elementFromPoint(x, y)
-  const key = corner === 'left' ? 'navToneLeft' : 'navToneRight'
-  while (node) {
-    const tone = node.dataset?.[key] ?? node.dataset?.navTone
-    if (tone) return tone
+const relLuminance = (r, g, b) => 0.2126 * r + 0.7152 * g + 0.0722 * b
+
+const sampleCanvas = document.createElement('canvas')
+sampleCanvas.width = SAMPLE
+sampleCanvas.height = SAMPLE
+const sampleCtx = sampleCanvas.getContext('2d', { willReadFrequently: true })
+
+const parseColor = (str) => {
+  const m = /rgba?\(([^)]+)\)/.exec(str)
+  if (!m) return null
+  const [r, g, b, a = 1] = m[1].split(',').map((v) => parseFloat(v))
+  return { r, g, b, a }
+}
+
+const backgroundLuminance = (el) => {
+  let node = el
+  while (node && node.nodeType === 1) {
+    const c = parseColor(getComputedStyle(node).backgroundColor)
+    if (c && c.a > 0) return relLuminance(c.r, c.g, c.b)
     node = node.parentElement
   }
-  return null
+  return 255
+}
+
+const imageLuminance = (img, x, y) => {
+  const nw = img.naturalWidth
+  const nh = img.naturalHeight
+  const rect = img.getBoundingClientRect()
+  if (!nw || !nh || !rect.width || !rect.height) return null
+
+  const fit = getComputedStyle(img).objectFit || 'fill'
+  const boxX = Math.min(Math.max(x - rect.left, 0), rect.width)
+  const boxY = Math.min(Math.max(y - rect.top, 0), rect.height)
+
+  let sx
+  let sy
+  if (fit === 'cover' || fit === 'contain') {
+    const scale =
+      fit === 'cover'
+        ? Math.max(rect.width / nw, rect.height / nh)
+        : Math.min(rect.width / nw, rect.height / nh)
+    sx = (boxX - (rect.width - nw * scale) / 2) / scale
+    sy = (boxY - (rect.height - nh * scale) / 2) / scale
+  } else {
+    sx = (boxX / rect.width) * nw
+    sy = (boxY / rect.height) * nh
+  }
+
+  const half = 12
+  const cx = Math.min(Math.max(Math.round(sx) - half, 0), nw - 1)
+  const cy = Math.min(Math.max(Math.round(sy) - half, 0), nh - 1)
+  const cw = Math.min(half * 2, nw - cx)
+  const ch = Math.min(half * 2, nh - cy)
+
+  sampleCtx.clearRect(0, 0, SAMPLE, SAMPLE)
+  sampleCtx.drawImage(img, cx, cy, cw, ch, 0, 0, SAMPLE, SAMPLE)
+  const { data } = sampleCtx.getImageData(0, 0, SAMPLE, SAMPLE)
+  let sum = 0
+  for (let i = 0; i < data.length; i += 4) {
+    sum += relLuminance(data[i], data[i + 1], data[i + 2])
+  }
+  return sum / (data.length / 4)
+}
+
+const toneAt = (x, y, iconEl) => {
+  const prev = iconEl.style.pointerEvents
+  iconEl.style.pointerEvents = 'none'
+  const el = document.elementFromPoint(x, y)
+  iconEl.style.pointerEvents = prev
+  if (!el) return null
+
+  let luma = null
+  if (el.tagName === 'IMG') {
+    try {
+      luma = imageLuminance(el, x, y)
+    } catch {
+      luma = null
+    }
+  }
+  if (luma == null) luma = backgroundLuminance(el)
+  return luma > LUMA_THRESHOLD ? 'light' : 'dark'
 }
 
 const Nav = styled.nav`
@@ -194,28 +269,27 @@ function Navigation() {
 
   useLayoutEffect(() => {
     let raf
+    let lastSample = 0
     let last = { logo: null, plus: null }
 
-    const sample = () => {
-      const logoEl = logoRef.current
-      const plusEl = plusRef.current
-      if (logoEl && plusEl) {
-        const l = logoEl.getBoundingClientRect()
-        const p = plusEl.getBoundingClientRect()
+    const sample = (now) => {
+      if (now - lastSample >= 66) {
+        lastSample = now
+        const logoEl = logoRef.current
+        const plusEl = plusRef.current
+        if (logoEl && plusEl) {
+          const l = logoEl.getBoundingClientRect()
+          const p = plusEl.getBoundingClientRect()
 
-        logoEl.style.pointerEvents = 'none'
-        const logo = toneAtPoint(l.left + l.width / 2, l.top + l.height / 2, 'left')
-        logoEl.style.pointerEvents = ''
+          const logo = toneAt(l.left + l.width / 2, l.top + l.height / 2, logoEl)
+          const plus = toneAt(p.left + p.width / 2, p.top + p.height / 2, plusEl)
 
-        plusEl.style.pointerEvents = 'none'
-        const plus = toneAtPoint(p.left + p.width / 2, p.top + p.height / 2, 'right')
-        plusEl.style.pointerEvents = ''
-
-        const nextLogo = logo ?? last.logo ?? 'dark'
-        const nextPlus = plus ?? last.plus ?? 'dark'
-        if (nextLogo !== last.logo || nextPlus !== last.plus) {
-          last = { logo: nextLogo, plus: nextPlus }
-          setTones(last)
+          const nextLogo = logo ?? last.logo ?? 'dark'
+          const nextPlus = plus ?? last.plus ?? 'dark'
+          if (nextLogo !== last.logo || nextPlus !== last.plus) {
+            last = { logo: nextLogo, plus: nextPlus }
+            setTones(last)
+          }
         }
       }
       raf = requestAnimationFrame(sample)
