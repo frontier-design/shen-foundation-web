@@ -5,9 +5,16 @@ const pageModules = import.meta.glob('../content/pages/*.json', {
   import: 'default',
 })
 
+const exhibitionModules = import.meta.glob('../content/exhibitions/*.json', {
+  eager: true,
+  import: 'default',
+})
+
 export { site }
 
 export const pages = Object.values(pageModules)
+
+export const exhibitions = Object.values(exhibitionModules)
 
 export function getPage(slug) {
   return pages.find((page) => page.slug === slug)
@@ -48,10 +55,5 @@ export function exhibitionSlug(item) {
 }
 
 export function getExhibition(slug) {
-  for (const page of pages) {
-    for (const item of page.grid || []) {
-      if (isExhibition(item) && exhibitionSlug(item) === slug) return item
-    }
-  }
-  return null
+  return exhibitions.find((item) => exhibitionSlug(item) === slug) || null
 }

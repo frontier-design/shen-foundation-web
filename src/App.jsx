@@ -24,7 +24,7 @@ function App() {
       {import.meta.env.DEV && <GridOverlay />}
       <Navigation />
       {exhibition ? <Exhibition slug={exhibition[1]} /> : <Home />}
-      {!exhibition && <Footer />}
+      <Footer />
     </ThemeProvider>
   )
 }

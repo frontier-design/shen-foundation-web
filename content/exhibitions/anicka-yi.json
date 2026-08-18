@@ -1,0 +1,38 @@
+{
+  "title": "Anicka Yi",
+  "slug": "anicka-yi",
+  "subtitle": "Life is Cheap",
+  "heroImage": "/media/carousel-image-1.webp",
+  "captionLabel": "Exhibition",
+  "captionDate": "05 Jun – 04 Oct 2026",
+  "captionLocation": "Art Gallery of Ontario, Toronto",
+  "body": "In 2016 Anicka Yi was awarded the Hugo Boss Prize in recognition of the power and singularity of the experimental body of work she has produced over the past decade. Her installations, which draw on scientific concepts and techniques to activate vivid fictional scenarios, ask incisive questions about human psychology and the workings of society. Yi uses unconventional materials to examine what she calls 'a biopolitics of the senses,' or how assumptions and anxieties related to gender, race, and class shape physical perception.",
+  "artistLinkLabel": "Learn more about the artist",
+  "artistLinkUrl": "#",
+  "gallery": [
+    {
+      "image": "/media/HeroCarousel/carousel-image-2.png",
+      "caption": ""
+    },
+    {
+      "image": "/media/carousel-image-3.webp",
+      "caption": ""
+    },
+    {
+      "image": "/media/Test/florian-luthi.jpg",
+      "caption": ""
+    },
+    {
+      "image": "/media/abbas-akshavan-1.jpg",
+      "caption": ""
+    },
+    {
+      "image": "/media/carousel-image-1.webp",
+      "caption": ""
+    },
+    {
+      "image": "/media/HeroCarousel/carousel-image-4.jpg",
+      "caption": ""
+    }
+  ]
+}

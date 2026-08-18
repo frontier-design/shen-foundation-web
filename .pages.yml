@@ -146,6 +146,90 @@ content:
             label: Caption location
             type: string
 
+  - name: exhibitions
+    label: Exhibitions
+    type: collection
+    path: content/exhibitions
+    format: json
+    filename:
+      template: "{fields.slug}.json"
+      field: create
+    view:
+      fields: [title, subtitle, slug]
+      primary: title
+      sort: [title]
+      search: [title, subtitle, slug]
+      default:
+        sort: title
+        order: asc
+    fields:
+      - name: title
+        label: Title
+        type: string
+        required: true
+        options:
+          maxlength: 120
+      - name: slug
+        label: Slug
+        type: string
+        required: true
+        pattern: "^[a-z0-9-]+$"
+        description: "Must match the Slug on the matching home grid card so the card links here."
+        options:
+          minlength: 1
+          maxlength: 80
+      - name: subtitle
+        label: Subtitle
+        type: string
+        options:
+          maxlength: 160
+      - name: heroImage
+        label: Hero image (full bleed)
+        type: image
+        options:
+          categories: [image]
+          path: public/media
+      - name: captionLabel
+        label: Caption label
+        type: string
+      - name: captionDate
+        label: Caption date
+        type: string
+      - name: captionLocation
+        label: Caption location
+        type: string
+      - name: body
+        label: Body text
+        type: text
+        options:
+          maxlength: 1200
+      - name: artistLinkLabel
+        label: Artist link label
+        type: string
+      - name: artistLinkUrl
+        label: Artist link URL
+        type: string
+      - name: gallery
+        label: Gallery
+        type: object
+        list:
+          collapsible:
+            collapsed: true
+            summary: "{caption}"
+        fields:
+          - name: image
+            label: Image
+            type: image
+            options:
+              categories: [image]
+              path: public/media
+          - name: caption
+            label: Caption
+            type: string
+          - name: fullWidth
+            label: Full width
+            type: boolean
+
 settings:
   content:
     merge: true
