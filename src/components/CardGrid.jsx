@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components'
 import { Grid, GridCell, GRID } from '../grid'
 import { colors, type, easing, duration } from '../theme.js'
-import { mediaUrl, isExhibition, exhibitionSlug } from '../content.js'
+import { mediaUrl, isExhibition, exhibitionSlug, eventSlug } from '../content.js'
 import { useImageAccent } from '../hooks/useImageAccent.js'
 import { linkProps } from '../router.jsx'
 
@@ -76,7 +76,7 @@ const Title = styled.h3`
   text-wrap: balance;
 
   @media ${GRID.MEDIA_MOBILE} {
-    font-size: clamp(41px, 11vw, 52px);
+    ${type.displayLarge}
   }
 `
 
@@ -87,7 +87,7 @@ const Subtitle = styled.p`
   transition: color ${duration.base}s ${easing.reveal};
 
   @media ${GRID.MEDIA_MOBILE} {
-    font-size: clamp(26px, 7vw, 34px);
+    ${type.titleLarge}
   }
 `
 
@@ -112,6 +112,7 @@ function GridItem({ item, index }) {
   const src = mediaUrl(item?.image)
   const accent = useImageAccent(src, colors.gray)
   const exhibition = isExhibition(item)
+  const href = exhibition ? `/exhibitions/${exhibitionSlug(item)}` : `/events/${eventSlug(item)}`
 
   const placement =
     side === 'left'
@@ -137,11 +138,7 @@ function GridItem({ item, index }) {
 
   return (
     <Item {...placement}>
-      {exhibition ? (
-        <CardLink {...linkProps(`/exhibitions/${exhibitionSlug(item)}`)}>{content}</CardLink>
-      ) : (
-        content
-      )}
+      <CardLink {...linkProps(href)}>{content}</CardLink>
     </Item>
   )
 }

@@ -54,8 +54,7 @@ const MetaLine = styled.p`
 `
 
 const Body = styled.p`
-  ${type.caption}
-  line-height: 1.5;
+  ${type.body}
   color: ${colors.black};
   margin: clamp(40px, 5vw, 88px) 0 0;
 `
@@ -98,11 +97,10 @@ const Gallery = styled(Grid).attrs({ as: 'section' })`
 const GalleryFigure = styled.figure`
   margin: 0;
 
-  ${(props) => (props.$side === 'full' ? bleedBoth(GRID.PADDING) : bleed(props.$side, GRID.PADDING))}
+  ${(props) => bleed(props.$side, GRID.PADDING)}
 
   @media ${GRID.MEDIA_TABLET} {
-    ${(props) =>
-      props.$side === 'full' ? bleedBoth(GRID.PADDING_TABLET) : bleed(props.$side, GRID.PADDING_TABLET)}
+    ${(props) => bleed(props.$side, GRID.PADDING_TABLET)}
   }
 
   @media ${GRID.MEDIA_MOBILE} {
@@ -140,7 +138,7 @@ function Exhibition({ slug }) {
       ) : null}
 
       <Header>
-        <GridCell $start={1} $span={6} $startTablet={1} $spanTablet={8}>
+        <GridCell $start={1} $span={5} $startTablet={1} $spanTablet={8}>
           {item.title ? <Title>{item.title}</Title> : null}
           {item.subtitle ? <Subtitle $color={accent}>{item.subtitle}</Subtitle> : null}
         </GridCell>
@@ -167,32 +165,25 @@ function Exhibition({ slug }) {
 
       {gallery.length > 0 ? (
         <Gallery>
-          {(() => {
-            let col = 0
-            return gallery.map((entry, index) => {
-              const src = mediaUrl(entry.image)
-              if (!src) return null
+          {gallery.map((entry, index) => {
+            const src = mediaUrl(entry.image)
+            if (!src) return null
 
-              const full = Boolean(entry.fullWidth)
-              const side = full ? 'full' : col % 2 === 0 ? 'left' : 'right'
-              if (!full) col += 1
+            const side = index % 2 === 0 ? 'left' : 'right'
+            const placement =
+              side === 'left'
+                ? { $start: 1, $span: 6, $startTablet: 1, $spanTablet: 4 }
+                : { $start: 7, $span: 6, $startTablet: 5, $spanTablet: 4 }
 
-              const placement = full
-                ? { $start: 1, $end: -1 }
-                : side === 'left'
-                  ? { $start: 1, $span: 6, $startTablet: 1, $spanTablet: 4 }
-                  : { $start: 7, $span: 6, $startTablet: 5, $spanTablet: 4 }
-
-              return (
-                <GridCell key={index} {...placement}>
-                  <GalleryFigure $side={side}>
-                    <img src={src} alt={entry.caption || ''} />
-                    {entry.caption ? <GalleryCaption>{entry.caption}</GalleryCaption> : null}
-                  </GalleryFigure>
-                </GridCell>
-              )
-            })
-          })()}
+            return (
+              <GridCell key={index} {...placement}>
+                <GalleryFigure $side={side}>
+                  <img src={src} alt={entry.caption || ''} />
+                  {entry.caption ? <GalleryCaption>{entry.caption}</GalleryCaption> : null}
+                </GalleryFigure>
+              </GridCell>
+            )
+          })}
         </Gallery>
       ) : null}
     </main>

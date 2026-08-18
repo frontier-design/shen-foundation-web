@@ -226,9 +226,68 @@ content:
           - name: caption
             label: Caption
             type: string
-          - name: fullWidth
-            label: Full width
-            type: boolean
+
+  - name: events
+    label: Events
+    type: collection
+    path: content/events
+    format: json
+    filename:
+      template: "{fields.slug}.json"
+      field: create
+    view:
+      fields: [title, captionLabel, slug]
+      primary: title
+      sort: [title]
+      search: [title, slug]
+      default:
+        sort: title
+        order: asc
+    fields:
+      - name: title
+        label: Title
+        type: string
+        required: true
+        options:
+          maxlength: 120
+      - name: slug
+        label: Slug
+        type: string
+        required: true
+        pattern: "^[a-z0-9-]+$"
+        description: "Must match the Slug/Title on the matching home grid card so the card links here."
+        options:
+          minlength: 1
+          maxlength: 80
+      - name: captionLabel
+        label: Caption label
+        type: string
+      - name: captionDate
+        label: Caption date
+        type: string
+      - name: captionLocation
+        label: Caption location
+        type: string
+      - name: image
+        label: Thumbnail image
+        type: image
+        options:
+          categories: [image]
+          path: public/media
+      - name: sections
+        label: Accordion sections
+        type: object
+        list:
+          collapsible:
+            collapsed: true
+            summary: "{title}"
+        fields:
+          - name: title
+            label: Title
+            type: string
+          - name: content
+            label: Content
+            type: text
 
 settings:
   content:

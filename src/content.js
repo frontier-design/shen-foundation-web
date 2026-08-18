@@ -10,11 +10,18 @@ const exhibitionModules = import.meta.glob('../content/exhibitions/*.json', {
   import: 'default',
 })
 
+const eventModules = import.meta.glob('../content/events/*.json', {
+  eager: true,
+  import: 'default',
+})
+
 export { site }
 
 export const pages = Object.values(pageModules)
 
 export const exhibitions = Object.values(exhibitionModules)
+
+export const events = Object.values(eventModules)
 
 export function getPage(slug) {
   return pages.find((page) => page.slug === slug)
@@ -56,4 +63,12 @@ export function exhibitionSlug(item) {
 
 export function getExhibition(slug) {
   return exhibitions.find((item) => exhibitionSlug(item) === slug) || null
+}
+
+export function eventSlug(item) {
+  return item?.slug || slugify(item?.title)
+}
+
+export function getEvent(slug) {
+  return events.find((item) => eventSlug(item) === slug) || null
 }

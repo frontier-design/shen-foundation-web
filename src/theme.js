@@ -69,6 +69,12 @@ export const type = {
     line-height: 1.35;
     letter-spacing: -0.05em;
   `,
+  body: css`
+    font-family: ${fonts.body};
+    font-size: 18px;
+    line-height: 1.5;
+    letter-spacing: -0.05em;
+  `,
 };
 
 export const theme = { colors, fonts, type, easing, duration };
