@@ -47,6 +47,14 @@
       "captionLabel": "Exhibition",
       "captionDate": "05 Jun – 04 Oct 2026",
       "captionLocation": "Art Gallery of Ontario, Toronto"
+    },
+    {
+      "image": "/media/abbas-akshavan.jpg",
+      "title": "test",
+      "subtitle": "test",
+      "captionLabel": "test",
+      "captionDate": "123",
+      "captionLocation": "123"
     }
   ]
 }
