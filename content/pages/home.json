@@ -28,14 +28,6 @@
       "captionLocation": "Art Gallery of Ontario, Toronto"
     },
     {
-      "image": "/media/carousel-image-3.webp",
-      "title": "Haugue Yang",
-      "subtitle": "Dynamic Spaces",
-      "captionLabel": "Exhibition",
-      "captionDate": "05 Jun – 04 Oct 2026",
-      "captionLocation": "Art Gallery of Ontario, Toronto"
-    },
-    {
       "image": "/media/HeroCarousel/carousel-image-2.png",
       "title": "Jeremie Gindre and Mirjana Farkas",
       "captionLabel": "Talk",
@@ -48,6 +40,14 @@
       "captionLabel": "Talk",
       "captionDate": "05 Oct 2026",
       "captionLocation": "Guggenheim, New York"
+    },
+    {
+      "image": "/media/carousel-image-3.webp",
+      "title": "Haugue Yang",
+      "subtitle": "Dynamic Spaces",
+      "captionLabel": "Exhibition",
+      "captionDate": "05 Jun – 04 Oct 2026",
+      "captionLocation": "Art Gallery of Ontario, Toronto"
     }
   ]
 }
