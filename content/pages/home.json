@@ -10,12 +10,21 @@
   "callout": {
     "enabled": true,
     "exhibition": "curtain-call",
-    "image": "/media/abbas-akshavan.jpg"
+    "image": "/media/abbas-akshavan.jpg",
+    "event": "content/events/sensing-quantum-symposium.json"
   },
   "grid": [
-    { "exhibition": "life-is-cheap" },
-    { "event": "jeremie-gindre-and-mirjana-farkas" },
-    { "event": "florian-luthi-artist-talk" },
-    { "exhibition": "dynamic-spaces" }
+    {
+      "exhibition": "life-is-cheap"
+    },
+    {
+      "event": "jeremie-gindre-and-mirjana-farkas"
+    },
+    {
+      "event": "florian-luthi-artist-talk"
+    },
+    {
+      "exhibition": "dynamic-spaces"
+    }
   ]
 }
