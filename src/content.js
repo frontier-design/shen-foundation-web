@@ -79,19 +79,23 @@ export function exhibitionEndDate(item) {
   return m == null ? Number.POSITIVE_INFINITY : new Date(+year, m, +day).getTime()
 }
 
+function exhibitionToCard(item) {
+  return {
+    image: item.heroImage,
+    title: item.title,
+    subtitle: item.subtitle,
+    slug: item.slug,
+    status: item.status || 'ongoing',
+    captionLabel: item.captionLabel,
+    captionDate: item.captionDate,
+    captionLocation: item.captionLocation,
+  }
+}
+
 export function exhibitionCards() {
   return [...exhibitions]
     .sort((a, b) => exhibitionEndDate(a) - exhibitionEndDate(b))
-    .map((item) => ({
-      image: item.heroImage,
-      title: item.title,
-      subtitle: item.subtitle,
-      slug: item.slug,
-      status: item.status || 'ongoing',
-      captionLabel: item.captionLabel,
-      captionDate: item.captionDate,
-      captionLocation: item.captionLocation,
-    }))
+    .map(exhibitionToCard)
 }
 
 export function eventSlug(item) {
@@ -102,16 +106,44 @@ export function getEvent(slug) {
   return events.find((item) => eventSlug(item) === slug) || null
 }
 
+function eventToCard(item) {
+  return {
+    image: item.image,
+    title: item.title,
+    slug: item.slug,
+    status: item.status || 'ongoing',
+    captionLabel: item.captionLabel,
+    captionDate: item.captionDate,
+    captionLocation: item.captionLocation,
+  }
+}
+
 export function eventCards() {
   return [...events]
     .sort((a, b) => exhibitionEndDate(a) - exhibitionEndDate(b))
-    .map((item) => ({
-      image: item.image,
-      title: item.title,
-      slug: item.slug,
-      status: item.status || 'ongoing',
-      captionLabel: item.captionLabel,
-      captionDate: item.captionDate,
-      captionLocation: item.captionLocation,
-    }))
+    .map(eventToCard)
+}
+
+function refSlug(v) {
+  if (!v) return null
+  const s = typeof v === 'string' ? v : v.path || v.value || ''
+  return s.replace(/^.*\//, '').replace(/\.json$/, '') || null
+}
+
+export function homeGridCards(grid = []) {
+  return grid
+    .map((row) => {
+      const ex = refSlug(row.exhibition)
+      if (ex) {
+        const doc = getExhibition(ex)
+        return doc ? exhibitionToCard(doc) : null
+      }
+      const ev = refSlug(row.event)
+      if (ev) {
+        const doc = getEvent(ev)
+        return doc ? eventToCard(doc) : null
+      }
+      return null
+    })
+    .filter(Boolean)
 }

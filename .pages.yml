@@ -110,41 +110,29 @@ content:
             label: Button link (URL)
             type: string
       - name: grid
-        label: Grid
+        label: Homepage grid
         type: object
         list:
           collapsible:
             collapsed: true
-            summary: "{title}"
+            summary: "{exhibition}{event}"
         fields:
-          - name: image
-            label: Image
-            type: image
+          - name: exhibition
+            label: Exhibition
+            type: reference
+            description: "Feature an Exhibition. Leave Event blank on this row."
             options:
-              categories: [image]
-              path: public/media
-          - name: title
-            label: Title
-            type: string
-          - name: subtitle
-            label: Subtitle (exhibitions only)
-            type: string
-          - name: slug
-            label: Exhibition page slug (exhibitions only)
-            type: string
-            pattern: "^[a-z0-9-]*$"
-            description: "The exhibition/project name (e.g. life-is-cheap). Must match the exhibition doc's Slug. Defaults to the subtitle if left blank. Leave blank for non-exhibitions."
+              collection: exhibitions
+              search: title,subtitle,slug
+              label: "{title} — {subtitle}"
+          - name: event
+            label: Event
+            type: reference
+            description: "Feature an Event. Leave Exhibition blank on this row."
             options:
-              maxlength: 80
-          - name: captionLabel
-            label: Caption label
-            type: string
-          - name: captionDate
-            label: Caption date
-            type: string
-          - name: captionLocation
-            label: Caption location
-            type: string
+              collection: events
+              search: title,slug
+              label: "{title}"
       - name: artists
         label: Artists
         type: object

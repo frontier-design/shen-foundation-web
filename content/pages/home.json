@@ -18,39 +18,9 @@
     "link": "#"
   },
   "grid": [
-    {
-      "image": "/media/anicka-yi-life-is-cheap.jpeg",
-      "title": "Anicka Yi",
-      "subtitle": "Life is Cheap",
-      "slug": "life-is-cheap",
-      "captionLabel": "Exhibition",
-      "captionDate": "05 Jun – 04 Oct 2026",
-      "captionLocation": "Art Gallery of Ontario, Toronto"
-    },
-    {
-      "image": "/media/HeroCarousel/carousel-image-2.png",
-      "title": "Jeremie Gindre and Mirjana Farkas",
-      "slug": "jeremie-gindre-and-mirjana-farkas",
-      "captionLabel": "Talk",
-      "captionDate": "21 Oct – 21 Mar 2027",
-      "captionLocation": "The Power Plant Art Gallery"
-    },
-    {
-      "image": "/media/Test/florian-luthi.jpg",
-      "title": "Florian Luthi Artist Talk",
-      "slug": "florian-luthi-artist-talk",
-      "captionLabel": "Talk",
-      "captionDate": "05 Oct 2026",
-      "captionLocation": "Guggenheim, New York"
-    },
-    {
-      "image": "/media/carousel-image-3.webp",
-      "title": "Haugue Yang",
-      "subtitle": "Dynamic Spaces",
-      "slug": "dynamic-spaces",
-      "captionLabel": "Exhibition",
-      "captionDate": "05 Jun – 04 Oct 2026",
-      "captionLocation": "Art Gallery of Ontario, Toronto"
-    }
+    { "exhibition": "life-is-cheap" },
+    { "event": "jeremie-gindre-and-mirjana-farkas" },
+    { "event": "florian-luthi-artist-talk" },
+    { "exhibition": "dynamic-spaces" }
   ]
 }
