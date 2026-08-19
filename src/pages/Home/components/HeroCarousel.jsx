@@ -140,7 +140,11 @@ function HeroCarousel({ images = [] }) {
 
         tl.set({}, {}, HOLD_BEFORE)
           .add(() => publish({ plus: tones[next].plus }))
-          .to(front, { clipPath: 'inset(0 0 0 50%)', duration: WIPE, ease: 'reveal' })
+          .to(front, {
+            clipPath: `inset(0 0 0 calc(50% + ${GRID.GAP / 2}px))`,
+            duration: WIPE,
+            ease: 'reveal',
+          })
           .to({}, { duration: HOLD_HALF })
           .add(() => publish(tones[next]))
           .to(front, { clipPath: 'inset(0 0 0 0%)', duration: WIPE, ease: 'reveal' })

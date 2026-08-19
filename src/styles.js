@@ -28,7 +28,7 @@ const GlobalStyle = createGlobalStyle`
   }
 
   html, body {
-    overflow-x: hidden;
+    overflow-x: clip;
   }
 
   body {

@@ -20,6 +20,9 @@ const Section = styled(Grid).attrs({ as: 'section' })`
   row-gap: clamp(96px, 12vw, 200px);
   padding-top: 0;
   padding-bottom: clamp(64px, 10vh, 160px);
+  position: relative;
+  z-index: 1;
+  background-color: ${colors.white};
 
   @media ${GRID.MEDIA_MOBILE} {
     row-gap: clamp(72px, 18vw, 120px);

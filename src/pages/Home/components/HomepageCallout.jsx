@@ -1,17 +1,15 @@
-import { useLayoutEffect, useRef } from 'react'
 import styled from 'styled-components'
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { Grid, GridCell, GRID, useMediaQuery } from '../../../grid/index.js'
+import { Grid, GridCell, GRID } from '../../../grid/index.js'
 import { colors, type, easing, duration } from '../../../theme.js'
 import { mediaUrl } from '../../../content.js'
 import { useImageAccent } from '../../../hooks/useImageAccent.js'
 
-gsap.registerPlugin(ScrollTrigger)
-
 const Section = styled.section`
   width: 100%;
   height: 100svh;
+  position: sticky;
+  top: 0;
+  z-index: 0;
 `
 
 const Layout = styled(Grid)`
@@ -31,9 +29,9 @@ const TextCell = styled(GridCell)`
 
   @media ${GRID.MEDIA_MOBILE} {
     justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding: ${GRID.PADDING_MOBILE}px 0;
+    align-items: flex-start;
+    text-align: left;
+    padding: clamp(48px, 9vh, 88px) 0 ${GRID.PADDING_MOBILE}px;
     gap: 1.5rem;
   }
 `
@@ -93,7 +91,6 @@ const ArrowButton = styled.a`
   }
 
   @media ${GRID.MEDIA_MOBILE} {
-    align-self: center;
     width: 44px;
     font-size: 16px;
   }
@@ -122,48 +119,20 @@ const ImageViewport = styled.div`
 
 const Image = styled.img`
   position: absolute;
-  top: -15%;
+  top: 0;
   left: 0;
   width: 100%;
-  height: 130%;
+  height: 100%;
   object-fit: cover;
-  will-change: transform;
 `
 
 function HomepageCallout({ callout }) {
-  const sectionRef = useRef(null)
-  const imageRef = useRef(null)
-  const reduceMotion = useMediaQuery('(prefers-reduced-motion: reduce)')
-
   const src = mediaUrl(callout?.image)
   const link = callout?.link || undefined
   const accent = useImageAccent(src, colors.gray)
 
-  useLayoutEffect(() => {
-    if (reduceMotion || !imageRef.current) return undefined
-
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        imageRef.current,
-        { yPercent: -10 },
-        {
-          yPercent: 10,
-          ease: 'none',
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: 'top bottom',
-            end: 'bottom top',
-            scrub: true,
-          },
-        },
-      )
-    }, sectionRef)
-
-    return () => ctx.revert()
-  }, [reduceMotion, src])
-
   return (
-    <Section ref={sectionRef} data-nav-tone-left="light" data-nav-tone-right="dark">
+    <Section data-nav-tone-left="light" data-nav-tone-right="dark">
       <Layout>
         <TextCell $start={1} $span={6} $spanMobile={4}>
           <div>
@@ -193,7 +162,7 @@ function HomepageCallout({ callout }) {
 
         <ImageCell $start={7} $end={-1} $startMobile={1} $endMobile={-1}>
           <ImageViewport>
-            {src ? <Image ref={imageRef} src={src} alt={callout?.title || ''} /> : null}
+            {src ? <Image src={src} alt={callout?.title || ''} /> : null}
           </ImageViewport>
         </ImageCell>
       </Layout>

@@ -25,11 +25,17 @@ const Title = styled.h1`
 const Tabs = styled.div`
   display: flex;
   flex-wrap: wrap;
-  gap: clamp(16px, 1.6vw, 24px);
+  gap: clamp(24px, 2.6vw, 40px);
+
+  @media ${GRID.MEDIA_MOBILE} {
+    row-gap: 6px;
+    column-gap: 16px;
+  }
 `
 
 const Tab = styled.button`
   ${type.titleLarge}
+  font-size: clamp(24px, 2.9vw, 36px);
   background: none;
   border: none;
   padding: 0;

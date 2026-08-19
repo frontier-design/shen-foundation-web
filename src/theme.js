@@ -68,12 +68,20 @@ export const type = {
     font-size: 18px;
     line-height: 1.35;
     letter-spacing: -0.05em;
+
+    @media (max-width: 768px) {
+      font-size: 16px;
+    }
   `,
   body: css`
     font-family: ${fonts.body};
     font-size: 18px;
     line-height: 1.5;
     letter-spacing: -0.05em;
+
+    @media (max-width: 768px) {
+      font-size: 16px;
+    }
   `,
 };
 
