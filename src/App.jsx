@@ -9,6 +9,7 @@ import Footer from './components/Footer.jsx'
 import Home from './pages/Home'
 import Exhibition from './pages/Exhibition'
 import ExhibitionsIndex from './pages/Exhibitions'
+import Artists from './pages/Artists'
 import Event from './pages/Event'
 import EventsIndex from './pages/Events'
 import { site } from './content.js'
@@ -26,6 +27,7 @@ function App() {
   const pathname = usePathname()
   const exhibition = pathname.match(/^\/exhibitions\/([a-z0-9-]+)\/?$/)
   const exhibitionsIndex = pathname === '/exhibitions' || pathname === '/exhibitions/'
+  const artistsIndex = pathname === '/artists' || pathname === '/artists/'
   const event = pathname.match(/^\/events\/([a-z0-9-]+)\/?$/)
   const eventsIndex = pathname === '/events' || pathname === '/events/'
 
@@ -42,6 +44,8 @@ function App() {
         <Exhibition slug={exhibition[1]} />
       ) : exhibitionsIndex ? (
         <ExhibitionsIndex />
+      ) : artistsIndex ? (
+        <Artists />
       ) : event ? (
         <Event slug={event[1]} />
       ) : eventsIndex ? (
