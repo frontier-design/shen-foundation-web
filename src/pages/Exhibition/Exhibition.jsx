@@ -9,6 +9,11 @@ const Hero = styled.div`
   height: 100vh;
   height: 100dvh;
 
+  @media ${GRID.MEDIA_MOBILE} {
+    height: 50vh;
+    height: 50dvh;
+  }
+
   img {
     display: block;
     width: 100%;
@@ -21,6 +26,10 @@ const Header = styled(Grid).attrs({ as: 'header' })`
   align-items: start;
   padding-top: clamp(48px, 6vw, 100px);
   row-gap: clamp(32px, 4vw, 56px);
+
+  @media ${GRID.MEDIA_MOBILE} {
+    row-gap: 0;
+  }
 `
 
 const Title = styled.h1`
@@ -39,6 +48,10 @@ const Subtitle = styled.p`
 const Meta = styled.div`
   display: flex;
   flex-direction: column;
+
+  @media ${GRID.MEDIA_MOBILE} {
+    margin-top: clamp(24px, 8vw, 48px);
+  }
 `
 
 const MetaLabel = styled.p`
@@ -57,6 +70,10 @@ const Body = styled.p`
   ${type.body}
   color: ${colors.black};
   margin: clamp(40px, 5vw, 88px) 0 0;
+
+  @media ${GRID.MEDIA_MOBILE} {
+    margin-top: clamp(48px, 14vw, 72px);
+  }
 `
 
 const ArtistLink = styled.a`
@@ -90,7 +107,7 @@ const Gallery = styled(Grid).attrs({ as: 'section' })`
   @media ${GRID.MEDIA_MOBILE} {
     display: flex;
     flex-direction: column;
-    gap: clamp(40px, 12vw, 72px);
+    gap: 0;
   }
 `
 

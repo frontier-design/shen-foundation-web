@@ -1,7 +1,8 @@
 import { useEffect } from 'react'
-import { ThemeProvider } from 'styled-components'
+import styled, { ThemeProvider } from 'styled-components'
 import GlobalStyle from './styles.js'
 import theme from './theme.js'
+import { GRID } from './grid'
 import GridOverlay from './components/GridOverlay.jsx'
 import Navigation from './components/Navigation.jsx'
 import Footer from './components/Footer.jsx'
@@ -10,6 +11,14 @@ import Exhibition from './pages/Exhibition'
 import Event from './pages/Event'
 import { site } from './content.js'
 import { usePathname } from './router.jsx'
+
+const MobileOnlyFooter = styled.div`
+  display: none;
+
+  @media ${GRID.MEDIA_MOBILE} {
+    display: block;
+  }
+`
 
 function App() {
   const pathname = usePathname()
@@ -32,7 +41,13 @@ function App() {
       ) : (
         <Home />
       )}
-      <Footer />
+      {event ? (
+        <MobileOnlyFooter>
+          <Footer />
+        </MobileOnlyFooter>
+      ) : (
+        <Footer />
+      )}
     </ThemeProvider>
   )
 }
