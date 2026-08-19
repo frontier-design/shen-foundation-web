@@ -10,7 +10,7 @@ import Home from './pages/Home'
 import Exhibition from './pages/Exhibition'
 import ExhibitionsIndex from './pages/Exhibitions'
 import Artists from './pages/Artists'
-import Artist from './pages/Artist'
+import IndividualArtist from './pages/IndividualArtist'
 import Event from './pages/Event'
 import EventsIndex from './pages/Events'
 import { site } from './content.js'
@@ -47,7 +47,7 @@ function App() {
       ) : exhibitionsIndex ? (
         <ExhibitionsIndex />
       ) : artist ? (
-        <Artist slug={artist[1]} />
+        <IndividualArtist slug={artist[1]} />
       ) : artistsIndex ? (
         <Artists />
       ) : event ? (

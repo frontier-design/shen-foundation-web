@@ -139,6 +139,32 @@ export function getArtist(slug) {
   return artists.find((item) => artistSlug(item) === slug) || null
 }
 
+export function orderedArtists(order = []) {
+  const bySlug = new Map(artists.map((a) => [artistSlug(a), a]))
+  const seen = new Set()
+  const result = []
+  for (const row of order) {
+    const slug = refSlug(row?.artist)
+    const doc = slug && bySlug.get(slug)
+    if (doc && !seen.has(slug)) {
+      result.push(doc)
+      seen.add(slug)
+    }
+  }
+  for (const a of artists) {
+    if (!seen.has(artistSlug(a))) result.push(a)
+  }
+  return result
+}
+
+export function artistExhibitions(artist) {
+  const name = slugify(artist?.title)
+  if (!name) return []
+  return exhibitions
+    .filter((ex) => slugify(ex.title) === name)
+    .sort((a, b) => exhibitionEndDate(a) - exhibitionEndDate(b))
+}
+
 function refSlug(v) {
   if (!v) return null
   const s = typeof v === 'string' ? v : v.path || v.value || ''

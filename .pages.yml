@@ -68,6 +68,22 @@ content:
         type: text
         options:
           maxlength: 320
+      - name: artistOrder
+        label: Artist order
+        type: object
+        description: "Drag to set the order artists appear on the Artists index. Any artist not listed is appended at the end."
+        list:
+          collapsible:
+            collapsed: true
+            summary: "{artist}"
+        fields:
+          - name: artist
+            label: Artist
+            type: reference
+            options:
+              collection: artists
+              search: title,slug
+              label: "{title}"
       - name: heroImages
         label: Hero carousel
         type: image
@@ -146,30 +162,6 @@ content:
               collection: events
               search: title,slug
               label: "{title}"
-      - name: artists
-        label: Artists
-        type: object
-        list:
-          collapsible:
-            collapsed: true
-            summary: "{title}"
-        fields:
-          - name: image
-            label: Image
-            type: image
-            options:
-              categories: [image]
-              path: public/media
-          - name: title
-            label: Title
-            type: string
-          - name: slug
-            label: Slug
-            type: string
-            pattern: "^[a-z0-9-]*$"
-            description: "Must match the Slug on the artist detail doc so the card links there."
-            options:
-              maxlength: 80
 
   - name: artists
     label: Artists
@@ -208,34 +200,12 @@ content:
         type: text
         options:
           maxlength: 2000
-      - name: images
-        label: Images
-        type: object
-        list:
-          collapsible:
-            collapsed: true
-            summary: "Image"
-        fields:
-          - name: image
-            label: Image
-            type: image
-            options:
-              categories: [image]
-              path: public/media
-      - name: subtitle
-        label: Work title
-        type: string
+      - name: thumbnail
+        label: Thumbnail
+        type: image
         options:
-          maxlength: 160
-      - name: captionLabel
-        label: Caption label
-        type: string
-      - name: captionDate
-        label: Caption date
-        type: string
-      - name: captionLocation
-        label: Caption location
-        type: string
+          categories: [image]
+          path: public/media
 
   - name: exhibitions
     label: Exhibitions

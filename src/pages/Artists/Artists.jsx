@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components'
 import { Grid, GridCell, GRID } from '../../grid'
 import { colors, type } from '../../theme.js'
-import { getPage, mediaUrl, artistSlug } from '../../content.js'
+import { getPage, orderedArtists, mediaUrl, artistSlug } from '../../content.js'
 import { linkProps } from '../../router.jsx'
 
 const ScreenReaderTitle = styled.h1`
@@ -82,7 +82,7 @@ const Name = styled.h2`
 
 function ArtistItem({ item, index }) {
   const side = index % 2 === 0 ? 'left' : 'right'
-  const src = mediaUrl(item?.image)
+  const src = mediaUrl(item?.thumbnail)
 
   const placement =
     side === 'left'
@@ -105,18 +105,15 @@ function ArtistItem({ item, index }) {
 
 function Artists() {
   const page = getPage('artists')
-
-  if (!page) return null
-
-  const artists = page.artists || []
+  const artists = orderedArtists(page?.artistOrder)
 
   return (
     <main>
-      <ScreenReaderTitle>{page.title}</ScreenReaderTitle>
+      <ScreenReaderTitle>Artists</ScreenReaderTitle>
       {artists.length > 0 ? (
         <Section data-nav-tone-left="dark" data-nav-tone-right="dark">
           {artists.map((item, index) => (
-            <ArtistItem key={index} item={item} index={index} />
+            <ArtistItem key={artistSlug(item)} item={item} index={index} />
           ))}
         </Section>
       ) : null}

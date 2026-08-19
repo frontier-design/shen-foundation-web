@@ -1,8 +1,9 @@
 import styled, { css } from 'styled-components'
 import { Grid, GridCell, GRID } from '../../grid'
 import { colors, type, easing, duration } from '../../theme.js'
-import { getArtist, mediaUrl } from '../../content.js'
+import { getArtist, mediaUrl, artistExhibitions, exhibitionSlug } from '../../content.js'
 import { useImageAccent } from '../../hooks/useImageAccent.js'
+import { linkProps } from '../../router.jsx'
 
 const Section = styled.main`
   width: 100%;
@@ -36,6 +37,10 @@ const Left = styled(GridCell)`
     padding-bottom: 0;
     row-gap: clamp(32px, 8vw, 48px);
   }
+
+  @media ${GRID.MEDIA_MOBILE} {
+    padding-top: clamp(96px, 15.6vh, 192px);
+  }
 `
 
 const Name = styled.h1`
@@ -47,12 +52,15 @@ const Name = styled.h1`
 `
 
 const Bio = styled.p`
-  ${type.gridSubtitle}
-  font-size: clamp(20px, 1.5vw, 28px);
+  ${type.body}
   color: ${colors.black};
-  line-height: 1.5;
   margin: 0;
   white-space: pre-line;
+  text-wrap: pretty;
+
+  @media ${GRID.MEDIA_MOBILE} {
+    margin-bottom: clamp(18px, 5.6vw, 31.5px);
+  }
 `
 
 const Right = styled(GridCell)`
@@ -90,12 +98,12 @@ const FeedImage = styled.div`
   ${(props) =>
     props.$fill &&
     css`
-      min-height: 100%;
-      min-height: 100dvh;
+      height: 100vh;
+      height: 100dvh;
 
-      @media ${GRID.MEDIA_TABLET} {
-        min-height: 50vh;
-        min-height: 50dvh;
+      @media ${GRID.MEDIA_MOBILE} {
+        height: 50vh;
+        height: 50dvh;
       }
     `}
 
@@ -103,7 +111,6 @@ const FeedImage = styled.div`
     display: block;
     width: 100%;
     height: ${(props) => (props.$fill ? '100%' : 'auto')};
-    min-height: ${(props) => (props.$fill ? '100%' : '0')};
     object-fit: cover;
   }
 `
@@ -111,7 +118,7 @@ const FeedImage = styled.div`
 const Meta = styled.div`
   display: flex;
   flex-direction: column;
-  padding: clamp(24px, 3vw, 40px) ${GRID.PADDING}px clamp(40px, 5vw, 72px) 0;
+  padding: clamp(20px, 2.5vw, 33px) ${GRID.PADDING}px clamp(40px, 5vw, 72px) 0;
 
   @media ${GRID.MEDIA_TABLET} {
     padding-left: ${GRID.PADDING_TABLET}px;
@@ -143,17 +150,40 @@ const MetaLine = styled.p`
   margin: 0;
 `
 
-function Artist({ slug }) {
+const CardLink = styled.a`
+  display: block;
+  color: inherit;
+  text-decoration: none;
+`
+
+function ExhibitionEntry({ item }) {
+  const src = mediaUrl(item.heroImage)
+  const accent = useImageAccent(src, colors.gray)
+
+  return (
+    <CardLink {...linkProps(`/exhibitions/${exhibitionSlug(item)}`)}>
+      {src ? (
+        <FeedImage>
+          <img src={src} alt={item.subtitle || ''} />
+        </FeedImage>
+      ) : null}
+      <Meta>
+        {item.subtitle ? <WorkTitle $color={accent}>{item.subtitle}</WorkTitle> : null}
+        {item.captionLabel ? <MetaLabel>{item.captionLabel}</MetaLabel> : null}
+        {item.captionDate ? <MetaLine>{item.captionDate}</MetaLine> : null}
+        {item.captionLocation ? <MetaLine>{item.captionLocation}</MetaLine> : null}
+      </Meta>
+    </CardLink>
+  )
+}
+
+function IndividualArtist({ slug }) {
   const item = getArtist(slug)
-  const images = (item?.images || []).map((entry) => mediaUrl(entry?.image)).filter(Boolean)
-  const accentSrc = images[images.length - 1] || null
-  const accent = useImageAccent(accentSrc, colors.gray)
 
   if (!item) return null
 
-  const hasMeta = Boolean(
-    item.subtitle || item.captionLabel || item.captionDate || item.captionLocation,
-  )
+  const thumbnail = mediaUrl(item.thumbnail)
+  const shows = artistExhibitions(item)
 
   return (
     <Section data-nav-tone-left="light" data-nav-tone-right="dark">
@@ -165,19 +195,14 @@ function Artist({ slug }) {
 
         <Right $start={7} $end={-1} $startTablet={1} $spanTablet={8}>
           <Feed>
-            {images.map((src, index) => (
-              <FeedImage key={index} $fill={index === 0}>
-                <img src={src} alt="" />
+            {thumbnail ? (
+              <FeedImage $fill>
+                <img src={thumbnail} alt="" />
               </FeedImage>
-            ))}
-            {hasMeta ? (
-              <Meta>
-                {item.subtitle ? <WorkTitle $color={accent}>{item.subtitle}</WorkTitle> : null}
-                {item.captionLabel ? <MetaLabel>{item.captionLabel}</MetaLabel> : null}
-                {item.captionDate ? <MetaLine>{item.captionDate}</MetaLine> : null}
-                {item.captionLocation ? <MetaLine>{item.captionLocation}</MetaLine> : null}
-              </Meta>
             ) : null}
+            {shows.map((ex) => (
+              <ExhibitionEntry key={exhibitionSlug(ex)} item={ex} />
+            ))}
           </Feed>
         </Right>
       </Layout>
@@ -185,4 +210,4 @@ function Artist({ slug }) {
   )
 }
 
-export default Artist
+export default IndividualArtist

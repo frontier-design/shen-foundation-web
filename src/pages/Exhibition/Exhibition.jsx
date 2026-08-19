@@ -50,7 +50,7 @@ const Meta = styled.div`
   flex-direction: column;
 
   @media ${GRID.MEDIA_MOBILE} {
-    margin-top: clamp(24px, 8vw, 48px);
+    margin-top: clamp(31px, 3.9vw, 69px);
   }
 `
 
@@ -69,11 +69,7 @@ const MetaLine = styled.p`
 const Body = styled.p`
   ${type.body}
   color: ${colors.black};
-  margin: clamp(40px, 5vw, 88px) 0 0;
-
-  @media ${GRID.MEDIA_MOBILE} {
-    margin-top: clamp(48px, 14vw, 72px);
-  }
+  margin: clamp(31px, 3.9vw, 69px) 0 0;
 `
 
 const ArtistLink = styled.a`
