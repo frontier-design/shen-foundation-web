@@ -2,7 +2,7 @@ import { useState } from 'react'
 import styled from 'styled-components'
 import { Grid, GridCell, GRID } from '../../grid'
 import { colors, type, easing, duration } from '../../theme.js'
-import { exhibitionCards } from '../../content.js'
+import { eventCards } from '../../content.js'
 import CardGrid from '../../components/CardGrid.jsx'
 
 const Header = styled(Grid).attrs({ as: 'header' })`
@@ -24,6 +24,7 @@ const Title = styled.h1`
 
 const Tabs = styled.div`
   display: flex;
+  flex-wrap: wrap;
   gap: clamp(16px, 1.6vw, 24px);
 `
 
@@ -37,28 +38,46 @@ const Tab = styled.button`
   transition: color ${duration.fast}s ${easing.reveal};
 `
 
-function Exhibitions() {
-  const [active, setActive] = useState('ongoing')
-  const visible = exhibitionCards().filter((card) => card.status === active)
+const pluralize = (value) => (value.endsWith('s') ? value : `${value}s`)
+
+function Events() {
+  const [active, setActive] = useState('all')
+  const cards = eventCards()
+
+  const labels = [
+    ...new Set(
+      cards
+        .filter((card) => card.status !== 'archive')
+        .map((card) => card.captionLabel)
+        .filter(Boolean),
+    ),
+  ]
+
+  const tabs = [
+    { key: 'all', label: 'All' },
+    ...labels.map((label) => ({ key: label, label: pluralize(label) })),
+    { key: 'archive', label: 'Archive' },
+  ]
+
+  const visible = cards.filter((card) => {
+    if (active === 'all') return card.status !== 'archive'
+    if (active === 'archive') return card.status === 'archive'
+    return card.status !== 'archive' && card.captionLabel === active
+  })
 
   return (
     <main>
       <Header>
         <GridCell $start={1} $end={-1}>
-          <Title>
-            Exhibitions
-            <br />
-            &amp; Projects
-          </Title>
+          <Title>Events</Title>
         </GridCell>
         <GridCell $start={1} $end={-1}>
           <Tabs>
-            <Tab $active={active === 'ongoing'} onClick={() => setActive('ongoing')}>
-              Ongoing
-            </Tab>
-            <Tab $active={active === 'archive'} onClick={() => setActive('archive')}>
-              Archive
-            </Tab>
+            {tabs.map((tab) => (
+              <Tab key={tab.key} $active={active === tab.key} onClick={() => setActive(tab.key)}>
+                {tab.label}
+              </Tab>
+            ))}
           </Tabs>
         </GridCell>
       </Header>
@@ -67,4 +86,4 @@ function Exhibitions() {
   )
 }
 
-export default Exhibitions
+export default Events

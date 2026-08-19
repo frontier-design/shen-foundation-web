@@ -10,6 +10,7 @@ import Home from './pages/Home'
 import Exhibition from './pages/Exhibition'
 import ExhibitionsIndex from './pages/Exhibitions'
 import Event from './pages/Event'
+import EventsIndex from './pages/Events'
 import { site } from './content.js'
 import { usePathname } from './router.jsx'
 
@@ -26,6 +27,7 @@ function App() {
   const exhibition = pathname.match(/^\/exhibitions\/([a-z0-9-]+)\/?$/)
   const exhibitionsIndex = pathname === '/exhibitions' || pathname === '/exhibitions/'
   const event = pathname.match(/^\/events\/([a-z0-9-]+)\/?$/)
+  const eventsIndex = pathname === '/events' || pathname === '/events/'
 
   useEffect(() => {
     document.title = site.title
@@ -42,6 +44,8 @@ function App() {
         <ExhibitionsIndex />
       ) : event ? (
         <Event slug={event[1]} />
+      ) : eventsIndex ? (
+        <EventsIndex />
       ) : (
         <Home />
       )}

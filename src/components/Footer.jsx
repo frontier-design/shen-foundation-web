@@ -53,7 +53,7 @@ function Footer() {
           <FooterLink href="#">About</FooterLink>
           <FooterLink href="#">Artists</FooterLink>
           <FooterLink {...linkProps('/exhibitions')}>Exhibitions</FooterLink>
-          <FooterLink href="#">Events</FooterLink>
+          <FooterLink {...linkProps('/events')}>Events</FooterLink>
         </Group>
         <Group>
           <FooterLink href="#">Contact</FooterLink>

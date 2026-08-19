@@ -101,3 +101,17 @@ export function eventSlug(item) {
 export function getEvent(slug) {
   return events.find((item) => eventSlug(item) === slug) || null
 }
+
+export function eventCards() {
+  return [...events]
+    .sort((a, b) => exhibitionEndDate(a) - exhibitionEndDate(b))
+    .map((item) => ({
+      image: item.image,
+      title: item.title,
+      slug: item.slug,
+      status: item.status || 'ongoing',
+      captionLabel: item.captionLabel,
+      captionDate: item.captionDate,
+      captionLocation: item.captionLocation,
+    }))
+}

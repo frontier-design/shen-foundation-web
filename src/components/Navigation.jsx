@@ -2,6 +2,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import { Grid, GridCell, GRID } from '../grid'
 import { colors, type, easing, duration } from '../theme.js'
+import { linkProps } from '../router.jsx'
 
 const LUMA_THRESHOLD = 140
 const SAMPLE = 8
@@ -267,6 +268,11 @@ function Navigation() {
   const [tones, setTones] = useState({ logo: 'dark', plus: 'dark' })
   const [open, setOpen] = useState(false)
 
+  const navTo = (to) => (event) => {
+    linkProps(to).onClick(event)
+    setOpen(false)
+  }
+
   useLayoutEffect(() => {
     let raf
     let lastSample = 0
@@ -319,7 +325,9 @@ function Navigation() {
               <MenuGroup>
                 <MenuLink href="#">About</MenuLink>
                 <MenuLink href="#">Artists</MenuLink>
-                <MenuLink href="#">Exhibitions</MenuLink>
+                <MenuLink href="/exhibitions" onClick={navTo('/exhibitions')}>
+                  Exhibitions
+                </MenuLink>
                 <MenuLink href="#">Program</MenuLink>
               </MenuGroup>
               <MenuGroup>

@@ -1,0 +1,23 @@
+{
+  "title": "Guided Collection Tour",
+  "slug": "guided-collection-tour",
+  "status": "ongoing",
+  "captionLabel": "Tour",
+  "captionDate": "14 Nov 2026",
+  "captionLocation": "Shen Foundation, New York",
+  "image": "/media/HeroCarousel/carousel-image-4.jpg",
+  "sections": [
+    {
+      "title": "About",
+      "content": "Join a foundation guide for an intimate walkthrough of works currently on view. The tour highlights recent acquisitions and the conversations they open across generations of artists in the collection."
+    },
+    {
+      "title": "Ticket Infos and Prices",
+      "content": "General admission: $15. Members and students: $10. Tickets can be reserved online in advance or purchased at the door subject to availability. Doors open thirty minutes before the tour begins."
+    },
+    {
+      "title": "Accessibility",
+      "content": "The venue is wheelchair accessible with step-free entry and accessible restrooms. Assistive listening devices are available on request. For specific accommodations, please contact the gallery ahead of your visit."
+    }
+  ]
+}

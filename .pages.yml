@@ -243,7 +243,7 @@ content:
       template: "{fields.slug}.json"
       field: create
     view:
-      fields: [title, captionLabel, slug]
+      fields: [title, captionLabel, status, slug]
       primary: title
       sort: [title]
       search: [title, slug]
@@ -266,6 +266,13 @@ content:
         options:
           minlength: 1
           maxlength: 80
+      - name: status
+        label: Status
+        type: select
+        default: ongoing
+        description: "Archived events move to the Archive tab on the Events page."
+        options:
+          values: [ongoing, archive]
       - name: captionLabel
         label: Caption label
         type: string
