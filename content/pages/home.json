@@ -9,7 +9,7 @@
   ],
   "callout": {
     "enabled": true,
-    "type": "event",
+    "type": "exhibition",
     "exhibition": "curtain-call",
     "event": "content/events/sensing-quantum-symposium.json"
   },
