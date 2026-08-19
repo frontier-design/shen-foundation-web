@@ -32,22 +32,14 @@ content:
         options:
           maxlength: 320
 
-  - name: pages
-    label: Pages
-    type: collection
-    path: content/pages
+  - name: home
+    label: Home
+    type: file
+    path: content/pages/home.json
     format: json
-    filename:
-      template: "{fields.slug}.json"
-      field: create
-    view:
-      fields: [title, slug]
-      primary: title
-      sort: [title]
-      search: [title, slug]
-      default:
-        sort: title
-        order: asc
+    operations:
+      delete: false
+      rename: false
     fields:
       - name: title
         label: Title
@@ -68,22 +60,6 @@ content:
         type: text
         options:
           maxlength: 320
-      - name: artistOrder
-        label: Artist order
-        type: object
-        description: "Drag to set the order artists appear on the Artists index. Any artist not listed is appended at the end."
-        list:
-          collapsible:
-            collapsed: true
-            summary: "{artist}"
-        fields:
-          - name: artist
-            label: Artist
-            type: reference
-            options:
-              collection: artists
-              search: title,slug
-              label: "{title}"
       - name: heroImages
         label: Hero carousel
         type: image
@@ -160,6 +136,51 @@ content:
             description: "Used when Type is Event."
             options:
               collection: events
+              search: title,slug
+              label: "{title}"
+
+  - name: artistsPage
+    label: Artists page
+    type: file
+    path: content/pages/artists.json
+    format: json
+    operations:
+      delete: false
+      rename: false
+    fields:
+      - name: title
+        label: Title
+        type: string
+        required: true
+        options:
+          maxlength: 120
+      - name: slug
+        label: Slug
+        type: string
+        required: true
+        pattern: "^[a-z0-9-]+$"
+        options:
+          minlength: 1
+          maxlength: 80
+      - name: description
+        label: Description
+        type: text
+        options:
+          maxlength: 320
+      - name: artistOrder
+        label: Artist order
+        type: object
+        description: "Drag to set the order artists appear on the Artists index. Any artist not listed is appended at the end."
+        list:
+          collapsible:
+            collapsed: true
+            summary: "{artist}"
+        fields:
+          - name: artist
+            label: Artist
+            type: reference
+            options:
+              collection: artists
               search: title,slug
               label: "{title}"
 
