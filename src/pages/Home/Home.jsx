@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { getPage, mediaList, homeGridCards } from '../../content.js'
+import { getPage, mediaList, homeGridCards, homeCallout } from '../../content.js'
 import HeroCarousel from './components/HeroCarousel.jsx'
 import HomepageCallout from './components/HomepageCallout.jsx'
 import CardGrid from '../../components/CardGrid.jsx'
@@ -22,12 +22,13 @@ function Home() {
   if (!page) return null
 
   const images = mediaList(page.heroImages)
+  const callout = homeCallout(page.callout)
 
   return (
     <main>
       <ScreenReaderTitle>{page.title}</ScreenReaderTitle>
       <HeroCarousel key={images.join('|')} images={images} />
-      {page.callout?.enabled && <HomepageCallout callout={page.callout} />}
+      {callout && <HomepageCallout callout={callout} />}
       {page.grid?.length > 0 && <CardGrid items={homeGridCards(page.grid)} />}
     </main>
   )

@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import { Grid, GridCell, GRID } from '../../../grid/index.js'
 import { colors, type, easing, duration } from '../../../theme.js'
 import { mediaUrl } from '../../../content.js'
+import { linkProps } from '../../../router.jsx'
 import { useImageAccent } from '../../../hooks/useImageAccent.js'
 
 const Section = styled.section`
@@ -151,9 +152,9 @@ function HomepageCallout({ callout }) {
             {callout?.captionLocation ? <CaptionLine>{callout.captionLocation}</CaptionLine> : null}
             <ArrowButton
               as={link ? 'a' : 'button'}
-              href={link}
               type={link ? undefined : 'button'}
               aria-label="View more"
+              {...(link ? linkProps(link) : {})}
             >
               &rarr;
             </ArrowButton>

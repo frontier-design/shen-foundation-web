@@ -9,13 +9,8 @@
   ],
   "callout": {
     "enabled": true,
-    "title": "Abbas Akhavan",
-    "subtitle": "Curtain Call",
-    "image": "/media/abbas-akshavan.jpg",
-    "captionLabel": "Exhibition",
-    "captionDate": "05 Jun – 04 Oct 2026",
-    "captionLocation": "Art Gallery of Ontario, Toronto",
-    "link": "#"
+    "exhibition": "curtain-call",
+    "image": "/media/abbas-akshavan.jpg"
   },
   "grid": [
     { "exhibition": "life-is-cheap" },

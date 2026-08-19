@@ -130,6 +130,33 @@ function refSlug(v) {
   return s.replace(/^.*\//, '').replace(/\.json$/, '') || null
 }
 
+export function homeCallout(callout) {
+  if (!callout?.enabled) return null
+  const ex = refSlug(callout.exhibition)
+  if (ex) {
+    const doc = getExhibition(ex)
+    if (doc) {
+      return {
+        ...exhibitionToCard(doc),
+        image: callout.image || doc.heroImage,
+        link: `/exhibitions/${exhibitionSlug(doc)}`,
+      }
+    }
+  }
+  const ev = refSlug(callout.event)
+  if (ev) {
+    const doc = getEvent(ev)
+    if (doc) {
+      return {
+        ...eventToCard(doc),
+        image: callout.image || doc.image,
+        link: `/events/${eventSlug(doc)}`,
+      }
+    }
+  }
+  return null
+}
+
 export function homeGridCards(grid = []) {
   return grid
     .map((row) => {
