@@ -3,7 +3,7 @@
   "slug": "soft-machines",
   "subtitle": "Soft Machines",
   "heroImage": "/media/HeroCarousel/carousel-image-4.jpg",
-  "status": "archive",
+  "status": "ongoing",
   "captionLabel": "Exhibition",
   "captionDate": "12 Jan – 30 Mar 2024",
   "captionLocation": "Art Gallery of Ontario, Toronto",
@@ -11,7 +11,11 @@
   "artistLinkLabel": "Learn more about the artist",
   "artistLinkUrl": "#",
   "gallery": [
-    { "image": "/media/carousel-image-1.webp", "caption": "" },
-    { "image": "/media/HeroCarousel/carousel-image-2.png", "caption": "" }
+    {
+      "image": "/media/carousel-image-1.webp"
+    },
+    {
+      "image": "/media/HeroCarousel/carousel-image-2.png"
+    }
   ]
 }
