@@ -65,6 +65,35 @@ export function getExhibition(slug) {
   return exhibitions.find((item) => exhibitionSlug(item) === slug) || null
 }
 
+export function exhibitionEndDate(item) {
+  const s = item?.captionDate || ''
+  const months = {
+    jan: 0, feb: 1, mar: 2, apr: 3, may: 4, jun: 5,
+    jul: 6, aug: 7, sep: 8, oct: 9, nov: 10, dec: 11,
+  }
+  const matches = [...s.matchAll(/(\d{1,2})\s+([A-Za-z]{3})[A-Za-z]*\s+(\d{4})/g)]
+  const last = matches[matches.length - 1]
+  if (!last) return Number.POSITIVE_INFINITY
+  const [, day, mon, year] = last
+  const m = months[mon.toLowerCase()]
+  return m == null ? Number.POSITIVE_INFINITY : new Date(+year, m, +day).getTime()
+}
+
+export function exhibitionCards() {
+  return [...exhibitions]
+    .sort((a, b) => exhibitionEndDate(a) - exhibitionEndDate(b))
+    .map((item) => ({
+      image: item.heroImage,
+      title: item.title,
+      subtitle: item.subtitle,
+      slug: item.slug,
+      status: item.status || 'ongoing',
+      captionLabel: item.captionLabel,
+      captionDate: item.captionDate,
+      captionLocation: item.captionLocation,
+    }))
+}
+
 export function eventSlug(item) {
   return item?.slug || slugify(item?.title)
 }

@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import { Grid, GridCell, GRID } from '../grid'
 import { colors, type } from '../theme.js'
+import { linkProps } from '../router.jsx'
 import wordmark from '../assets/images/logos/shen-wordmark-oneline.svg'
 
 const FooterEl = styled(Grid).attrs({ as: 'footer' })`
@@ -51,7 +52,7 @@ function Footer() {
         <Group>
           <FooterLink href="#">About</FooterLink>
           <FooterLink href="#">Artists</FooterLink>
-          <FooterLink href="#">Exhibitions</FooterLink>
+          <FooterLink {...linkProps('/exhibitions')}>Exhibitions</FooterLink>
           <FooterLink href="#">Events</FooterLink>
         </Group>
         <Group>

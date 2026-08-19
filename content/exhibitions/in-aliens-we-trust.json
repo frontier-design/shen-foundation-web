@@ -1,0 +1,19 @@
+{
+  "title": "Rirkrit Tiravanija",
+  "slug": "in-aliens-we-trust",
+  "subtitle": "In Aliens We Trust",
+  "heroImage": "/media/carousel-image-1.webp",
+  "status": "ongoing",
+  "captionLabel": "Exhibition",
+  "captionDate": "23 Oct – 10 Jan 2027",
+  "captionLocation": "Dia, NYC",
+  "body": "For In Aliens We Trust, Rirkrit Tiravanija transforms the galleries into a space of gathering, cooking, and conversation. Extending his long-running inquiry into hospitality as a medium, the exhibition invites visitors to participate rather than observe — sharing meals, reading rooms, and printed slogans that blur the line between artwork, social space, and everyday life.",
+  "artistLinkLabel": "Learn more about the artist",
+  "artistLinkUrl": "#",
+  "gallery": [
+    { "image": "/media/HeroCarousel/carousel-image-2.png", "caption": "" },
+    { "image": "/media/Test/florian-luthi.jpg", "caption": "" },
+    { "image": "/media/HeroCarousel/carousel-image-4.jpg", "caption": "" },
+    { "image": "/media/carousel-image-3.webp", "caption": "" }
+  ]
+}

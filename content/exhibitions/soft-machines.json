@@ -1,0 +1,17 @@
+{
+  "title": "Lygia Clark",
+  "slug": "soft-machines",
+  "subtitle": "Soft Machines",
+  "heroImage": "/media/HeroCarousel/carousel-image-4.jpg",
+  "status": "archive",
+  "captionLabel": "Exhibition",
+  "captionDate": "12 Jan – 30 Mar 2024",
+  "captionLocation": "Art Gallery of Ontario, Toronto",
+  "body": "Soft Machines revisited Lygia Clark’s pioneering experiments with participation and the body, from the hinged metal Bichos to the sensorial propositions of her later therapeutic practice. The exhibition traced how Clark dissolved the boundary between object and viewer, treating art as something to be handled, worn, and lived rather than merely looked at.",
+  "artistLinkLabel": "Learn more about the artist",
+  "artistLinkUrl": "#",
+  "gallery": [
+    { "image": "/media/carousel-image-1.webp", "caption": "" },
+    { "image": "/media/HeroCarousel/carousel-image-2.png", "caption": "" }
+  ]
+}

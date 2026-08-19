@@ -155,7 +155,7 @@ content:
       template: "{fields.slug}.json"
       field: create
     view:
-      fields: [title, subtitle, slug]
+      fields: [title, subtitle, status, slug]
       primary: title
       sort: [title]
       search: [title, subtitle, slug]
@@ -178,6 +178,13 @@ content:
         options:
           minlength: 1
           maxlength: 80
+      - name: status
+        label: Status
+        type: select
+        default: ongoing
+        description: "Controls which tab this appears under on the Exhibitions & Projects page."
+        options:
+          values: [ongoing, archive]
       - name: subtitle
         label: Subtitle
         type: string

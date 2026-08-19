@@ -1,0 +1,19 @@
+{
+  "title": "Abbas Akhavan",
+  "slug": "curtain-call",
+  "subtitle": "Curtain Call",
+  "heroImage": "/media/abbas-akshavan.jpg",
+  "status": "ongoing",
+  "captionLabel": "Exhibition",
+  "captionDate": "15 Sep – 12 Nov 2026",
+  "captionLocation": "Solomon R. Guggenheim Museum, NYC",
+  "body": "Abbas Akhavan’s Curtain Call stages a series of quiet interventions that test the thresholds between the gallery and the world outside it. Working with cast bronze, water, and living plants, Akhavan turns architectural conventions — the plinth, the backdrop, the doorway — into sites of tension where hospitality and surveillance, refuge and exposure, are held in delicate balance.",
+  "artistLinkLabel": "Learn more about the artist",
+  "artistLinkUrl": "#",
+  "gallery": [
+    { "image": "/media/abbas-akshavan-1.jpg", "caption": "" },
+    { "image": "/media/carousel-image-1.webp", "caption": "" },
+    { "image": "/media/HeroCarousel/carousel-image-4.jpg", "caption": "" },
+    { "image": "/media/carousel-image-3.webp", "caption": "" }
+  ]
+}
