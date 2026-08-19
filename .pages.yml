@@ -85,10 +85,17 @@ content:
           - name: enabled
             label: Show callout
             type: boolean
+          - name: type
+            label: Type
+            type: select
+            default: exhibition
+            description: "Choose whether the callout features an Exhibition or an Event, then pick it below. The other picker is ignored."
+            options:
+              values: [exhibition, event]
           - name: exhibition
             label: Exhibition
             type: reference
-            description: "Feature an Exhibition. Leave Event blank."
+            description: "Used when Type is Exhibition."
             options:
               collection: exhibitions
               search: title,subtitle,slug
@@ -96,7 +103,7 @@ content:
           - name: event
             label: Event
             type: reference
-            description: "Feature an Event. Leave Exhibition blank."
+            description: "Used when Type is Event."
             options:
               collection: events
               search: title,slug
@@ -114,12 +121,19 @@ content:
         list:
           collapsible:
             collapsed: true
-            summary: "{exhibition}{event}"
+            summary: "{type}: {exhibition}{event}"
         fields:
+          - name: type
+            label: Type
+            type: select
+            default: exhibition
+            description: "Choose whether this row features an Exhibition or an Event, then pick it below. The other picker is ignored."
+            options:
+              values: [exhibition, event]
           - name: exhibition
             label: Exhibition
             type: reference
-            description: "Feature an Exhibition. Leave Event blank on this row."
+            description: "Used when Type is Exhibition."
             options:
               collection: exhibitions
               search: title,subtitle,slug
@@ -127,7 +141,7 @@ content:
           - name: event
             label: Event
             type: reference
-            description: "Feature an Event. Leave Exhibition blank on this row."
+            description: "Used when Type is Event."
             options:
               collection: events
               search: title,slug

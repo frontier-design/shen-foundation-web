@@ -130,47 +130,46 @@ function refSlug(v) {
   return s.replace(/^.*\//, '').replace(/\.json$/, '') || null
 }
 
+function refType(row) {
+  if (row.type === 'exhibition' || row.type === 'event') return row.type
+  if (refSlug(row.exhibition)) return 'exhibition'
+  if (refSlug(row.event)) return 'event'
+  return null
+}
+
 export function homeCallout(callout) {
   if (!callout?.enabled) return null
+  if (refType(callout) === 'event') {
+    const ev = refSlug(callout.event)
+    const doc = ev && getEvent(ev)
+    if (!doc) return null
+    return {
+      ...eventToCard(doc),
+      image: callout.image || doc.image,
+      link: `/events/${eventSlug(doc)}`,
+    }
+  }
   const ex = refSlug(callout.exhibition)
-  if (ex) {
-    const doc = getExhibition(ex)
-    if (doc) {
-      return {
-        ...exhibitionToCard(doc),
-        image: callout.image || doc.heroImage,
-        link: `/exhibitions/${exhibitionSlug(doc)}`,
-      }
-    }
+  const doc = ex && getExhibition(ex)
+  if (!doc) return null
+  return {
+    ...exhibitionToCard(doc),
+    image: callout.image || doc.heroImage,
+    link: `/exhibitions/${exhibitionSlug(doc)}`,
   }
-  const ev = refSlug(callout.event)
-  if (ev) {
-    const doc = getEvent(ev)
-    if (doc) {
-      return {
-        ...eventToCard(doc),
-        image: callout.image || doc.image,
-        link: `/events/${eventSlug(doc)}`,
-      }
-    }
-  }
-  return null
 }
 
 export function homeGridCards(grid = []) {
   return grid
     .map((row) => {
-      const ex = refSlug(row.exhibition)
-      if (ex) {
-        const doc = getExhibition(ex)
-        return doc ? exhibitionToCard(doc) : null
-      }
-      const ev = refSlug(row.event)
-      if (ev) {
-        const doc = getEvent(ev)
+      if (refType(row) === 'event') {
+        const ev = refSlug(row.event)
+        const doc = ev && getEvent(ev)
         return doc ? eventToCard(doc) : null
       }
-      return null
+      const ex = refSlug(row.exhibition)
+      const doc = ex && getExhibition(ex)
+      return doc ? exhibitionToCard(doc) : null
     })
     .filter(Boolean)
 }
