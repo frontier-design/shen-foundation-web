@@ -9,10 +9,9 @@
   ],
   "callout": {
     "enabled": true,
-    "type": "exhibition",
+    "type": "event",
     "exhibition": "curtain-call",
-    "event": "content/events/sensing-quantum-symposium.json",
-    "image": "/media/abbas-akshavan.jpg"
+    "event": "content/events/sensing-quantum-symposium.json"
   },
   "grid": [
     {
