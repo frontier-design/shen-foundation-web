@@ -323,8 +323,10 @@ function Navigation() {
           <GridCell $start={7} $startTablet={5} $end={-1}>
             <MenuInner>
               <MenuGroup>
-                <MenuLink href="#">About</MenuLink>
-                <MenuLink href="#">Artists</MenuLink>
+                <MenuLink href="/about" onClick={navTo('/about')}>About</MenuLink>
+                  <MenuLink href="/artists" onClick={navTo('/artists')}>
+                  Artists
+                </MenuLink>
                 <MenuLink href="/exhibitions" onClick={navTo('/exhibitions')}>
                   Exhibitions
                 </MenuLink>

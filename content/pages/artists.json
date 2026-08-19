@@ -1,5 +1,6 @@
 {
   "title": "Artists",
   "slug": "artists",
-  "description": "Artists"
+  "description": "Artists",
+  "artists": []
 }

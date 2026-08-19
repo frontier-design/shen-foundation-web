@@ -145,6 +145,23 @@ content:
           - name: captionLocation
             label: Caption location
             type: string
+      - name: artists
+        label: Artists
+        type: object
+        list:
+          collapsible:
+            collapsed: true
+            summary: "{title}"
+        fields:
+          - name: image
+            label: Image
+            type: image
+            options:
+              categories: [image]
+              path: public/media
+          - name: title
+            label: Title
+            type: string
 
   - name: exhibitions
     label: Exhibitions
