@@ -10,6 +10,7 @@ import Home from './pages/Home'
 import Exhibition from './pages/Exhibition'
 import ExhibitionsIndex from './pages/Exhibitions'
 import Artists from './pages/Artists'
+import Artist from './pages/Artist'
 import Event from './pages/Event'
 import EventsIndex from './pages/Events'
 import { site } from './content.js'
@@ -18,7 +19,7 @@ import { usePathname } from './router.jsx'
 const MobileOnlyFooter = styled.div`
   display: none;
 
-  @media ${GRID.MEDIA_MOBILE} {
+  @media ${GRID.MEDIA_TABLET} {
     display: block;
   }
 `
@@ -27,6 +28,7 @@ function App() {
   const pathname = usePathname()
   const exhibition = pathname.match(/^\/exhibitions\/([a-z0-9-]+)\/?$/)
   const exhibitionsIndex = pathname === '/exhibitions' || pathname === '/exhibitions/'
+  const artist = pathname.match(/^\/artists\/([a-z0-9-]+)\/?$/)
   const artistsIndex = pathname === '/artists' || pathname === '/artists/'
   const event = pathname.match(/^\/events\/([a-z0-9-]+)\/?$/)
   const eventsIndex = pathname === '/events' || pathname === '/events/'
@@ -44,6 +46,8 @@ function App() {
         <Exhibition slug={exhibition[1]} />
       ) : exhibitionsIndex ? (
         <ExhibitionsIndex />
+      ) : artist ? (
+        <Artist slug={artist[1]} />
       ) : artistsIndex ? (
         <Artists />
       ) : event ? (
@@ -53,7 +57,7 @@ function App() {
       ) : (
         <Home />
       )}
-      {event ? (
+      {event || artist ? (
         <MobileOnlyFooter>
           <Footer />
         </MobileOnlyFooter>

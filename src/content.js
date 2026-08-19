@@ -15,6 +15,11 @@ const eventModules = import.meta.glob('../content/events/*.json', {
   import: 'default',
 })
 
+const artistModules = import.meta.glob('../content/artists/*.json', {
+  eager: true,
+  import: 'default',
+})
+
 export { site }
 
 export const pages = Object.values(pageModules)
@@ -22,6 +27,8 @@ export const pages = Object.values(pageModules)
 export const exhibitions = Object.values(exhibitionModules)
 
 export const events = Object.values(eventModules)
+
+export const artists = Object.values(artistModules)
 
 export function getPage(slug) {
   return pages.find((page) => page.slug === slug)
@@ -122,6 +129,14 @@ export function eventCards() {
   return [...events]
     .sort((a, b) => exhibitionEndDate(a) - exhibitionEndDate(b))
     .map(eventToCard)
+}
+
+export function artistSlug(item) {
+  return item?.slug || slugify(item?.title)
+}
+
+export function getArtist(slug) {
+  return artists.find((item) => artistSlug(item) === slug) || null
 }
 
 function refSlug(v) {

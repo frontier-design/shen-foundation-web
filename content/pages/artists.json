@@ -9,7 +9,8 @@
     },
     {
       "image": "/media/danh-vo.webp",
-      "title": "Danh Võ"
+      "title": "Danh Võ",
+      "slug": "danh-vo"
     },
     {
       "image": "/media/ken-lunn.webp",
