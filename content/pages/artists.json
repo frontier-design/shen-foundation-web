@@ -2,5 +2,33 @@
   "title": "Artists",
   "slug": "artists",
   "description": "Artists",
-  "artists": []
+  "artists": [
+    {
+      "image": "/media/anicka-y.webp",
+      "title": "Anicka Yi"
+    },
+    {
+      "image": "/media/danh-vo.webp",
+      "title": "Danh Võ"
+    },
+    {
+      "image": "/media/ken-lunn.webp",
+      "title": "Ken Lum"
+    },
+    {
+      "image": "/media/mire-lee.webp",
+      "title": "Mire Lee"
+    },
+    {
+      "image": "/media/ron-terada.webp",
+      "title": "Ron Terada"
+    },
+    {
+      "image": "/media/haegua-yang.webp",
+      "title": "Haegue Yang"
+    }
+  ],
+  "callout": {
+    "enabled": false
+  }
 }
