@@ -1,7 +1,8 @@
 import styled, { css } from 'styled-components'
 import { Grid, GridCell, GRID } from '../../grid'
 import { colors, type } from '../../theme.js'
-import { getPage, mediaUrl } from '../../content.js'
+import { getPage, mediaUrl, artistSlug } from '../../content.js'
+import { linkProps } from '../../router.jsx'
 
 const ScreenReaderTitle = styled.h1`
   position: absolute;
@@ -90,7 +91,7 @@ function ArtistItem({ item, index }) {
 
   return (
     <Item {...placement}>
-      <CardLink href="#">
+      <CardLink {...linkProps(`/artists/${artistSlug(item)}`)}>
         {src ? (
           <Media $side={side}>
             <img src={src} alt={item?.title || ''} />
