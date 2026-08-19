@@ -328,7 +328,9 @@ function Navigation() {
                 <MenuLink href="/exhibitions" onClick={navTo('/exhibitions')}>
                   Exhibitions
                 </MenuLink>
-                <MenuLink href="#">Program</MenuLink>
+                <MenuLink href="/events" onClick={navTo('/events')}>
+                  Events
+                </MenuLink>
               </MenuGroup>
               <MenuGroup>
                 <MenuSubLink href="#">Contact</MenuSubLink>
