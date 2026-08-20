@@ -84,6 +84,10 @@ const Title = styled.h1`
   ${type.gridTitle}
   color: ${colors.black};
   margin: 0;
+
+  @media ${GRID.MEDIA_MOBILE} {
+    ${type.displayLarge}
+  }
 `
 
 const Description = styled.p`
@@ -108,6 +112,10 @@ const IntroTitle = styled.h2`
   ${type.gridTitle}
   color: ${colors.black};
   margin: 0;
+
+  @media ${GRID.MEDIA_MOBILE} {
+    ${type.displayLarge}
+  }
 `
 
 const IntroBody = styled.p`
@@ -160,12 +168,20 @@ const PersonName = styled.h3`
   color: ${colors.black};
   margin-top: 24px;
   width: min-content;
+
+  @media ${GRID.MEDIA_MOBILE} {
+    ${type.displayLarge}
+  }
 `
 
 const PersonRole = styled.p`
   ${type.gridSubtitle}
   color: ${colors.gray};
   margin-top: 6px;
+
+  @media ${GRID.MEDIA_MOBILE} {
+    ${type.titleLarge}
+  }
 `
 
 const PersonBio = styled.p`
