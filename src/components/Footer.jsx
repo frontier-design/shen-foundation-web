@@ -50,7 +50,7 @@ function Footer() {
     <FooterEl data-nav-tone-left="light" data-nav-tone-right="light">
       <LinksCell $start={7} $end={-1} $startTablet={5} $endTablet={-1}>
         <Group>
-          <FooterLink href="#">About</FooterLink>
+          <FooterLink {...linkProps('/about')}>About</FooterLink>
           <FooterLink {...linkProps('/artists')}>Artists</FooterLink>
           <FooterLink {...linkProps('/exhibitions')}>Exhibitions</FooterLink>
           <FooterLink {...linkProps('/events')}>Events</FooterLink>

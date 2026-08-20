@@ -184,6 +184,89 @@ content:
               search: title,slug
               label: "{title}"
 
+  - name: aboutPage
+    label: About page
+    type: file
+    path: content/pages/about.json
+    format: json
+    operations:
+      delete: false
+      rename: false
+    fields:
+      - name: title
+        label: Title
+        type: string
+        required: true
+        description: "Shown as the large heading on the white card. Displayed in uppercase."
+        options:
+          maxlength: 120
+      - name: slug
+        label: Slug
+        type: string
+        required: true
+        pattern: "^[a-z0-9-]+$"
+        options:
+          minlength: 1
+          maxlength: 80
+      - name: description
+        label: Body text
+        type: text
+        description: "The paragraph shown on the white card, under the heading."
+        options:
+          maxlength: 1200
+      - name: heroImage
+        label: Hero image (full bleed)
+        type: image
+        description: "Fills the top of the page behind the white card."
+        options:
+          categories: [image]
+          path: public/media
+      - name: intro
+        label: Intro section
+        type: object
+        description: "The title and paragraph directly under the hero."
+        fields:
+          - name: title
+            label: Title
+            type: string
+            options:
+              maxlength: 120
+          - name: body
+            label: Body text
+            type: text
+            options:
+              maxlength: 1200
+      - name: people
+        label: People
+        type: object
+        description: "Founder, curator and any other people shown near the bottom of the page. Drag to reorder."
+        list:
+          collapsible:
+            collapsed: true
+            summary: "{name} — {role}"
+        fields:
+          - name: name
+            label: Name
+            type: string
+            options:
+              maxlength: 120
+          - name: role
+            label: Role
+            type: string
+            options:
+              maxlength: 120
+          - name: bio
+            label: Bio
+            type: text
+            options:
+              maxlength: 2000
+          - name: photo
+            label: Photo
+            type: image
+            options:
+              categories: [image]
+              path: public/media
+
   - name: artists
     label: Artists
     type: collection
