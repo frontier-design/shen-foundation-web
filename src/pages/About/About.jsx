@@ -63,7 +63,7 @@ const Card = styled(GridCell)`
 
   width: calc(100% + ${GRID.PADDING}px);
   margin-left: -${GRID.PADDING}px;
-  padding: 50px 0 50px ${GRID.PADDING}px;
+  padding: ${GRID.PADDING}px;
 
   @media ${GRID.MEDIA_TABLET} {
     width: calc(100% + ${GRID.PADDING_TABLET}px);
@@ -91,15 +91,9 @@ const Description = styled.p`
   color: ${colors.black};
   margin-top: clamp(12px, 1.4vw, 20px);
   text-wrap: pretty;
-  white-space: pre-line;
-
-  max-width: calc((5 * 100% - ${GRID.GAP}px) / 6);
+  max-width: 90%;
 
   @media ${GRID.MEDIA_TABLET} {
-    max-width: calc((5 * 100% - ${GRID.GAP_TABLET}) / 6);
-  }
-
-  @media ${GRID.MEDIA_MOBILE} {
     max-width: none;
   }
 `
@@ -120,7 +114,6 @@ const IntroBody = styled.p`
   ${type.body}
   color: ${colors.black};
   margin: 0;
-  text-wrap: pretty;
   white-space: pre-line;
 `
 
@@ -166,11 +159,6 @@ const PersonName = styled.h3`
   ${type.gridTitle}
   color: ${colors.black};
   margin-top: 24px;
-  text-wrap: balance;
-
-  @media ${GRID.MEDIA_MOBILE} {
-    ${type.displayLarge}
-  }
 `
 
 const PersonRole = styled.p`
@@ -187,7 +175,7 @@ const PersonBio = styled.p`
   white-space: pre-line;
   max-width: 90%;
 
-  @media ${GRID.MEDIA_MOBILE} {
+  @media ${GRID.MEDIA_TABLET} {
     max-width: none;
   }
 `
