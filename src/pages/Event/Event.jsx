@@ -174,11 +174,24 @@ const SectionToggle = styled.span`
   }
 `
 
+const SectionCollapse = styled.div`
+  display: grid;
+  grid-template-rows: ${(props) => (props.$open ? '1fr' : '0fr')};
+  transition: grid-template-rows ${duration.base}s ${easing.reveal};
+`
+
+const SectionContentInner = styled.div`
+  overflow: hidden;
+  min-height: 0;
+`
+
 const SectionContent = styled.div`
   ${type.body}
   color: ${colors.black};
   padding-bottom: clamp(20px, 2.4vw, 32px);
   white-space: pre-line;
+  opacity: ${(props) => (props.$open ? 1 : 0)};
+  transition: opacity ${duration.base}s ${easing.reveal};
 `
 
 function Event({ slug }) {
@@ -221,8 +234,12 @@ function Event({ slug }) {
                       {section.title}
                       <SectionToggle $open={open} aria-hidden="true" />
                     </SectionButton>
-                    {open && section.content ? (
-                      <SectionContent>{section.content}</SectionContent>
+                    {section.content ? (
+                      <SectionCollapse $open={open}>
+                        <SectionContentInner>
+                          <SectionContent $open={open}>{section.content}</SectionContent>
+                        </SectionContentInner>
+                      </SectionCollapse>
                     ) : null}
                   </SectionRow>
                 )

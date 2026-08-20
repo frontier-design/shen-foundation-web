@@ -354,7 +354,7 @@ function Navigation() {
         <Grid>
           <GridCell $start={1} $end={-1}>
             <Bar>
-              <LogoLink ref={logoRef} href="/" aria-label="Shen Foundation home">
+              <LogoLink ref={logoRef} {...linkProps('/')} aria-label="Shen Foundation home">
                 <ShenMark color={iconColor(tones.logo)} />
               </LogoLink>
               <Plus

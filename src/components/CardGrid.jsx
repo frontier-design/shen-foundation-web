@@ -76,10 +76,15 @@ const Title = styled.h3`
   ${type.gridTitle}
   color: ${colors.black};
   margin-top: 24px;
-  text-wrap: balance;
+  text-wrap: pretty;
+  max-width: calc(
+    (min(${GRID.MAX_WIDTH}px, 100vw) - ${2 * GRID.PADDING + 11 * GRID.GAP}px) / 12 * 5 +
+      ${4 * GRID.GAP}px
+  );
 
   @media ${GRID.MEDIA_MOBILE} {
     ${type.displayLarge}
+    max-width: none;
   }
 `
 

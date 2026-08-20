@@ -23,7 +23,6 @@ export function navigate(to) {
   if (to === window.location.pathname) return
   window.history.pushState({}, '', to)
   window.dispatchEvent(new Event(NAVIGATE_EVENT))
-  window.scrollTo(0, 0)
 }
 
 export function linkProps(to) {

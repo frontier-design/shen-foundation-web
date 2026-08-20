@@ -1,8 +1,8 @@
-import { useEffect } from 'react'
-import styled, { ThemeProvider } from 'styled-components'
+import { useEffect, useLayoutEffect, useState } from 'react'
+import styled, { ThemeProvider, keyframes } from 'styled-components'
 import GlobalStyle from './styles.js'
-import theme from './theme.js'
-import { GRID } from './grid'
+import theme, { easing, duration, colors } from './theme.js'
+import { GRID, useMediaQuery } from './grid'
 import GridOverlay from './components/GridOverlay.jsx'
 import Navigation from './components/Navigation.jsx'
 import Footer from './components/Footer.jsx'
@@ -24,8 +24,26 @@ const MobileOnlyFooter = styled.div`
   }
 `
 
-function App() {
-  const pathname = usePathname()
+const slideIn = keyframes`
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+`
+
+const OverlayLayer = styled.div`
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  overflow: hidden;
+  background-color: ${colors.white};
+  animation: ${slideIn} ${duration.slow}s ${easing.reveal} both;
+  will-change: transform;
+`
+
+function RouteView({ pathname }) {
   const exhibition = pathname.match(/^\/exhibitions\/([a-z0-9-]+)\/?$/)
   const exhibitionsIndex = pathname === '/exhibitions' || pathname === '/exhibitions/'
   const artist = pathname.match(/^\/artists\/([a-z0-9-]+)\/?$/)
@@ -33,15 +51,8 @@ function App() {
   const event = pathname.match(/^\/events\/([a-z0-9-]+)\/?$/)
   const eventsIndex = pathname === '/events' || pathname === '/events/'
 
-  useEffect(() => {
-    document.title = site.title
-  }, [])
-
   return (
-    <ThemeProvider theme={theme}>
-      <GlobalStyle />
-      {import.meta.env.DEV && <GridOverlay />}
-      <Navigation />
+    <>
       {exhibition ? (
         <Exhibition slug={exhibition[1]} />
       ) : exhibitionsIndex ? (
@@ -64,6 +75,60 @@ function App() {
       ) : (
         <Footer />
       )}
+    </>
+  )
+}
+
+function App() {
+  const pathname = usePathname()
+  const reduceMotion = useMediaQuery('(prefers-reduced-motion: reduce)')
+  const [base, setBase] = useState(pathname)
+  const [incoming, setIncoming] = useState(null)
+  const [prevPath, setPrevPath] = useState(pathname)
+
+  if (prevPath !== pathname) {
+    setPrevPath(pathname)
+    if (reduceMotion) {
+      setBase(pathname)
+      setIncoming(null)
+    } else {
+      setIncoming(pathname)
+    }
+  }
+
+  useEffect(() => {
+    document.title = site.title
+  }, [])
+
+  useLayoutEffect(() => {
+    window.scrollTo(0, 0)
+  }, [base])
+
+  useEffect(() => {
+    if (incoming === null) return
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [incoming])
+
+  const finishTransition = (e) => {
+    if (e.target !== e.currentTarget) return
+    setBase(pathname)
+    setIncoming(null)
+  }
+
+  return (
+    <ThemeProvider theme={theme}>
+      <GlobalStyle />
+      {import.meta.env.DEV && <GridOverlay />}
+      <Navigation />
+      <RouteView pathname={base} />
+      {incoming !== null ? (
+        <OverlayLayer key={incoming} onAnimationEnd={finishTransition}>
+          <RouteView pathname={incoming} />
+        </OverlayLayer>
+      ) : null}
     </ThemeProvider>
   )
 }

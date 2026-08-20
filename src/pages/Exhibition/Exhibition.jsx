@@ -36,6 +36,15 @@ const Title = styled.h1`
   ${type.displayLarge}
   color: ${colors.black};
   margin: 0;
+  text-wrap: pretty;
+  max-width: calc(
+    (min(${GRID.MAX_WIDTH}px, 100vw) - ${2 * GRID.PADDING + 11 * GRID.GAP}px) / 12 * 5 +
+      ${4 * GRID.GAP}px
+  );
+
+  @media ${GRID.MEDIA_MOBILE} {
+    max-width: none;
+  }
 `
 
 const Subtitle = styled.p`
@@ -108,6 +117,7 @@ const Gallery = styled(Grid).attrs({ as: 'section' })`
 `
 
 const GalleryFigure = styled.figure`
+  position: relative;
   margin: 0;
 
   ${(props) => bleed(props.$side, GRID.PADDING)}
@@ -125,12 +135,39 @@ const GalleryFigure = styled.figure`
     width: 100%;
     height: auto;
   }
+
+  &:hover figcaption {
+    opacity: 1;
+  }
+
+  &:hover figcaption span {
+    transform: translateY(0);
+  }
 `
 
 const GalleryCaption = styled.figcaption`
   ${type.caption}
-  color: ${colors.gray};
-  margin-top: 12px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: clamp(48px, 8vw, 88px) clamp(16px, 2vw, 28px) clamp(16px, 2vw, 28px);
+  color: ${colors.white};
+  opacity: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    to top,
+    rgba(18, 18, 18, 0.55) 0%,
+    rgba(18, 18, 18, 0.28) 45%,
+    rgba(18, 18, 18, 0) 100%
+  );
+  transition: opacity ${duration.base}s ${easing.reveal};
+
+  span {
+    display: block;
+    transform: translateY(1em);
+    transition: transform ${duration.base}s ${easing.reveal};
+  }
 `
 
 function Exhibition({ slug }) {
@@ -192,7 +229,11 @@ function Exhibition({ slug }) {
               <GridCell key={index} {...placement}>
                 <GalleryFigure $side={side}>
                   <img src={src} alt={entry.caption || ''} />
-                  {entry.caption ? <GalleryCaption>{entry.caption}</GalleryCaption> : null}
+                  {entry.caption ? (
+                    <GalleryCaption>
+                      <span>{entry.caption}</span>
+                    </GalleryCaption>
+                  ) : null}
                 </GalleryFigure>
               </GridCell>
             )
