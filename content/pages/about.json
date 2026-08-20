@@ -1,0 +1,24 @@
+{
+  "title": "About Us",
+  "slug": "about",
+  "description": "The Shen Foundation is devoted to exhibiting contemporary art and to deepening our understanding of the artistic practices that define our time. At the heart of our work is a dedicated focus on contemporary Asian and Asian diasporic artists — an offering that remains rare in the Canadian cultural landscape.",
+  "heroImage": "/media/about-us-hero-bg.webp",
+  "intro": {
+    "title": "What we do",
+    "body": "We organize special temporary exhibitions and new commissions, working closely with artists to bring ambitious, large-scale projects into being. This work is built on trust, patience and long-term relationships — commissioning contemporary art takes time, and we're committed to doing it right."
+  },
+  "people": [
+    {
+      "name": "Eleanor Shen",
+      "role": "Founder",
+      "bio": "Eleanor Shen is a Canadian arts advocate, philanthropist and collector of Hong Kong descent who has championed contemporary art for over 15 years. An AGO Trustee since 2015, she and her husband Francis Shen have helped the AGO build a significant collection of contemporary Asian art, including works by Danh Vō, Ron Terada and Haegue Yang. She has previously served on the boards of the Canadian Art Foundation and the Power Plant Contemporary Art Gallery, and is a past co-chair of Partners in Art, a charity supporting contemporary Canadian art.",
+      "photo": "/media/eleanor-shen.webp"
+    },
+    {
+      "name": "Kitty Scott",
+      "role": "Curator",
+      "bio": "Kitty Scott is a Canadian curator and writer who currently serves as Director and Curator of the Shen Foundation, alongside her role as Strategic Director of Fogo Island Arts. She was Chief Curator of the 15th Shanghai Biennale (2025–26), the first woman to lead the exhibition since its founding in 1996, and previously held senior curatorial posts including Deputy Director and Chief Curator of the National Gallery of Canada, Chief Curator at the Serpentine Gallery, and Curator of Modern and Contemporary Art at the Art Gallery of Ontario. Her curatorial work spans artists such as Francis Alÿs, Theaster Gates, Ken Lum and Ron Terada, and includes co-curating the Liverpool Biennial and Canada's Pavilion at the Venice Biennale.",
+      "photo": "/media/kitty-scott.webp"
+    }
+  ]
+}

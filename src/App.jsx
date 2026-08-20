@@ -13,6 +13,7 @@ import Artists from './pages/Artists'
 import IndividualArtist from './pages/IndividualArtist'
 import Event from './pages/Event'
 import EventsIndex from './pages/Events'
+import About from './pages/About'
 import { site } from './content.js'
 import { usePathname } from './router.jsx'
 
@@ -50,6 +51,7 @@ function RouteView({ pathname }) {
   const artistsIndex = pathname === '/artists' || pathname === '/artists/'
   const event = pathname.match(/^\/events\/([a-z0-9-]+)\/?$/)
   const eventsIndex = pathname === '/events' || pathname === '/events/'
+  const aboutIndex = pathname === '/about' || pathname === '/about/'
 
   return (
     <>
@@ -65,6 +67,8 @@ function RouteView({ pathname }) {
         <Event slug={event[1]} />
       ) : eventsIndex ? (
         <EventsIndex />
+      ) : aboutIndex ? (
+        <About />
       ) : (
         <Home />
       )}
