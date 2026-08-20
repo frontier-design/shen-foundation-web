@@ -26,7 +26,7 @@ const TextCell = styled(GridCell)`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: clamp(120px, 16vh, 220px) 0 50px;
+  padding: clamp(160px, 22vh, 300px) 0 50px;
 
   @media ${GRID.MEDIA_MOBILE} {
     justify-content: center;
