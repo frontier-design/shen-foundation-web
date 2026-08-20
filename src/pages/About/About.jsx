@@ -81,7 +81,7 @@ const Card = styled(GridCell)`
 `
 
 const Title = styled.h1`
-  ${type.displayLarge}
+  ${type.gridTitle}
   color: ${colors.black};
   margin: 0;
 `
