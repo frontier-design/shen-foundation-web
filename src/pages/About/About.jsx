@@ -91,7 +91,7 @@ const Description = styled.p`
   color: ${colors.black};
   margin-top: clamp(12px, 1.4vw, 20px);
   text-wrap: pretty;
-  max-width: 90%;
+  max-width: 95%;
 
   @media ${GRID.MEDIA_TABLET} {
     max-width: none;
@@ -159,6 +159,7 @@ const PersonName = styled.h3`
   ${type.gridTitle}
   color: ${colors.black};
   margin-top: 24px;
+  width: min-content;
 `
 
 const PersonRole = styled.p`
@@ -173,7 +174,7 @@ const PersonBio = styled.p`
   margin-top: clamp(24px, 3vw, 40px);
   text-wrap: pretty;
   white-space: pre-line;
-  max-width: 90%;
+  max-width: 95%;
 
   @media ${GRID.MEDIA_TABLET} {
     max-width: none;
