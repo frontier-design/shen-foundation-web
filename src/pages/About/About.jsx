@@ -193,7 +193,11 @@ const PersonName = styled.h3`
 const PersonRole = styled.p`
   ${type.gridSubtitle}
   color: ${colors.gray};
-  margin-top: 12px;
+  margin-top: 6px;
+
+  @media ${GRID.MEDIA_MOBILE} {
+    ${type.titleLarge}
+  }
 `
 
 const PersonBio = styled.p`
