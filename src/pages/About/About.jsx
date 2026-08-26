@@ -19,6 +19,11 @@ const Hero = styled(Grid).attrs({ as: 'section' })`
   min-height: 100dvh;
   grid-template-rows: 1fr auto;
   row-gap: 0;
+
+  @media ${GRID.MEDIA_TABLET} {
+    grid-template-rows: auto 1fr;
+    row-gap: clamp(32px, 8vw, 48px);
+  }
 `
 
 const HeroMedia = styled(GridCell)`
@@ -31,6 +36,8 @@ const HeroMedia = styled(GridCell)`
   margin-right: -${GRID.PADDING}px;
 
   @media ${GRID.MEDIA_TABLET} {
+    grid-row: 2;
+    min-height: 0;
     width: calc(100% + ${GRID.PADDING_TABLET * 2}px);
     margin-left: -${GRID.PADDING_TABLET}px;
     margin-right: -${GRID.PADDING_TABLET}px;
@@ -66,17 +73,17 @@ const Card = styled(GridCell)`
   padding: ${GRID.PADDING}px;
 
   @media ${GRID.MEDIA_TABLET} {
-    width: calc(100% + ${GRID.PADDING_TABLET}px);
-    margin-left: -${GRID.PADDING_TABLET}px;
-    padding-left: ${GRID.PADDING_TABLET}px;
+    grid-row: 1;
+    gap: clamp(32px, 8vw, 48px);
+    min-height: 0;
+    background-color: transparent;
+    width: auto;
+    margin: 0;
+    padding: clamp(96px, 14vh, 140px) 0 0;
   }
 
   @media ${GRID.MEDIA_MOBILE} {
-    width: calc(100% + ${GRID.PADDING_MOBILE * 2}px);
-    margin-left: -${GRID.PADDING_MOBILE}px;
-    margin-right: -${GRID.PADDING_MOBILE}px;
-    padding-left: ${GRID.PADDING_MOBILE}px;
-    padding-right: ${GRID.PADDING_MOBILE}px;
+    padding-top: clamp(96px, 15.6vh, 192px);
   }
 `
 
@@ -84,6 +91,10 @@ const Title = styled.h1`
   ${type.gridTitle}
   color: ${colors.black};
   margin: 0;
+
+  @media ${GRID.MEDIA_TABLET} {
+    ${type.displayLarge}
+  }
 `
 
 const Description = styled.p`
@@ -91,10 +102,15 @@ const Description = styled.p`
   color: ${colors.black};
   margin-top: clamp(12px, 1.4vw, 20px);
   text-wrap: pretty;
-  max-width: 95%;
+  max-width: 90%;
 
   @media ${GRID.MEDIA_TABLET} {
+    margin: 0;
     max-width: none;
+  }
+
+  @media ${GRID.MEDIA_MOBILE} {
+    margin-bottom: clamp(18px, 5.6vw, 31.5px);
   }
 `
 
@@ -108,6 +124,10 @@ const IntroTitle = styled.h2`
   ${type.gridTitle}
   color: ${colors.black};
   margin: 0;
+
+  @media ${GRID.MEDIA_TABLET} {
+    ${type.displayLarge}
+  }
 `
 
 const IntroBody = styled.p`
@@ -115,6 +135,10 @@ const IntroBody = styled.p`
   color: ${colors.black};
   margin: 0;
   white-space: pre-line;
+
+  & + & {
+    margin-top: clamp(32px, 4vw, 56px);
+  }
 `
 
 const People = styled(Grid).attrs({ as: 'section' })`
@@ -160,12 +184,16 @@ const PersonName = styled.h3`
   color: ${colors.black};
   margin-top: 24px;
   width: min-content;
+
+  @media ${GRID.MEDIA_TABLET} {
+    ${type.displayLarge}
+  }
 `
 
 const PersonRole = styled.p`
   ${type.gridSubtitle}
   color: ${colors.gray};
-  margin-top: 6px;
+  margin-top: 12px;
 `
 
 const PersonBio = styled.p`
@@ -211,6 +239,7 @@ function About() {
 
   const heroSrc = mediaUrl(page.heroImage)
   const intro = page.intro
+  const introBody = (intro?.body || []).filter(Boolean)
   const people = page.people || []
 
   return (
@@ -222,20 +251,26 @@ function About() {
           </HeroMedia>
         ) : null}
 
-        <Card $start={1} $span={6} $startTablet={1} $spanTablet={6} $rowStart={2}>
+        <Card $start={1} $span={6} $startTablet={1} $spanTablet={8} $rowStart={2}>
           {page.title ? <Title>{page.title}</Title> : null}
           {page.description ? <Description>{page.description}</Description> : null}
         </Card>
       </Hero>
 
-      {intro?.title || intro?.body ? (
+      {intro?.title || introBody.length > 0 ? (
         <Intro data-nav-tone-left="dark" data-nav-tone-right="dark">
-          <GridCell $start={1} $span={6} $startTablet={1} $spanTablet={8}>
-            {intro.title ? <IntroTitle>{intro.title}</IntroTitle> : null}
-          </GridCell>
-          <GridCell $start={7} $end={-1} $startTablet={1} $spanTablet={8}>
-            {intro.body ? <IntroBody>{intro.body}</IntroBody> : null}
-          </GridCell>
+          {intro.title ? (
+            <GridCell $start={1} $span={6} $startTablet={1} $spanTablet={8}>
+              <IntroTitle>{intro.title}</IntroTitle>
+            </GridCell>
+          ) : null}
+          {introBody.length > 0 ? (
+            <GridCell $start={7} $end={-1} $startTablet={1} $spanTablet={8}>
+              {introBody.map((paragraph, index) => (
+                <IntroBody key={index}>{paragraph}</IntroBody>
+              ))}
+            </GridCell>
+          ) : null}
         </Intro>
       ) : null}
 
