@@ -135,6 +135,10 @@ const IntroBody = styled.p`
   color: ${colors.black};
   margin: 0;
   white-space: pre-line;
+
+  & + & {
+    margin-top: clamp(32px, 4vw, 56px);
+  }
 `
 
 const People = styled(Grid).attrs({ as: 'section' })`
@@ -235,6 +239,7 @@ function About() {
 
   const heroSrc = mediaUrl(page.heroImage)
   const intro = page.intro
+  const introBody = (intro?.body || []).filter(Boolean)
   const people = page.people || []
 
   return (
@@ -252,14 +257,20 @@ function About() {
         </Card>
       </Hero>
 
-      {intro?.title || intro?.body ? (
+      {intro?.title || introBody.length > 0 ? (
         <Intro data-nav-tone-left="dark" data-nav-tone-right="dark">
-          <GridCell $start={1} $span={6} $startTablet={1} $spanTablet={8}>
-            {intro.title ? <IntroTitle>{intro.title}</IntroTitle> : null}
-          </GridCell>
-          <GridCell $start={7} $end={-1} $startTablet={1} $spanTablet={8}>
-            {intro.body ? <IntroBody>{intro.body}</IntroBody> : null}
-          </GridCell>
+          {intro.title ? (
+            <GridCell $start={1} $span={6} $startTablet={1} $spanTablet={8}>
+              <IntroTitle>{intro.title}</IntroTitle>
+            </GridCell>
+          ) : null}
+          {introBody.length > 0 ? (
+            <GridCell $start={7} $end={-1} $startTablet={1} $spanTablet={8}>
+              {introBody.map((paragraph, index) => (
+                <IntroBody key={index}>{paragraph}</IntroBody>
+              ))}
+            </GridCell>
+          ) : null}
         </Intro>
       ) : null}
 

@@ -224,7 +224,7 @@ content:
       - name: intro
         label: Intro section
         type: object
-        description: "The title and paragraph directly under the hero."
+        description: "The title and paragraphs directly under the hero."
         fields:
           - name: title
             label: Title
@@ -232,8 +232,10 @@ content:
             options:
               maxlength: 120
           - name: body
-            label: Body text
+            label: Body paragraphs
             type: text
+            list: true
+            description: "Each paragraph stacks under the one before it, beside the title. Drag to reorder."
             options:
               maxlength: 1200
       - name: people
