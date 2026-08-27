@@ -224,7 +224,11 @@ content:
       - name: intro
         label: Intro section
         type: object
-        description: "The title and paragraphs directly under the hero."
+        description: "Title and body blocks directly under the hero. Drag to reorder."
+        list:
+          collapsible:
+            collapsed: true
+            summary: "{title}"
         fields:
           - name: title
             label: Title
@@ -232,10 +236,9 @@ content:
             options:
               maxlength: 120
           - name: body
-            label: Body paragraphs
+            label: Body
             type: text
-            list: true
-            description: "Each paragraph stacks under the one before it, beside the title. Drag to reorder."
+            description: "Shown beside the title."
             options:
               maxlength: 1200
       - name: people

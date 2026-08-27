@@ -117,6 +117,10 @@ const Description = styled.p`
 const Intro = styled(Grid).attrs({ as: 'section' })`
   align-items: start;
   padding-top: clamp(72px, 12vw, 220px);
+  row-gap: 100px;
+`
+
+const IntroBlock = styled(GridCell).attrs({ as: 'article' })`
   row-gap: clamp(32px, 4vw, 56px);
 `
 
@@ -135,10 +139,6 @@ const IntroBody = styled.p`
   color: ${colors.black};
   margin: 0;
   white-space: pre-line;
-
-  & + & {
-    margin-top: clamp(32px, 4vw, 56px);
-  }
 `
 
 const People = styled(Grid).attrs({ as: 'section' })`
@@ -213,6 +213,23 @@ const PersonBio = styled.p`
   }
 `
 
+function IntroItem({ item }) {
+  return (
+    <IntroBlock $start={1} $end={-1} $subgrid>
+      {item?.title ? (
+        <GridCell $start={1} $span={6} $startTablet={1} $spanTablet={8}>
+          <IntroTitle>{item.title}</IntroTitle>
+        </GridCell>
+      ) : null}
+      {item?.body ? (
+        <GridCell $start={7} $end={-1} $startTablet={1} $spanTablet={8}>
+          <IntroBody>{item.body}</IntroBody>
+        </GridCell>
+      ) : null}
+    </IntroBlock>
+  )
+}
+
 function PersonItem({ item, index }) {
   const side = index % 2 === 0 ? 'left' : 'right'
   const src = mediaUrl(item?.photo)
@@ -242,8 +259,7 @@ function About() {
   if (!page) return null
 
   const heroSrc = mediaUrl(page.heroImage)
-  const intro = page.intro
-  const introBody = (intro?.body || []).filter(Boolean)
+  const intro = (page.intro || []).filter((item) => item?.title || item?.body)
   const people = page.people || []
 
   return (
@@ -261,20 +277,11 @@ function About() {
         </Card>
       </Hero>
 
-      {intro?.title || introBody.length > 0 ? (
+      {intro.length > 0 ? (
         <Intro data-nav-tone-left="dark" data-nav-tone-right="dark">
-          {intro.title ? (
-            <GridCell $start={1} $span={6} $startTablet={1} $spanTablet={8}>
-              <IntroTitle>{intro.title}</IntroTitle>
-            </GridCell>
-          ) : null}
-          {introBody.length > 0 ? (
-            <GridCell $start={7} $end={-1} $startTablet={1} $spanTablet={8}>
-              {introBody.map((paragraph, index) => (
-                <IntroBody key={index}>{paragraph}</IntroBody>
-              ))}
-            </GridCell>
-          ) : null}
+          {intro.map((item, index) => (
+            <IntroItem key={index} item={item} />
+          ))}
         </Intro>
       ) : null}
 
