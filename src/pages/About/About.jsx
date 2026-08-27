@@ -117,6 +117,10 @@ const Description = styled.p`
 const Intro = styled(Grid).attrs({ as: 'section' })`
   align-items: start;
   padding-top: clamp(72px, 12vw, 220px);
+  row-gap: 100px;
+`
+
+const IntroBlock = styled(GridCell).attrs({ as: 'article' })`
   row-gap: clamp(32px, 4vw, 56px);
 `
 
@@ -211,7 +215,7 @@ const PersonBio = styled.p`
 
 function IntroItem({ item }) {
   return (
-    <>
+    <IntroBlock $start={1} $end={-1} $subgrid>
       {item?.title ? (
         <GridCell $start={1} $span={6} $startTablet={1} $spanTablet={8}>
           <IntroTitle>{item.title}</IntroTitle>
@@ -222,7 +226,7 @@ function IntroItem({ item }) {
           <IntroBody>{item.body}</IntroBody>
         </GridCell>
       ) : null}
-    </>
+    </IntroBlock>
   )
 }
 
