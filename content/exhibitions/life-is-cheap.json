@@ -12,11 +12,11 @@
   "artistLinkUrl": "#",
   "gallery": [
     {
-      "image": "/media/carousel-image-3.webp"
-    },
-    {
       "image": "/media/HeroCarousel/carousel-image-2.png",
       "caption": "Anicka Yi, Biologizing the Machine (tentacular trouble), 2019. Installation view. © Anicka Yi. Courtesy the artist."
+    },
+    {
+      "image": "/media/carousel-image-3.webp"
     },
     {
       "image": "/media/Test/florian-luthi.jpg",
