@@ -12,30 +12,24 @@
   "artistLinkUrl": "#",
   "gallery": [
     {
-      "image": "/media/HeroCarousel/carousel-image-2.png",
-      "caption": "Anicka Yi, Biologizing the Machine (tentacular trouble), 2019. Installation view. © Anicka Yi. Courtesy the artist.",
-      "fullWidth": false
+      "image": "/media/carousel-image-3.webp"
     },
     {
-      "image": "/media/carousel-image-3.webp",
-      "fullWidth": false
+      "image": "/media/HeroCarousel/carousel-image-2.png",
+      "caption": "Anicka Yi, Biologizing the Machine (tentacular trouble), 2019. Installation view. © Anicka Yi. Courtesy the artist."
     },
     {
       "image": "/media/Test/florian-luthi.jpg",
-      "caption": "Anicka Yi, Life is Cheap, 2026. Video still (detail). Commissioned by LAS Art Foundation. © 2026 Anicka Yi. Courtesy the artist.",
-      "fullWidth": false
+      "caption": "Anicka Yi, Life is Cheap, 2026. Video still (detail). Commissioned by LAS Art Foundation. © 2026 Anicka Yi. Courtesy the artist."
     },
     {
-      "image": "/media/abbas-akshavan-1.jpg",
-      "fullWidth": false
+      "image": "/media/abbas-akshavan-1.jpg"
     },
     {
-      "image": "/media/carousel-image-1.webp",
-      "fullWidth": false
+      "image": "/media/carousel-image-1.webp"
     },
     {
-      "image": "/media/HeroCarousel/carousel-image-4.jpg",
-      "fullWidth": false
+      "image": "/media/HeroCarousel/carousel-image-4.jpg"
     }
   ]
 }
