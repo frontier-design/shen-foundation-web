@@ -144,7 +144,6 @@ content:
       - name: artistOrder
         label: Artist order
         type: object
-        description: "Drag to set the order artists appear on the Artists index. Any artist not listed is appended at the end."
         list:
           collapsible:
             collapsed: true
@@ -204,7 +203,6 @@ content:
       - name: people
         label: People
         type: object
-        description: "Founder, curator and any other people shown near the bottom of the page. Drag to reorder."
         list:
           collapsible:
             collapsed: true
