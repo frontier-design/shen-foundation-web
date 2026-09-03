@@ -29,7 +29,7 @@ function withSlug(modules) {
   }))
 }
 
-export const pages = Object.values(pageModules)
+export const pages = withSlug(pageModules)
 
 export const exhibitions = withSlug(exhibitionModules)
 
@@ -38,7 +38,7 @@ export const events = withSlug(eventModules)
 export const artists = withSlug(artistModules)
 
 export function getPage(slug) {
-  return pages.find((page) => page.slug === slug)
+  return pages.find((page) => page.__slug === slug)
 }
 
 export function mediaUrl(value) {

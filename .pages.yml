@@ -47,14 +47,6 @@ content:
         required: true
         options:
           maxlength: 120
-      - name: slug
-        label: Slug
-        type: string
-        required: true
-        pattern: "^[a-z0-9-]+$"
-        options:
-          minlength: 1
-          maxlength: 80
       - name: description
         label: Description
         type: text
@@ -154,14 +146,6 @@ content:
         required: true
         options:
           maxlength: 120
-      - name: slug
-        label: Slug
-        type: string
-        required: true
-        pattern: "^[a-z0-9-]+$"
-        options:
-          minlength: 1
-          maxlength: 80
       - name: description
         label: Description
         type: text
@@ -200,14 +184,6 @@ content:
         description: "Shown as the large heading on the white card. Displayed in uppercase."
         options:
           maxlength: 120
-      - name: slug
-        label: Slug
-        type: string
-        required: true
-        pattern: "^[a-z0-9-]+$"
-        options:
-          minlength: 1
-          maxlength: 80
       - name: description
         label: Body text
         type: text
