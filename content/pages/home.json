@@ -30,6 +30,10 @@
     {
       "type": "exhibition",
       "exhibition": "dynamic-spaces"
+    },
+    {
+      "type": "exhibition",
+      "exhibition": "content/exhibitions/curtain-call.json"
     }
   ]
 }
