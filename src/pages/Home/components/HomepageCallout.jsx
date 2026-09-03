@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { Grid, GridCell, GRID } from '../../../grid/index.js'
 import { colors, type, easing, duration } from '../../../theme.js'
-import { mediaUrl } from '../../../content.js'
+import { mediaUrl, accentImage } from '../../../content.js'
 import { linkProps } from '../../../router.jsx'
 import { useImageAccent } from '../../../hooks/useImageAccent.js'
 
@@ -130,7 +130,7 @@ const Image = styled.img`
 function HomepageCallout({ callout }) {
   const src = mediaUrl(callout?.image)
   const link = callout?.link || undefined
-  const accent = useImageAccent(src, colors.gray)
+  const accent = useImageAccent(accentImage(callout) || src, colors.gray)
 
   return (
     <Section data-nav-tone-left="light" data-nav-tone-right="dark">

@@ -92,9 +92,10 @@ content:
                       search: title,slug
                       label: "{title}"
           - name: image
-            label: Image override (optional)
+            label: Image (portrait)
             type: image
-            description: "Optional. Defaults to the referenced item's hero/thumbnail image."
+            required: true
+            description: "Portrait only. Landscape images are not accepted here."
             options:
               categories: [image]
               path: public/media
@@ -307,8 +308,9 @@ content:
         options:
           maxlength: 160
       - name: heroImage
-        label: Hero image (full bleed)
+        label: Hero image (landscape)
         type: image
+        description: "Landscape only. Also used as the project thumbnail in grids. Portrait images are not accepted."
         options:
           categories: [image]
           path: public/media
@@ -353,6 +355,7 @@ content:
           - name: image
             label: Image
             type: image
+            description: "Any dimensions."
             options:
               categories: [image]
               path: public/media
@@ -410,8 +413,9 @@ content:
         label: Caption location
         type: string
       - name: image
-        label: Thumbnail image
+        label: Thumbnail image (landscape)
         type: image
+        description: "Landscape only. Portrait images are not accepted."
         options:
           categories: [image]
           path: public/media

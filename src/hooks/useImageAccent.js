@@ -108,19 +108,18 @@ function ensureContrast([r, g, b]) {
   return `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
 }
 
-export function useImageAccent(src, fallback = null) {
-  const [accent, setAccent] = useState(null);
+const accentCache = new Map();
 
-  useEffect(() => {
-    if (!src) return undefined;
+function loadAccent(src) {
+  if (accentCache.has(src)) return accentCache.get(src);
 
-    let cancelled = false;
+  const promise = new Promise((resolve) => {
     const img = new Image();
     img.crossOrigin = "anonymous";
     img.decoding = "async";
 
+    img.onerror = () => resolve(null);
     img.onload = () => {
-      if (cancelled) return;
       const scale = Math.min(
         1,
         SAMPLE / Math.max(img.naturalWidth, img.naturalHeight),
@@ -131,25 +130,40 @@ export function useImageAccent(src, fallback = null) {
       canvas.width = w;
       canvas.height = h;
       const ctx = canvas.getContext("2d", { willReadFrequently: true });
-      if (!ctx) return;
+      if (!ctx) return resolve(null);
       ctx.drawImage(img, 0, 0, w, h);
 
       let data;
       try {
         data = ctx.getImageData(0, 0, w, h).data;
       } catch {
-        return;
+        return resolve(null);
       }
 
       const vibrant = extractVibrant(data);
-      setAccent(vibrant ? ensureContrast(vibrant) : fallback);
+      resolve(vibrant ? ensureContrast(vibrant) : null);
     };
 
     img.src = src;
+  });
+
+  accentCache.set(src, promise);
+  return promise;
+}
+
+export function useImageAccent(src, fallback = null) {
+  const [accent, setAccent] = useState(null);
+
+  useEffect(() => {
+    if (!src) return undefined;
+
+    let cancelled = false;
+    loadAccent(src).then((value) => {
+      if (!cancelled) setAccent(value ?? fallback);
+    });
 
     return () => {
       cancelled = true;
-      img.onload = null;
     };
   }, [src, fallback]);
 

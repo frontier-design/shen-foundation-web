@@ -100,6 +100,10 @@ export function isExhibition(item) {
   return Boolean(item?.subtitle)
 }
 
+export function accentImage(item) {
+  return mediaUrl(item?.accentImage || item?.heroImage || item?.image)
+}
+
 export function exhibitionSlug(item) {
   return item?.slug || item?.__slug || slugify(item?.subtitle)
 }
@@ -127,6 +131,7 @@ export function exhibitionEndDate(item) {
 function exhibitionToCard(item) {
   return {
     image: item.heroImage,
+    accentImage: item.heroImage,
     title: item.title,
     subtitle: item.subtitle,
     slug: item.slug,
@@ -154,6 +159,7 @@ export function getEvent(slug) {
 function eventToCard(item) {
   return {
     image: item.image,
+    accentImage: item.image,
     title: item.title,
     slug: item.slug,
     status: item.status || 'ongoing',

@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components'
 import { Grid, GridCell, GRID } from '../grid'
-import { colors, type, easing, duration } from '../theme.js'
-import { mediaUrl, isExhibition, exhibitionSlug, eventSlug } from '../content.js'
+import { colors, type, easing, duration, aspect } from '../theme.js'
+import { mediaUrl, accentImage, isExhibition, exhibitionSlug, eventSlug } from '../content.js'
 import { useImageAccent } from '../hooks/useImageAccent.js'
 import { linkProps } from '../router.jsx'
 
@@ -39,6 +39,9 @@ const CardLink = styled.a`
 
 const Media = styled.div`
   ${(props) => bleed(props.$side, GRID.PADDING)}
+  aspect-ratio: ${aspect.landscape};
+  overflow: hidden;
+  background-color: ${colors.gray};
 
   @media ${GRID.MEDIA_TABLET} {
     ${(props) => bleed(props.$side, GRID.PADDING_TABLET)}
@@ -50,25 +53,11 @@ const Media = styled.div`
     margin-right: -${GRID.PADDING_MOBILE}px;
   }
 
-  ${(props) =>
-    props.$fixed &&
-    css`
-      height: clamp(350px, 38vw, 530px);
-
-      @media ${GRID.MEDIA_MOBILE} {
-        height: auto;
-      }
-    `}
-
   img {
     display: block;
     width: 100%;
-    height: ${(props) => (props.$fixed ? '100%' : 'auto')};
+    height: 100%;
     object-fit: cover;
-
-    @media ${GRID.MEDIA_MOBILE} {
-      height: auto;
-    }
   }
 `
 
@@ -118,7 +107,7 @@ const CaptionLine = styled.p`
 function GridItem({ item, index }) {
   const side = index % 2 === 0 ? 'left' : 'right'
   const src = mediaUrl(item?.image)
-  const accent = useImageAccent(src, colors.gray)
+  const accent = useImageAccent(accentImage(item), colors.gray)
   const exhibition = isExhibition(item)
   const href = exhibition ? `/exhibitions/${exhibitionSlug(item)}` : `/events/${eventSlug(item)}`
 
@@ -130,7 +119,7 @@ function GridItem({ item, index }) {
   const content = (
     <>
       {src ? (
-        <Media $side={side} $fixed={!item?.subtitle}>
+        <Media $side={side}>
           <img src={src} alt={item?.title || ''} />
         </Media>
       ) : null}

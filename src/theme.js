@@ -23,6 +23,11 @@ export const duration = {
   slow: 0.9,
 };
 
+export const aspect = {
+  landscape: "4 / 3",
+  portrait: "3 / 4",
+};
+
 export const type = {
   navLink: css`
     font-family: ${fonts.body};

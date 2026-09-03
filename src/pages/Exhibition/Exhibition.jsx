@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components'
 import { Grid, GridCell, GRID } from '../../grid'
 import { colors, type, easing, duration } from '../../theme.js'
-import { getExhibition, mediaUrl } from '../../content.js'
+import { getExhibition, mediaUrl, accentImage } from '../../content.js'
 import { useImageAccent } from '../../hooks/useImageAccent.js'
 
 const Hero = styled.div`
@@ -173,7 +173,7 @@ const GalleryCaption = styled.figcaption`
 function Exhibition({ slug }) {
   const item = getExhibition(slug)
   const heroSrc = mediaUrl(item?.heroImage)
-  const accent = useImageAccent(heroSrc, colors.gray)
+  const accent = useImageAccent(accentImage(item), colors.gray)
 
   if (!item) return null
 

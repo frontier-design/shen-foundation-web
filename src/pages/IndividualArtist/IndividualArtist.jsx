@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components'
 import { Grid, GridCell, GRID } from '../../grid'
-import { colors, type, easing, duration } from '../../theme.js'
-import { getArtist, mediaUrl, artistExhibitions, exhibitionSlug } from '../../content.js'
+import { colors, type, easing, duration, aspect } from '../../theme.js'
+import { getArtist, mediaUrl, accentImage, artistExhibitions, exhibitionSlug } from '../../content.js'
 import { useImageAccent } from '../../hooks/useImageAccent.js'
 import { linkProps } from '../../router.jsx'
 
@@ -96,21 +96,24 @@ const FeedImage = styled.div`
   background-color: ${colors.gray};
 
   ${(props) =>
-    props.$fill &&
-    css`
-      height: 100vh;
-      height: 100dvh;
+    props.$fill
+      ? css`
+          height: 100vh;
+          height: 100dvh;
 
-      @media ${GRID.MEDIA_MOBILE} {
-        height: 50vh;
-        height: 50dvh;
-      }
-    `}
+          @media ${GRID.MEDIA_MOBILE} {
+            height: 50vh;
+            height: 50dvh;
+          }
+        `
+      : css`
+          aspect-ratio: ${aspect.landscape};
+        `}
 
   img {
     display: block;
     width: 100%;
-    height: ${(props) => (props.$fill ? '100%' : 'auto')};
+    height: 100%;
     object-fit: cover;
   }
 `
@@ -158,7 +161,7 @@ const CardLink = styled.a`
 
 function ExhibitionEntry({ item }) {
   const src = mediaUrl(item.heroImage)
-  const accent = useImageAccent(src, colors.gray)
+  const accent = useImageAccent(accentImage(item), colors.gray)
 
   return (
     <CardLink {...linkProps(`/exhibitions/${exhibitionSlug(item)}`)}>
