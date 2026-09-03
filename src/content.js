@@ -22,13 +22,20 @@ const artistModules = import.meta.glob('../content/artists/*.json', {
 
 export { site }
 
+function withSlug(modules) {
+  return Object.entries(modules).map(([path, doc]) => ({
+    ...doc,
+    __slug: path.split('/').pop().replace(/\.json$/, ''),
+  }))
+}
+
 export const pages = Object.values(pageModules)
 
-export const exhibitions = Object.values(exhibitionModules)
+export const exhibitions = withSlug(exhibitionModules)
 
-export const events = Object.values(eventModules)
+export const events = withSlug(eventModules)
 
-export const artists = Object.values(artistModules)
+export const artists = withSlug(artistModules)
 
 export function getPage(slug) {
   return pages.find((page) => page.slug === slug)
@@ -65,7 +72,7 @@ export function isExhibition(item) {
 }
 
 export function exhibitionSlug(item) {
-  return item?.slug || slugify(item?.subtitle)
+  return item?.slug || item?.__slug || slugify(item?.subtitle)
 }
 
 export function getExhibition(slug) {
@@ -106,7 +113,7 @@ export function exhibitionCards() {
 }
 
 export function eventSlug(item) {
-  return item?.slug || slugify(item?.title)
+  return item?.slug || item?.__slug || slugify(item?.title)
 }
 
 export function getEvent(slug) {
@@ -132,7 +139,7 @@ export function eventCards() {
 }
 
 export function artistSlug(item) {
-  return item?.slug || slugify(item?.title)
+  return item?.slug || item?.__slug || slugify(item?.title)
 }
 
 export function getArtist(slug) {

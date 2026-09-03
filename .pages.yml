@@ -278,13 +278,13 @@ content:
     path: content/artists
     format: json
     filename:
-      template: "{fields.slug}.json"
+      template: "{fields.title}.json"
       field: create
     view:
-      fields: [title, slug]
+      fields: [title]
       primary: title
       sort: [title]
-      search: [title, slug]
+      search: [title]
       default:
         sort: title
         order: asc
@@ -295,15 +295,6 @@ content:
         required: true
         options:
           maxlength: 120
-      - name: slug
-        label: Slug
-        type: string
-        required: true
-        pattern: "^[a-z0-9-]+$"
-        description: "Must match the Slug on the matching Artists page card so the card links here."
-        options:
-          minlength: 1
-          maxlength: 80
       - name: bio
         label: Bio
         type: text
@@ -322,13 +313,13 @@ content:
     path: content/exhibitions
     format: json
     filename:
-      template: "{fields.slug}.json"
+      template: "{fields.subtitle}.json"
       field: create
     view:
-      fields: [title, subtitle, status, slug]
+      fields: [title, subtitle, status]
       primary: title
       sort: [title]
-      search: [title, subtitle, slug]
+      search: [title, subtitle]
       default:
         sort: title
         order: asc
@@ -339,15 +330,6 @@ content:
         required: true
         options:
           maxlength: 120
-      - name: slug
-        label: Slug
-        type: string
-        required: true
-        pattern: "^[a-z0-9-]+$"
-        description: "Must match the Slug on the matching home grid card so the card links here."
-        options:
-          minlength: 1
-          maxlength: 80
       - name: status
         label: Status
         type: select
@@ -358,6 +340,8 @@ content:
       - name: subtitle
         label: Subtitle
         type: string
+        required: true
+        description: "The project/exhibition name. Also used to generate the page URL."
         options:
           maxlength: 160
       - name: heroImage
@@ -410,13 +394,13 @@ content:
     path: content/events
     format: json
     filename:
-      template: "{fields.slug}.json"
+      template: "{fields.title}.json"
       field: create
     view:
-      fields: [title, captionLabel, status, slug]
+      fields: [title, captionLabel, status]
       primary: title
       sort: [title]
-      search: [title, slug]
+      search: [title]
       default:
         sort: title
         order: asc
@@ -427,15 +411,6 @@ content:
         required: true
         options:
           maxlength: 120
-      - name: slug
-        label: Slug
-        type: string
-        required: true
-        pattern: "^[a-z0-9-]+$"
-        description: "Must match the Slug/Title on the matching home grid card so the card links here."
-        options:
-          minlength: 1
-          maxlength: 80
       - name: status
         label: Status
         type: select
