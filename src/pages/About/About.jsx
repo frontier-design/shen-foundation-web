@@ -97,23 +97,6 @@ const Title = styled.h1`
   }
 `
 
-const Description = styled.p`
-  ${type.body}
-  color: ${colors.black};
-  margin-top: clamp(12px, 1.4vw, 20px);
-  text-wrap: pretty;
-  max-width: 90%;
-
-  @media ${GRID.MEDIA_TABLET} {
-    margin: 0;
-    max-width: none;
-  }
-
-  @media ${GRID.MEDIA_MOBILE} {
-    margin-bottom: clamp(18px, 5.6vw, 31.5px);
-  }
-`
-
 const Intro = styled(Grid).attrs({ as: 'section' })`
   align-items: start;
   padding-top: clamp(72px, 12vw, 220px);
@@ -273,7 +256,6 @@ function About() {
 
         <Card $start={1} $span={6} $startTablet={1} $spanTablet={8} $rowStart={2}>
           {page.title ? <Title>{page.title}</Title> : null}
-          {page.description ? <Description>{page.description}</Description> : null}
         </Card>
       </Hero>
 

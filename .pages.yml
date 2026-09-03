@@ -47,11 +47,6 @@ content:
         required: true
         options:
           maxlength: 120
-      - name: description
-        label: Description
-        type: text
-        options:
-          maxlength: 320
       - name: heroImages
         label: Hero carousel
         type: image
@@ -146,11 +141,6 @@ content:
         required: true
         options:
           maxlength: 120
-      - name: description
-        label: Description
-        type: text
-        options:
-          maxlength: 320
       - name: artistOrder
         label: Artist order
         type: object
@@ -184,12 +174,6 @@ content:
         description: "Shown as the large heading on the white card. Displayed in uppercase."
         options:
           maxlength: 120
-      - name: description
-        label: Body text
-        type: text
-        description: "The paragraph shown on the white card, under the heading."
-        options:
-          maxlength: 1200
       - name: heroImage
         label: Hero image (full bleed)
         type: image
