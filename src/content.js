@@ -1,5 +1,3 @@
-import site from '../content/site.json'
-
 const pageModules = import.meta.glob('../content/pages/*.json', {
   eager: true,
   import: 'default',
@@ -19,8 +17,6 @@ const artistModules = import.meta.glob('../content/artists/*.json', {
   eager: true,
   import: 'default',
 })
-
-export { site }
 
 function withSlug(modules) {
   return Object.entries(modules).map(([path, doc]) => ({

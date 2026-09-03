@@ -6,32 +6,6 @@ media:
   rename: safe
 
 content:
-  - name: site
-    label: Site
-    type: file
-    path: content/site.json
-    format: json
-    operations:
-      delete: false
-      rename: false
-    fields:
-      - name: title
-        label: Title
-        type: string
-        required: true
-        options:
-          maxlength: 120
-      - name: tagline
-        label: Tagline
-        type: string
-        options:
-          maxlength: 200
-      - name: description
-        label: Description
-        type: text
-        options:
-          maxlength: 320
-
   - name: home
     label: Home
     type: file

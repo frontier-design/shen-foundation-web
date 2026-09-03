@@ -14,8 +14,9 @@ import IndividualArtist from './pages/IndividualArtist'
 import Event from './pages/Event'
 import EventsIndex from './pages/Events'
 import About from './pages/About'
-import { site } from './content.js'
 import { usePathname } from './router.jsx'
+
+const SITE_TITLE = 'Shen Foundation'
 
 const MobileOnlyFooter = styled.div`
   display: none;
@@ -101,7 +102,7 @@ function App() {
   }
 
   useEffect(() => {
-    document.title = site.title
+    document.title = SITE_TITLE
   }, [])
 
   useLayoutEffect(() => {
