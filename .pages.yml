@@ -64,29 +64,33 @@ content:
           - name: enabled
             label: Show callout
             type: boolean
-          - name: type
-            label: Type
-            type: select
-            default: exhibition
-            description: "Choose whether the callout features an Exhibition or an Event, then pick it below. The other picker is ignored."
-            options:
-              values: [exhibition, event]
-          - name: exhibition
-            label: Exhibition
-            type: reference
-            description: "Used when Type is Exhibition."
-            options:
-              collection: exhibitions
-              search: title,subtitle,slug
-              label: "{title} — {subtitle}"
-          - name: event
-            label: Event
-            type: reference
-            description: "Used when Type is Event."
-            options:
-              collection: events
-              search: title,slug
-              label: "{title}"
+          - name: feature
+            label: Featured item
+            type: block
+            blockKey: type
+            blocks:
+              - name: exhibition
+                label: Exhibition
+                fields:
+                  - name: exhibition
+                    label: Exhibition
+                    type: reference
+                    required: true
+                    options:
+                      collection: exhibitions
+                      search: title,subtitle,slug
+                      label: "{title} — {subtitle}"
+              - name: event
+                label: Event
+                fields:
+                  - name: event
+                    label: Event
+                    type: reference
+                    required: true
+                    options:
+                      collection: events
+                      search: title,slug
+                      label: "{title}"
           - name: image
             label: Image override (optional)
             type: image
@@ -96,35 +100,35 @@ content:
               path: public/media
       - name: grid
         label: Homepage grid
-        type: object
+        type: block
+        blockKey: type
         list:
           collapsible:
             collapsed: true
             summary: "{type}: {exhibition}{event}"
-        fields:
-          - name: type
-            label: Type
-            type: select
-            default: exhibition
-            description: "Choose whether this row features an Exhibition or an Event, then pick it below. The other picker is ignored."
-            options:
-              values: [exhibition, event]
+        blocks:
           - name: exhibition
             label: Exhibition
-            type: reference
-            description: "Used when Type is Exhibition."
-            options:
-              collection: exhibitions
-              search: title,subtitle,slug
-              label: "{title} — {subtitle}"
+            fields:
+              - name: exhibition
+                label: Exhibition
+                type: reference
+                required: true
+                options:
+                  collection: exhibitions
+                  search: title,subtitle,slug
+                  label: "{title} — {subtitle}"
           - name: event
             label: Event
-            type: reference
-            description: "Used when Type is Event."
-            options:
-              collection: events
-              search: title,slug
-              label: "{title}"
+            fields:
+              - name: event
+                label: Event
+                type: reference
+                required: true
+                options:
+                  collection: events
+                  search: title,slug
+                  label: "{title}"
 
   - name: artistsPage
     label: Artists page

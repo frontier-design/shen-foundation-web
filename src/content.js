@@ -218,8 +218,9 @@ function refType(row) {
 
 export function homeCallout(callout) {
   if (!callout?.enabled) return null
-  if (refType(callout) === 'event') {
-    const ev = refSlug(callout.event)
+  const feature = callout.feature || callout
+  if (refType(feature) === 'event') {
+    const ev = refSlug(feature.event)
     const doc = ev && getEvent(ev)
     if (!doc) return null
     return {
@@ -228,7 +229,7 @@ export function homeCallout(callout) {
       link: `/events/${eventSlug(doc)}`,
     }
   }
-  const ex = refSlug(callout.exhibition)
+  const ex = refSlug(feature.exhibition)
   const doc = ex && getExhibition(ex)
   if (!doc) return null
   return {
