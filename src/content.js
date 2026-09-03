@@ -29,11 +29,40 @@ function withSlug(modules) {
   }))
 }
 
+const MONTHS_SHORT = [
+  'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+  'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
+]
+
+function parseDate(value) {
+  if (!value || typeof value !== 'string') return null
+  const m = value.match(/^(\d{4})-(\d{2})-(\d{2})/)
+  if (!m) return null
+  return { year: +m[1], month: +m[2] - 1, day: +m[3] }
+}
+
+export function formatDateRange(start, end) {
+  const s = parseDate(start)
+  if (!s) return ''
+  const startDay = String(s.day).padStart(2, '0')
+  const e = parseDate(end)
+  if (!e) return `${startDay} ${MONTHS_SHORT[s.month]} ${s.year}`
+  const endDay = String(e.day).padStart(2, '0')
+  return `${startDay} ${MONTHS_SHORT[s.month]} – ${endDay} ${MONTHS_SHORT[e.month]} ${e.year}`
+}
+
+function withDisplayDate(item) {
+  return {
+    ...item,
+    captionDate: formatDateRange(item.startDate, item.endDate) || item.captionDate || '',
+  }
+}
+
 export const pages = withSlug(pageModules)
 
-export const exhibitions = withSlug(exhibitionModules)
+export const exhibitions = withSlug(exhibitionModules).map(withDisplayDate)
 
-export const events = withSlug(eventModules)
+export const events = withSlug(eventModules).map(withDisplayDate)
 
 export const artists = withSlug(artistModules)
 
@@ -80,6 +109,8 @@ export function getExhibition(slug) {
 }
 
 export function exhibitionEndDate(item) {
+  const machine = parseDate(item?.endDate) || parseDate(item?.startDate)
+  if (machine) return new Date(machine.year, machine.month, machine.day).getTime()
   const s = item?.captionDate || ''
   const months = {
     jan: 0, feb: 1, mar: 2, apr: 3, may: 4, jun: 5,

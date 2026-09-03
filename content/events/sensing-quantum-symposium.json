@@ -3,7 +3,8 @@
   "slug": "sensing-quantum-symposium",
   "status": "ongoing",
   "captionLabel": "Symposium",
-  "captionDate": "25 Oct 2026",
+  "startDate": "2026-10-25",
+  "endDate": "",
   "captionLocation": "Art Gallery of Ontario, Toronto",
   "image": "/media/carousel-image-1.webp",
   "sections": [

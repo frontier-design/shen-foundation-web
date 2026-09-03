@@ -313,9 +313,19 @@ content:
       - name: captionLabel
         label: Caption label
         type: string
-      - name: captionDate
-        label: Caption date
-        type: string
+      - name: startDate
+        label: Start date
+        type: date
+        default: ""
+        options:
+          format: yyyy-MM-dd
+      - name: endDate
+        label: End date (optional)
+        type: date
+        default: ""
+        description: "Leave empty for a single-day date."
+        options:
+          format: yyyy-MM-dd
       - name: captionLocation
         label: Caption location
         type: string
@@ -381,9 +391,19 @@ content:
       - name: captionLabel
         label: Caption label
         type: string
-      - name: captionDate
-        label: Caption date
-        type: string
+      - name: startDate
+        label: Start date
+        type: date
+        default: ""
+        options:
+          format: yyyy-MM-dd
+      - name: endDate
+        label: End date (optional)
+        type: date
+        default: ""
+        description: "Leave empty for a single-day date."
+        options:
+          format: yyyy-MM-dd
       - name: captionLocation
         label: Caption location
         type: string
