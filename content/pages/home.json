@@ -28,5 +28,12 @@
       "type": "exhibition",
       "exhibition": "content/exhibitions/curtain-call.json"
     }
+  ],
+  "heroSlides": [
+    "content/exhibitions/life-is-cheap.json",
+    "content/exhibitions/in-aliens-we-trust.json",
+    "content/exhibitions/dynamic-spaces.json",
+    "content/exhibitions/curtain-call.json",
+    "content/exhibitions/soft-machines.json"
   ]
 }
