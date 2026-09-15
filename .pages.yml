@@ -19,11 +19,10 @@ content:
         label: Hero carousel
         type: block
         blockKey: type
-        description: "Choose exhibitions or events to feature. Each slide uses that item's image and links to its page."
         list:
           collapsible:
             collapsed: true
-            summary: "{type}: {exhibition}{event}"
+            summary: "{exhibition}"
         blocks:
           - name: exhibition
             label: Exhibition
@@ -36,17 +35,6 @@ content:
                   collection: exhibitions
                   search: title,subtitle
                   label: "{title} — {subtitle}"
-          - name: event
-            label: Event
-            fields:
-              - name: event
-                label: Event
-                type: reference
-                required: true
-                options:
-                  collection: events
-                  search: title
-                  label: "{title}"
       - name: callout
         label: Homepage callout
         type: object

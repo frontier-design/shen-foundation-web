@@ -259,17 +259,6 @@ export function homeGridCards(grid = []) {
 export function homeHeroSlides(slides = []) {
   return slides
     .map((row) => {
-      if (refType(row) === 'event') {
-        const ev = refSlug(row?.event)
-        const doc = ev && getEvent(ev)
-        const image = doc && mediaUrl(doc.image)
-        if (!image) return null
-        return {
-          image,
-          link: `/events/${eventSlug(doc)}`,
-          title: doc.title || '',
-        }
-      }
       const ex = refSlug(row?.exhibition)
       const doc = ex && getExhibition(ex)
       const image = doc && mediaUrl(doc.heroImage)
