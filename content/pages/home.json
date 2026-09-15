@@ -1,10 +1,4 @@
 {
-  "heroSlides": [
-    "content/exhibitions/soft-machines.json",
-    "content/exhibitions/dynamic-spaces.json",
-    "content/exhibitions/in-aliens-we-trust.json",
-    "content/exhibitions/curtain-call.json"
-  ],
   "callout": {
     "enabled": true,
     "feature": {
