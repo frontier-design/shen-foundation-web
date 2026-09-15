@@ -15,12 +15,6 @@ content:
       delete: false
       rename: false
     fields:
-      - name: title
-        label: Title
-        type: string
-        required: true
-        options:
-          maxlength: 120
       - name: heroImages
         label: Hero carousel
         type: image
@@ -114,12 +108,6 @@ content:
       delete: false
       rename: false
     fields:
-      - name: title
-        label: Title
-        type: string
-        required: true
-        options:
-          maxlength: 120
       - name: artistOrder
         label: Artist order
         type: object
@@ -145,13 +133,6 @@ content:
       delete: false
       rename: false
     fields:
-      - name: title
-        label: Title
-        type: string
-        required: true
-        description: "Shown as the large heading on the white card. Displayed in uppercase."
-        options:
-          maxlength: 120
       - name: heroImage
         label: Hero image (full bleed)
         type: image

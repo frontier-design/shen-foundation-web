@@ -26,7 +26,7 @@ function Home() {
 
   return (
     <main>
-      <ScreenReaderTitle>{page.title}</ScreenReaderTitle>
+      <ScreenReaderTitle>Home</ScreenReaderTitle>
       <HeroCarousel key={images.join('|')} images={images} />
       {callout && <HomepageCallout callout={callout} />}
       {page.grid?.length > 0 && <CardGrid items={homeGridCards(page.grid)} />}

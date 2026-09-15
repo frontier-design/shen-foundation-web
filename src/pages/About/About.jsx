@@ -255,7 +255,7 @@ function About() {
         ) : null}
 
         <Card $start={1} $span={6} $startTablet={1} $spanTablet={8} $rowStart={2}>
-          {page.title ? <Title>{page.title}</Title> : null}
+          <Title>About Us</Title>
         </Card>
       </Hero>
 
