@@ -17,24 +17,20 @@ content:
     fields:
       - name: heroSlides
         label: Hero carousel
-        type: block
-        blockKey: type
+        type: object
         list:
           collapsible:
             collapsed: true
             summary: "{exhibition}"
-        blocks:
+        fields:
           - name: exhibition
             label: Exhibition
-            fields:
-              - name: exhibition
-                label: Exhibition
-                type: reference
-                required: true
-                options:
-                  collection: exhibitions
-                  search: title,subtitle
-                  label: "{title} — {subtitle}"
+            type: reference
+            required: true
+            options:
+              collection: exhibitions
+              search: title,subtitle
+              label: "{title} — {subtitle}"
       - name: callout
         label: Homepage callout
         type: object
