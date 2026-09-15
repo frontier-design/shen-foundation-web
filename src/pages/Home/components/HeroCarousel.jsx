@@ -1,9 +1,10 @@
-import { useLayoutEffect, useRef } from 'react'
+import { useEffect, useLayoutEffect, useRef } from 'react'
 import styled from 'styled-components'
 import gsap from 'gsap'
 import { CustomEase } from 'gsap/CustomEase'
 import { GRID, useMediaQuery } from '../../../grid/index.js'
 import { colors, easing, duration } from '../../../theme.js'
+import { navigate } from '../../../router.jsx'
 
 gsap.registerPlugin(CustomEase)
 
@@ -34,6 +35,13 @@ const Layer = styled.img`
   object-fit: cover;
   object-position: center;
   will-change: clip-path;
+`
+
+const HeroLink = styled.a`
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: block;
 `
 
 const HOLD_BEFORE = 2.5
@@ -67,30 +75,56 @@ function cornerLuminance(img, side) {
 
 const toneFromLuminance = (luma) => (luma > LUMA_THRESHOLD ? 'light' : 'dark')
 
-function HeroCarousel({ images = [] }) {
+function HeroCarousel({ slides = [] }) {
   const sectionRef = useRef(null)
   const backRef = useRef(null)
   const frontRef = useRef(null)
+  const linkRef = useRef(null)
+  const activeRef = useRef(0)
+  const slidesRef = useRef(slides)
   const reduceMotion = useMediaQuery('(prefers-reduced-motion: reduce)')
+  const images = slides.map((s) => s.image)
   const signature = images.join('|')
+
+  useEffect(() => {
+    slidesRef.current = slides
+  })
+
+  const handleClick = (e) => {
+    if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return
+    const to = slidesRef.current[activeRef.current]?.link
+    if (!to) return
+    e.preventDefault()
+    navigate(to)
+  }
 
   useLayoutEffect(() => {
     const section = sectionRef.current
     const back = backRef.current
     const front = frontRef.current
-    const slides = signature ? signature.split('|') : []
-    const n = slides.length
+    const srcs = signature ? signature.split('|') : []
+    const n = srcs.length
 
     if (!section || !back || !front || n === 0) return undefined
+
+    const setActive = (i) => {
+      activeRef.current = i
+      const link = linkRef.current
+      const slide = slidesRef.current[i]
+      if (link && slide) {
+        link.href = slide.link
+        link.setAttribute('aria-label', slide.title ? `View ${slide.title}` : 'View exhibition')
+      }
+    }
 
     const publish = ({ logo, plus } = {}) => {
       if (logo) section.dataset.navToneLeft = logo
       if (plus) section.dataset.navToneRight = plus
     }
 
-    const tones = slides.map(() => ({ logo: 'dark', plus: 'dark' }))
+    const tones = srcs.map(() => ({ logo: 'dark', plus: 'dark' }))
 
-    slides.forEach((src, i) => {
+    srcs.forEach((src, i) => {
       const probe = new Image()
       if (/^https?:\/\//.test(src)) probe.crossOrigin = 'anonymous'
       probe.onload = () => {
@@ -107,8 +141,9 @@ function HeroCarousel({ images = [] }) {
       probe.src = src
     })
 
-    back.src = slides[0]
+    back.src = srcs[0]
     publish(tones[0])
+    setActive(0)
 
     if (n < 2 || reduceMotion) {
       gsap.set(front, { clipPath: 'inset(0 0 0 100%)' })
@@ -126,8 +161,8 @@ function HeroCarousel({ images = [] }) {
         if (cancelled) return
         const next = (current + 1) % n
 
-        back.src = slides[current]
-        front.src = slides[next]
+        back.src = srcs[current]
+        front.src = srcs[next]
         gsap.set(front, { clipPath: 'inset(0 0 0 100%)' })
 
         tl = gsap.timeline({
@@ -148,6 +183,7 @@ function HeroCarousel({ images = [] }) {
           .to({}, { duration: HOLD_HALF })
           .add(() => publish(tones[next]))
           .to(front, { clipPath: 'inset(0 0 0 0%)', duration: WIPE, ease: 'reveal' })
+          .add(() => setActive(next))
           .to({}, { duration: HOLD_FULL })
 
         publish(tones[current])
@@ -183,6 +219,12 @@ function HeroCarousel({ images = [] }) {
     >
       <Layer ref={backRef} src={images[0]} alt="" />
       <Layer ref={frontRef} alt="" />
+      <HeroLink
+        ref={linkRef}
+        href={slides[0]?.link}
+        onClick={handleClick}
+        aria-label={slides[0]?.title ? `View ${slides[0].title}` : 'View exhibition'}
+      />
     </HeroSection>
   )
 }

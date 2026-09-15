@@ -15,16 +15,23 @@ content:
       delete: false
       rename: false
     fields:
-      - name: heroImages
+      - name: heroSlides
         label: Hero carousel
-        type: image
-        options:
-          multiple:
-            max: 12
-          unique: true
-          categories: [image]
-          path: public/media
-          rename: safe
+        type: object
+        description: "Choose exhibitions to feature. Each slide uses that exhibition's hero image and links to its page."
+        list:
+          collapsible:
+            collapsed: true
+            summary: "{exhibition}"
+        fields:
+          - name: exhibition
+            label: Exhibition
+            type: reference
+            required: true
+            options:
+              collection: exhibitions
+              search: title,subtitle,slug
+              label: "{title} — {subtitle}"
       - name: callout
         label: Homepage callout
         type: object

@@ -1,9 +1,9 @@
 {
-  "heroImages": [
-    "/media/HeroCarousel/carousel-image-1.webp",
-    "/media/HeroCarousel/carousel-image-2.png",
-    "/media/HeroCarousel/carousel-image-3.webp",
-    "/media/HeroCarousel/carousel-image-4.jpg"
+  "heroSlides": [
+    { "exhibition": "content/exhibitions/soft-machines.json" },
+    { "exhibition": "content/exhibitions/dynamic-spaces.json" },
+    { "exhibition": "content/exhibitions/in-aliens-we-trust.json" },
+    { "exhibition": "content/exhibitions/curtain-call.json" }
   ],
   "callout": {
     "enabled": true,
