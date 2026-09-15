@@ -5,6 +5,7 @@ import { CustomEase } from 'gsap/CustomEase'
 import { GRID, useMediaQuery } from '../../../grid/index.js'
 import { colors, easing, duration } from '../../../theme.js'
 import { navigate } from '../../../router.jsx'
+import { isLoadingDone, onLoadingDone } from '../../../loading.js'
 
 gsap.registerPlugin(CustomEase)
 
@@ -124,6 +125,7 @@ function HeroCarousel({ slides = [] }) {
     let current = 0
     let tl
     let cancelled = false
+    let startUnsub = () => {}
 
     const ctx = gsap.context(() => {
       gsap.set(front, { clipPath: 'inset(0 0 0 100%)' })
@@ -158,7 +160,11 @@ function HeroCarousel({ slides = [] }) {
           .to({}, { duration: HOLD_FULL })
       }
 
-      step()
+      const start = () => {
+        if (!cancelled) step()
+      }
+      if (isLoadingDone()) start()
+      else startUnsub = onLoadingDone(start)
     }, section)
 
     const onVisibility = () => {
@@ -171,6 +177,7 @@ function HeroCarousel({ slides = [] }) {
 
     return () => {
       cancelled = true
+      startUnsub()
       document.removeEventListener('visibilitychange', onVisibility)
       ctx.revert()
     }
