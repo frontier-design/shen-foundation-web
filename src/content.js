@@ -259,7 +259,7 @@ export function homeGridCards(grid = []) {
 export function homeHeroSlides(slides = []) {
   return slides
     .map((row) => {
-      const ex = refSlug(row?.exhibition)
+      const ex = refSlug(typeof row === 'string' ? row : row?.exhibition)
       const doc = ex && getExhibition(ex)
       const image = doc && mediaUrl(doc.heroImage)
       if (!image) return null
