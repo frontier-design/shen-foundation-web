@@ -17,21 +17,36 @@ content:
     fields:
       - name: heroSlides
         label: Hero carousel
-        type: object
-        description: "Choose exhibitions to feature. Each slide uses that exhibition's hero image and links to its page."
+        type: block
+        blockKey: type
+        description: "Choose exhibitions or events to feature. Each slide uses that item's image and links to its page."
         list:
           collapsible:
             collapsed: true
-            summary: "{exhibition}"
-        fields:
+            summary: "{type}: {exhibition}{event}"
+        blocks:
           - name: exhibition
             label: Exhibition
-            type: reference
-            required: true
-            options:
-              collection: exhibitions
-              search: title,subtitle,slug
-              label: "{title} — {subtitle}"
+            fields:
+              - name: exhibition
+                label: Exhibition
+                type: reference
+                required: true
+                options:
+                  collection: exhibitions
+                  search: title,subtitle
+                  label: "{title} — {subtitle}"
+          - name: event
+            label: Event
+            fields:
+              - name: event
+                label: Event
+                type: reference
+                required: true
+                options:
+                  collection: events
+                  search: title
+                  label: "{title}"
       - name: callout
         label: Homepage callout
         type: object
@@ -53,7 +68,7 @@ content:
                     required: true
                     options:
                       collection: exhibitions
-                      search: title,subtitle,slug
+                      search: title,subtitle
                       label: "{title} — {subtitle}"
               - name: event
                 label: Event
@@ -64,7 +79,7 @@ content:
                     required: true
                     options:
                       collection: events
-                      search: title,slug
+                      search: title
                       label: "{title}"
           - name: image
             label: Image (portrait)
@@ -92,7 +107,7 @@ content:
                 required: true
                 options:
                   collection: exhibitions
-                  search: title,subtitle,slug
+                  search: title,subtitle
                   label: "{title} — {subtitle}"
           - name: event
             label: Event
@@ -103,7 +118,7 @@ content:
                 required: true
                 options:
                   collection: events
-                  search: title,slug
+                  search: title
                   label: "{title}"
 
   - name: artistsPage
@@ -128,7 +143,7 @@ content:
             type: reference
             options:
               collection: artists
-              search: title,slug
+              search: title
               label: "{title}"
 
   - name: aboutPage
