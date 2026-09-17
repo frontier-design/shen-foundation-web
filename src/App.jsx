@@ -4,8 +4,7 @@ import gsap from 'gsap'
 import { CustomEase } from 'gsap/CustomEase'
 import GlobalStyle from './styles.js'
 import theme, { easing, duration, colors } from './theme.js'
-import { Grid, GridCell, GRID, useMediaQuery } from './grid'
-import wordmark from './assets/images/logos/shen-wordmark-oneline.svg'
+import { GRID, useMediaQuery } from './grid'
 
 gsap.registerPlugin(CustomEase)
 if (!CustomEase.get('reveal')) CustomEase.create('reveal', easing.gsapReveal)
@@ -20,6 +19,7 @@ import IndividualArtist from './pages/IndividualArtist'
 import Event from './pages/Event'
 import EventsIndex from './pages/Events'
 import About from './pages/About'
+import Test from './pages/Test'
 import { usePathname } from './router.jsx'
 import { markLoadingDone } from './loading.js'
 
@@ -55,21 +55,8 @@ const OverlayLayer = styled.div`
 const LoadingScreen = styled.div`
   position: fixed;
   inset: 0;
-  z-index: 1000;
+  z-index: 95;
   background-color: ${colors.white};
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  padding-bottom: clamp(20px, 3vh, 40px);
-  will-change: transform;
-`
-
-const LoaderWordmark = styled.div`
-  width: 100%;
-  aspect-ratio: 1188 / 113;
-  background-color: ${colors.black};
-  -webkit-mask: url(${wordmark}) no-repeat center / contain;
-  mask: url(${wordmark}) no-repeat center / contain;
   will-change: transform;
 `
 
@@ -81,6 +68,7 @@ function RouteView({ pathname }) {
   const event = pathname.match(/^\/events\/([a-z0-9-]+)\/?$/)
   const eventsIndex = pathname === '/events' || pathname === '/events/'
   const aboutIndex = pathname === '/about' || pathname === '/about/'
+  const testIndex = pathname === '/test' || pathname === '/test/'
 
   return (
     <>
@@ -98,6 +86,8 @@ function RouteView({ pathname }) {
         <EventsIndex />
       ) : aboutIndex ? (
         <About />
+      ) : testIndex ? (
+        <Test />
       ) : (
         <Home />
       )}
@@ -122,7 +112,6 @@ function App() {
     () => !window.matchMedia('(prefers-reduced-motion: reduce)').matches,
   )
   const loaderRef = useRef(null)
-  const markRef = useRef(null)
 
   if (prevPath !== pathname) {
     setPrevPath(pathname)
@@ -143,23 +132,15 @@ function App() {
       markLoadingDone()
       return
     }
-    const startY = window.innerHeight - markRef.current.getBoundingClientRect().top
     const tl = gsap.timeline()
-    tl.set(markRef.current, { y: startY })
-      .to(markRef.current, { y: 0, duration: 1.1, ease: 'reveal' }, 0.25)
-      .to(
-        loaderRef.current,
-        {
-          yPercent: -100,
-          duration: duration.slow,
-          ease: 'reveal',
-          onComplete: () => {
-            setLoaderVisible(false)
-            markLoadingDone()
-          },
-        },
-        '+=0.5',
-      )
+    tl.to(loaderRef.current, {
+      yPercent: -100,
+      duration: duration.slow,
+      ease: 'reveal',
+      delay: 0.6,
+      onStart: () => markLoadingDone(),
+      onComplete: () => setLoaderVisible(false),
+    })
     return () => tl.kill()
   }, [])
 
@@ -173,7 +154,7 @@ function App() {
 
   useLayoutEffect(() => {
     window.scrollTo(0, 0)
-  }, [base])
+  }, [pathname])
 
   useEffect(() => {
     if (incoming === null) return
@@ -200,15 +181,7 @@ function App() {
           <RouteView pathname={incoming} />
         </OverlayLayer>
       ) : null}
-      {loaderVisible ? (
-        <LoadingScreen ref={loaderRef}>
-          <Grid>
-            <GridCell $start={1} $end={-1}>
-              <LoaderWordmark ref={markRef} role="img" aria-label="Shen Foundation" />
-            </GridCell>
-          </Grid>
-        </LoadingScreen>
-      ) : null}
+      {loaderVisible ? <LoadingScreen ref={loaderRef} /> : null}
     </ThemeProvider>
   )
 }

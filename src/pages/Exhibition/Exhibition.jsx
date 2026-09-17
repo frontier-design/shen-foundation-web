@@ -25,6 +25,7 @@ const Hero = styled.div`
 const Header = styled(Grid).attrs({ as: 'header' })`
   align-items: start;
   padding-top: clamp(48px, 6vw, 100px);
+  padding-bottom: 5vh;
   row-gap: clamp(32px, 4vw, 56px);
 
   @media ${GRID.MEDIA_MOBILE} {

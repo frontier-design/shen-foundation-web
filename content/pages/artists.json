@@ -1,10 +1,10 @@
 {
   "artistOrder": [
-    { "artist": "content/artists/anicka-yi.json" },
-    { "artist": "content/artists/haegue-yang.json" },
-    { "artist": "content/artists/danh-vo.json" },
-    { "artist": "content/artists/ken-lum.json" },
-    { "artist": "content/artists/mire-lee.json" },
-    { "artist": "content/artists/ron-terada.json" }
+    { "artist": "Anicka Yi" },
+    { "artist": "Haegue Yang" },
+    { "artist": "Danh Võ" },
+    { "artist": "Ken Lum" },
+    { "artist": "Mire Lee" },
+    { "artist": "Ron Terada" }
   ]
 }

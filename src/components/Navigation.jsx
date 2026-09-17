@@ -1,8 +1,13 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
-import { Grid, GridCell, GRID } from '../grid'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { Grid, GridCell, GRID, useMediaQuery } from '../grid'
 import { colors, type, easing, duration } from '../theme.js'
-import { linkProps } from '../router.jsx'
+import { linkProps, usePathname } from '../router.jsx'
+import { isLoadingDone, onLoadingDone } from '../loading.js'
+
+gsap.registerPlugin(ScrollTrigger)
 
 const LUMA_THRESHOLD = 140
 const SAMPLE = 8
@@ -73,7 +78,7 @@ const imageLuminance = (img, x, y) => {
   return sum / (data.length / 4)
 }
 
-const toneAt = (x, y, iconEl) => {
+const lumaAt = (x, y, iconEl) => {
   const prev = iconEl.style.pointerEvents
   iconEl.style.pointerEvents = 'none'
   const el = document.elementFromPoint(x, y)
@@ -89,7 +94,56 @@ const toneAt = (x, y, iconEl) => {
     }
   }
   if (luma == null) luma = backgroundLuminance(el)
-  return luma > LUMA_THRESHOLD ? 'light' : 'dark'
+  return luma
+}
+
+const SAMPLE_POINTS = [
+  [0.5, 0.5],
+  [0.2, 0.2],
+  [0.8, 0.2],
+  [0.2, 0.8],
+  [0.8, 0.8],
+]
+
+const toneForRect = (rect, iconEl) => {
+  let sum = 0
+  let count = 0
+  for (const [fx, fy] of SAMPLE_POINTS) {
+    const luma = lumaAt(rect.left + rect.width * fx, rect.top + rect.height * fy, iconEl)
+    if (luma != null) {
+      sum += luma
+      count += 1
+    }
+  }
+  if (!count) return null
+  return sum / count > LUMA_THRESHOLD ? 'light' : 'dark'
+}
+
+const remToPx = (value) => {
+  if (typeof value === 'number') return value
+  const n = parseFloat(value)
+  if (String(value).trim().endsWith('rem')) {
+    const root = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16
+    return n * root
+  }
+  return n
+}
+
+// Pixel width of `count` grid columns (incl. inner gaps) at the current breakpoint.
+const columnsSpanWidth = (count) => {
+  const isTablet = window.matchMedia(GRID.MEDIA_TABLET).matches
+  const columns = isTablet ? GRID.COLUMNS_TABLET : GRID.COLUMNS
+  const padding = isTablet ? GRID.PADDING_TABLET : GRID.PADDING
+  const gap = remToPx(isTablet ? GRID.GAP_TABLET : GRID.GAP)
+  const content = Math.min(GRID.MAX_WIDTH, window.innerWidth) - padding * 2
+  const colWidth = (content - (columns - 1) * gap) / columns
+  return count * colWidth + (count - 1) * gap
+}
+
+// Logo svg is `height: clamp(28px, 3.2vw, 44px)` with a 50:40 (1.25) aspect ratio.
+const logoNaturalWidth = () => {
+  const height = Math.min(Math.max(28, 0.032 * window.innerWidth), 44)
+  return height * (50 / 40)
 }
 
 const Nav = styled.nav`
@@ -143,9 +197,11 @@ const Plus = styled.button`
   padding: 0;
   border: none;
   background: none;
-  pointer-events: auto;
+  pointer-events: ${(props) => (props.$hidden ? 'none' : 'auto')};
   cursor: pointer;
   color: ${(props) => props.$color};
+  opacity: ${(props) => (props.$hidden ? 0 : 1)};
+  transition: opacity ${duration.base}s ${easing.reveal};
 
   &::before,
   &::after {
@@ -265,13 +321,135 @@ function ShenMark({ color, innerRef }) {
 function Navigation() {
   const logoRef = useRef(null)
   const plusRef = useRef(null)
+  const scaleAnimRef = useRef(null)
+  const menuOpenedRef = useRef(false)
+  const heldLargeRef = useRef(false)
   const [tones, setTones] = useState({ logo: 'dark', plus: 'dark' })
   const [open, setOpen] = useState(false)
+  const [loading, setLoading] = useState(() => !isLoadingDone())
+  const pathname = usePathname()
+  const isMobile = useMediaQuery(GRID.MEDIA_MOBILE)
+  const prevPathRef = useRef(pathname)
 
   const navTo = (to) => (event) => {
     linkProps(to).onClick(event)
     setOpen(false)
   }
+
+  useLayoutEffect(() => {
+    const logo = logoRef.current
+    if (!logo) return undefined
+
+    const cameFromOtherPage = prevPathRef.current !== '/'
+    prevPathRef.current = pathname
+
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const large = () => columnsSpanWidth(4) / logoNaturalWidth()
+
+    // While the loader is up, hold the enlarged logo in the nav corner on every
+    // route so the loading screen always shows the big logo.
+    if (loading) {
+      if (!reduce && !isMobile) {
+        gsap.set(logo, { transformOrigin: 'top left', scale: large() })
+        heldLargeRef.current = true
+      }
+      return undefined
+    }
+
+    if (pathname !== '/' || isMobile || reduce) {
+      // Coming off the loader on a non-home page: translate the enlarged logo
+      // down to its natural size, then clear. Otherwise reset instantly.
+      if (heldLargeRef.current && !isMobile && !reduce) {
+        heldLargeRef.current = false
+        const tween = gsap.to(logo, {
+          scale: 1,
+          duration: duration.base,
+          ease: 'reveal',
+          onComplete: () => gsap.set(logo, { clearProps: 'scale,transformOrigin' }),
+        })
+        return () => tween.kill()
+      }
+      gsap.set(logo, { clearProps: 'scale,transformOrigin' })
+      return undefined
+    }
+
+    heldLargeRef.current = false
+    gsap.set(logo, { transformOrigin: 'top left' })
+    const anim = gsap.fromTo(
+      logo,
+      { scale: large },
+      {
+        scale: 1,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: document.body,
+          start: 'top top',
+          end: () => `+=${window.innerHeight * 0.7}`,
+          scrub: true,
+          invalidateOnRefresh: true,
+        },
+      },
+    )
+    scaleAnimRef.current = anim
+
+    // Arriving on home from another page: scale the logo up from its natural
+    // size to the enlarged (top-of-page) size, then hand control to the scrub.
+    let intro
+    if (cameFromOtherPage) {
+      const st = anim.scrollTrigger
+      st.disable(false)
+      intro = gsap.fromTo(
+        logo,
+        { scale: 1 },
+        {
+          scale: large(),
+          duration: duration.base,
+          ease: 'reveal',
+          onComplete: () => st.enable(),
+        },
+      )
+    }
+
+    return () => {
+      intro?.kill()
+      anim.scrollTrigger?.kill()
+      anim.kill()
+      scaleAnimRef.current = null
+    }
+  }, [pathname, isMobile, loading])
+
+  // While the menu is open, shrink the enlarged logo back to its original size
+  // (pausing the scroll-driven scale), then restore it when the menu closes.
+  useLayoutEffect(() => {
+    const logo = logoRef.current
+    const anim = scaleAnimRef.current
+    const st = anim?.scrollTrigger
+    if (!logo || !st) return undefined
+
+    if (open) {
+      menuOpenedRef.current = true
+      st.disable(false)
+      const tween = gsap.to(logo, { scale: 1, duration: duration.base, ease: 'reveal' })
+      return () => tween.kill()
+    }
+
+    if (!menuOpenedRef.current) return undefined
+    menuOpenedRef.current = false
+
+    // Animate back to the scale the current scroll position calls for, then
+    // hand control back to the scrub (avoids a snap on menu close).
+    const end = window.innerHeight * 0.7
+    const large = columnsSpanWidth(4) / logoNaturalWidth()
+    const progress = Math.min(Math.max(window.scrollY / end, 0), 1)
+    const target = large + (1 - large) * progress
+    const tween = gsap.to(logo, {
+      scale: target,
+      duration: duration.base,
+      ease: 'reveal',
+      onComplete: () => st.enable(),
+    })
+    return () => tween.kill()
+  }, [open])
 
   useLayoutEffect(() => {
     let raf
@@ -287,8 +465,8 @@ function Navigation() {
           const l = logoEl.getBoundingClientRect()
           const p = plusEl.getBoundingClientRect()
 
-          const logo = toneAt(l.left + l.width / 2, l.top + l.height / 2, logoEl)
-          const plus = toneAt(p.left + p.width / 2, p.top + p.height / 2, plusEl)
+          const logo = toneForRect(l, logoEl)
+          const plus = toneForRect(p, plusEl)
 
           const nextLogo = logo ?? last.logo ?? 'dark'
           const nextPlus = plus ?? last.plus ?? 'dark'
@@ -304,6 +482,8 @@ function Navigation() {
     raf = requestAnimationFrame(sample)
     return () => cancelAnimationFrame(raf)
   }, [])
+
+  useEffect(() => onLoadingDone(() => setLoading(false)), [])
 
   useEffect(() => {
     if (!open) return undefined
@@ -335,7 +515,6 @@ function Navigation() {
                 </MenuLink>
               </MenuGroup>
               <MenuGroup>
-                <MenuSubLink href="#">Contact</MenuSubLink>
                 <MenuSubLink href="#">Instagram</MenuSubLink>
                 <MenuSubLink href="mailto:info@shenfoundation.com" $underline>
                   info@shenfoundation.com
@@ -362,6 +541,7 @@ function Navigation() {
                 type="button"
                 $color={iconColor(tones.plus)}
                 $open={open}
+                $hidden={loading}
                 onClick={() => setOpen((prev) => !prev)}
                 aria-label={open ? 'Close menu' : 'Open menu'}
                 aria-expanded={open}

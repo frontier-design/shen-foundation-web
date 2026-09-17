@@ -184,7 +184,8 @@ export function orderedArtists(order = []) {
   const seen = new Set()
   const result = []
   for (const row of order) {
-    const slug = refSlug(row?.artist)
+    const bare = refSlug(row?.artist)
+    const slug = bare && slugify(bare)
     const doc = slug && bySlug.get(slug)
     if (doc && !seen.has(slug)) {
       result.push(doc)

@@ -120,6 +120,7 @@ content:
             options:
               collection: artists
               search: title
+              value: title
               label: "{title}"
 
   - name: aboutPage

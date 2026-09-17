@@ -56,7 +56,6 @@ function Footer() {
           <FooterLink {...linkProps('/events')}>Events</FooterLink>
         </Group>
         <Group>
-          <FooterLink href="#">Contact</FooterLink>
           <FooterLink href="#">Instagram</FooterLink>
           <FooterLink href="mailto:info@shenfoundation.com" $underline>
             info@shenfoundation.com

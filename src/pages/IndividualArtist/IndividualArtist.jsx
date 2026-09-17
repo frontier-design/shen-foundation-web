@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react'
 import styled, { css } from 'styled-components'
 import { Grid, GridCell, GRID } from '../../grid'
 import { colors, type, easing, duration, aspect } from '../../theme.js'
@@ -182,6 +183,25 @@ function ExhibitionEntry({ item }) {
 
 function IndividualArtist({ slug }) {
   const item = getArtist(slug)
+  const sectionRef = useRef(null)
+  const rightRef = useRef(null)
+
+  useEffect(() => {
+    const section = sectionRef.current
+    const right = rightRef.current
+    if (!section || !right) return
+
+    const mq = window.matchMedia(GRID.MEDIA_TABLET)
+
+    const onWheel = (e) => {
+      if (mq.matches || e.ctrlKey) return
+      e.preventDefault()
+      right.scrollTop += e.deltaY
+    }
+
+    section.addEventListener('wheel', onWheel, { passive: false })
+    return () => section.removeEventListener('wheel', onWheel)
+  }, [])
 
   if (!item) return null
 
@@ -189,14 +209,14 @@ function IndividualArtist({ slug }) {
   const shows = artistExhibitions(item)
 
   return (
-    <Section data-nav-tone-left="light" data-nav-tone-right="dark">
+    <Section ref={sectionRef} data-nav-tone-left="light" data-nav-tone-right="dark">
       <Layout>
         <Left $start={1} $span={5} $startTablet={1} $spanTablet={8}>
           {item.title ? <Name>{item.title}</Name> : null}
           {item.bio ? <Bio>{item.bio}</Bio> : null}
         </Left>
 
-        <Right $start={7} $end={-1} $startTablet={1} $spanTablet={8}>
+        <Right ref={rightRef} $start={7} $end={-1} $startTablet={1} $spanTablet={8}>
           <Feed>
             {thumbnail ? (
               <FeedImage $fill>

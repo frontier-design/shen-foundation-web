@@ -25,6 +25,14 @@ export function navigate(to) {
   window.dispatchEvent(new Event(NAVIGATE_EVENT))
 }
 
+export function goBack(fallback = '/') {
+  if (window.history.length > 1) {
+    window.history.back()
+  } else {
+    navigate(fallback)
+  }
+}
+
 export function linkProps(to) {
   return {
     href: to,

@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { Grid, GridCell, GRID } from '../../grid'
 import { colors, fonts, type, easing, duration } from '../../theme.js'
 import { getEvent, mediaUrl } from '../../content.js'
+import { goBack } from '../../router.jsx'
 
 const Section = styled.main`
   width: 100%;
@@ -37,6 +38,7 @@ const ImageCell = styled(GridCell)`
 `
 
 const ImageViewport = styled.div`
+  position: relative;
   width: 100%;
   height: 100%;
   overflow: hidden;
@@ -73,6 +75,21 @@ const Content = styled(GridCell)`
     padding-left: 0;
     padding-top: 0;
   }
+`
+
+const BackButton = styled.button`
+  ${type.caption}
+  font-family: ${fonts.display};
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  padding: 0;
+  margin-bottom: clamp(16px, 1.6vw, 24px);
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: ${colors.black};
+  line-height: 1;
 `
 
 const Title = styled.h1`
@@ -213,6 +230,9 @@ function Event({ slug }) {
         </ImageCell>
 
         <Content $start={7} $end={-1} $startTablet={1} $spanTablet={8}>
+          <BackButton type="button" aria-label="Go back" onClick={() => goBack('/events')}>
+            &larr;
+          </BackButton>
           {item.title ? <Title>{item.title}</Title> : null}
           <Meta>
             {item.captionLabel ? <MetaLabel>{item.captionLabel}</MetaLabel> : null}
