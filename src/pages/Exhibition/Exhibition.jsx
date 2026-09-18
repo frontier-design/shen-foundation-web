@@ -1,7 +1,8 @@
 import styled, { css } from 'styled-components'
 import { Grid, GridCell, GRID } from '../../grid'
 import { colors, type, easing, duration } from '../../theme.js'
-import { getExhibition, mediaUrl, accentImage } from '../../content.js'
+import { getExhibition, mediaUrl, accentImage, exhibitionArtist, artistSlug } from '../../content.js'
+import { linkProps } from '../../router.jsx'
 import { useImageAccent } from '../../hooks/useImageAccent.js'
 
 const Hero = styled.div`
@@ -179,6 +180,7 @@ function Exhibition({ slug }) {
   if (!item) return null
 
   const gallery = item.gallery || []
+  const artist = exhibitionArtist(item)
 
   return (
     <main>
@@ -203,10 +205,12 @@ function Exhibition({ slug }) {
           {item.body ? (
             <Body>
               {item.body}
-              {item.artistLinkUrl && item.artistLinkLabel ? (
+              {artist ? (
                 <>
                   {' '}
-                  <ArtistLink href={item.artistLinkUrl}>{item.artistLinkLabel} →</ArtistLink>
+                  <ArtistLink {...linkProps(`/artists/${artistSlug(artist)}`)}>
+                    Learn more about the artist →
+                  </ArtistLink>
                 </>
               ) : null}
             </Body>

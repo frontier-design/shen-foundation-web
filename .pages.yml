@@ -139,6 +139,12 @@ content:
         options:
           categories: [image]
           path: public/media
+      - name: heroBody
+        label: About Us body copy
+        type: text
+        description: "Shown under the 'About Us' title in the white hero card."
+        options:
+          maxlength: 600
       - name: intro
         label: Intro section
         type: object
@@ -292,12 +298,6 @@ content:
         type: text
         options:
           maxlength: 1200
-      - name: artistLinkLabel
-        label: Artist link label
-        type: string
-      - name: artistLinkUrl
-        label: Artist link URL
-        type: string
       - name: gallery
         label: Gallery
         type: object

@@ -97,6 +97,15 @@ const Title = styled.h1`
   }
 `
 
+const HeroBody = styled.p`
+  ${type.body}
+  color: ${colors.black};
+  margin: clamp(24px, 3vw, 40px) 0 0;
+  max-width: 46ch;
+  text-wrap: pretty;
+  white-space: pre-line;
+`
+
 const Intro = styled(Grid).attrs({ as: 'section' })`
   align-items: start;
   padding-top: clamp(72px, 12vw, 220px);
@@ -256,6 +265,7 @@ function About() {
 
         <Card $start={1} $span={6} $startTablet={1} $spanTablet={8} $rowStart={2}>
           <Title>About Us</Title>
+          {page.heroBody ? <HeroBody>{page.heroBody}</HeroBody> : null}
         </Card>
       </Hero>
 

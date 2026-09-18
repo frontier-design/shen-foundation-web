@@ -198,6 +198,12 @@ export function orderedArtists(order = []) {
   return result
 }
 
+export function exhibitionArtist(item) {
+  const name = slugify(item?.title)
+  if (!name) return null
+  return artists.find((a) => artistSlug(a) === name) || null
+}
+
 export function artistExhibitions(artist) {
   const name = slugify(artist?.title)
   if (!name) return []
