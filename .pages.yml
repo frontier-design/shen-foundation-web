@@ -347,14 +347,9 @@ content:
         options:
           values: [ongoing, archive]
       - name: captionLabel
-        label: Event type
-        type: reference
-        description: "Pick an existing type, or add a new one in the Event Types collection — it then becomes pickable here for every event, and a filter tab on the Events page."
-        options:
-          collection: eventTypes
-          search: name
-          value: name
-          label: "{name}"
+        label: Event Type
+        type: string
+        description: "e.g. Talk, Workshop, Tour. Becomes a filter tab on the Events page."
       - name: startDate
         label: Start date
         type: date
@@ -392,30 +387,6 @@ content:
           - name: content
             label: Content
             type: text
-
-  - name: eventTypes
-    label: Event Types
-    type: collection
-    path: content/event-types
-    format: json
-    filename:
-      template: "{fields.name}.json"
-      field: false
-    view:
-      fields: [name]
-      primary: name
-      sort: [name]
-      search: [name]
-      default:
-        sort: name
-        order: asc
-    fields:
-      - name: name
-        label: Type name
-        type: string
-        required: true
-        options:
-          maxlength: 60
 
 settings:
   content:

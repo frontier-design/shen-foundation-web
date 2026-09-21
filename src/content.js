@@ -18,11 +18,6 @@ const artistModules = import.meta.glob('../content/artists/*.json', {
   import: 'default',
 })
 
-const eventTypeModules = import.meta.glob('../content/event-types/*.json', {
-  eager: true,
-  import: 'default',
-})
-
 function withSlug(modules) {
   return Object.entries(modules).map(([path, doc]) => ({
     ...doc,
@@ -66,8 +61,6 @@ export const exhibitions = withSlug(exhibitionModules).map(withDisplayDate)
 export const events = withSlug(eventModules).map(withDisplayDate)
 
 export const artists = withSlug(artistModules)
-
-export const eventTypes = withSlug(eventTypeModules)
 
 export function getPage(slug) {
   return pages.find((page) => page.__slug === slug)
@@ -159,14 +152,6 @@ export function getEvent(slug) {
   return events.find((item) => eventSlug(item) === slug) || null
 }
 
-export function eventTypeName(item) {
-  const bare = refSlug(item?.captionLabel)
-  if (!bare) return ''
-  const slug = slugify(bare)
-  const match = eventTypes.find((t) => slugify(t.name || t.__slug) === slug)
-  return match ? match.name || match.__slug : bare
-}
-
 function eventToCard(item) {
   return {
     image: item.image,
@@ -174,7 +159,7 @@ function eventToCard(item) {
     title: item.title,
     slug: item.slug,
     status: item.status || 'ongoing',
-    captionLabel: eventTypeName(item),
+    captionLabel: item.captionLabel,
     captionDate: item.captionDate,
     captionLocation: item.captionLocation,
   }

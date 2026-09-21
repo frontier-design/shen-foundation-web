@@ -2,7 +2,7 @@ import { useState } from 'react'
 import styled from 'styled-components'
 import { Grid, GridCell, GRID } from '../../grid'
 import { colors, fonts, type, easing, duration } from '../../theme.js'
-import { getEvent, mediaUrl, eventTypeName } from '../../content.js'
+import { getEvent, mediaUrl } from '../../content.js'
 import { goBack } from '../../router.jsx'
 
 const Section = styled.main`
@@ -235,7 +235,7 @@ function Event({ slug }) {
           </BackButton>
           {item.title ? <Title>{item.title}</Title> : null}
           <Meta>
-            {eventTypeName(item) ? <MetaLabel>{eventTypeName(item)}</MetaLabel> : null}
+            {item.captionLabel ? <MetaLabel>{item.captionLabel}</MetaLabel> : null}
             {item.captionDate ? <MetaLine>{item.captionDate}</MetaLine> : null}
             {item.captionLocation ? <MetaLine>{item.captionLocation}</MetaLine> : null}
           </Meta>
