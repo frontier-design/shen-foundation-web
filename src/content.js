@@ -18,11 +18,6 @@ const artistModules = import.meta.glob('../content/artists/*.json', {
   import: 'default',
 })
 
-const tagModules = import.meta.glob('../content/tags/*.json', {
-  eager: true,
-  import: 'default',
-})
-
 function withSlug(modules) {
   return Object.entries(modules).map(([path, doc]) => ({
     ...doc,
@@ -66,8 +61,6 @@ export const exhibitions = withSlug(exhibitionModules).map(withDisplayDate)
 export const events = withSlug(eventModules).map(withDisplayDate)
 
 export const artists = withSlug(artistModules)
-
-export const tags = withSlug(tagModules)
 
 export function getPage(slug) {
   return pages.find((page) => page.__slug === slug)
@@ -201,33 +194,6 @@ export function orderedArtists(order = []) {
   }
   for (const a of artists) {
     if (!seen.has(artistSlug(a))) result.push(a)
-  }
-  return result
-}
-
-export function tagName(item) {
-  return item?.name || item?.__slug || ''
-}
-
-export function tagSlug(item) {
-  return slugify(item?.name || item?.__slug)
-}
-
-export function exhibitionTags(item) {
-  const raw = item?.tags
-  if (!raw) return []
-  const list = Array.isArray(raw) ? raw : [raw]
-  const bySlug = new Map(tags.map((t) => [tagSlug(t), tagName(t)]))
-  const seen = new Set()
-  const result = []
-  for (const v of list) {
-    const bare = refSlug(v)
-    if (!bare) continue
-    const slug = slugify(bare)
-    const name = bySlug.get(slug) || bare
-    if (seen.has(slug)) continue
-    seen.add(slug)
-    result.push(name)
   }
   return result
 }

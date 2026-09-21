@@ -292,16 +292,6 @@ content:
       - name: captionLocation
         label: Location
         type: string
-      - name: tags
-        label: Tags
-        type: reference
-        description: "Pick existing tags. To add a new tag, create it in the Tags collection — it then becomes pickable here for every exhibition."
-        options:
-          collection: tags
-          multiple: true
-          search: name
-          value: name
-          label: "{name}"
       - name: body
         label: Body text
         type: text
@@ -397,30 +387,6 @@ content:
           - name: content
             label: Content
             type: text
-
-  - name: tags
-    label: Tags
-    type: collection
-    path: content/tags
-    format: json
-    filename:
-      template: "{fields.name}.json"
-      field: false
-    view:
-      fields: [name]
-      primary: name
-      sort: [name]
-      search: [name]
-      default:
-        sort: name
-        order: asc
-    fields:
-      - name: name
-        label: Tag name
-        type: string
-        required: true
-        options:
-          maxlength: 60
 
 settings:
   content:
