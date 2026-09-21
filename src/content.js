@@ -149,7 +149,11 @@ export function eventSlug(item) {
 }
 
 export function getEvent(slug) {
-  return events.find((item) => eventSlug(item) === slug) || null
+  return (
+    events.find((item) => eventSlug(item) === slug) ||
+    events.find((item) => slugify(item.title) === slug) ||
+    null
+  )
 }
 
 function eventToCard(item) {
