@@ -1,10 +1,25 @@
 {
   "artistOrder": [
-    { "artist": "Anicka Yi" },
-    { "artist": "Haegue Yang" },
-    { "artist": "Danh Võ" },
-    { "artist": "Ken Lum" },
-    { "artist": "Mire Lee" },
-    { "artist": "Ron Terada" }
+    {
+      "artist": "Anicka Yi"
+    },
+    {
+      "artist": "Haegue Yang"
+    },
+    {
+      "artist": "Danh Võ"
+    },
+    {
+      "artist": "Ken Lum"
+    },
+    {
+      "artist": "Mire Lee"
+    },
+    {
+      "artist": "Ron Terada"
+    },
+    {
+      "artist": "title"
+    }
   ]
 }
