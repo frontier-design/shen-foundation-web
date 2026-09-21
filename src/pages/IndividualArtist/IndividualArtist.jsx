@@ -173,7 +173,7 @@ function ExhibitionEntry({ item }) {
       ) : null}
       <Meta>
         {item.subtitle ? <WorkTitle $color={accent}>{item.subtitle}</WorkTitle> : null}
-        {item.captionLabel ? <MetaLabel>{item.captionLabel}</MetaLabel> : null}
+        <MetaLabel>Exhibition</MetaLabel>
         {item.captionDate ? <MetaLine>{item.captionDate}</MetaLine> : null}
         {item.captionLocation ? <MetaLine>{item.captionLocation}</MetaLine> : null}
       </Meta>

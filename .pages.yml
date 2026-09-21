@@ -263,7 +263,7 @@ content:
         options:
           values: [ongoing, archive]
       - name: subtitle
-        label: Subtitle
+        label: Artwork
         type: string
         required: true
         description: "The project/exhibition name. Also used to generate the page URL."
@@ -276,9 +276,6 @@ content:
         options:
           categories: [image]
           path: public/media
-      - name: captionLabel
-        label: Caption label
-        type: string
       - name: startDate
         label: Start date
         type: date

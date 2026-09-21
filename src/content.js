@@ -139,7 +139,7 @@ function exhibitionToCard(item) {
     subtitle: item.subtitle,
     slug: item.slug,
     status: item.status || 'ongoing',
-    captionLabel: item.captionLabel,
+    captionLabel: 'Exhibition',
     captionDate: item.captionDate,
     captionLocation: item.captionLocation,
   }

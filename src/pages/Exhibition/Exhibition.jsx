@@ -198,7 +198,7 @@ function Exhibition({ slug }) {
 
         <GridCell $start={7} $span={6} $startTablet={1} $spanTablet={8}>
           <Meta>
-            {item.captionLabel ? <MetaLabel>{item.captionLabel}</MetaLabel> : null}
+            <MetaLabel>Exhibition</MetaLabel>
             {item.captionDate ? <MetaLine>{item.captionDate}</MetaLine> : null}
             {item.captionLocation ? <MetaLine>{item.captionLocation}</MetaLine> : null}
           </Meta>
