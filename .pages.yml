@@ -215,7 +215,7 @@ content:
         order: asc
     fields:
       - name: title
-        label: Title
+        label: Artist
         type: string
         required: true
         options:
