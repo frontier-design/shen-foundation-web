@@ -380,12 +380,12 @@ function Navigation() {
       { scale: large },
       {
         scale: 1,
-        ease: 'none',
+        duration: duration.base,
+        ease: 'reveal',
         scrollTrigger: {
-          trigger: document.body,
-          start: 'top top',
-          end: () => `+=${window.innerHeight * 0.7}`,
-          scrub: true,
+          start: 1,
+          end: 2,
+          toggleActions: 'play none none reverse',
           invalidateOnRefresh: true,
         },
       },
@@ -437,11 +437,9 @@ function Navigation() {
     menuOpenedRef.current = false
 
     // Animate back to the scale the current scroll position calls for, then
-    // hand control back to the scrub (avoids a snap on menu close).
-    const end = window.innerHeight * 0.7
+    // hand control back to the trigger (avoids a snap on menu close).
     const large = columnsSpanWidth(3) / logoNaturalWidth()
-    const progress = Math.min(Math.max(window.scrollY / end, 0), 1)
-    const target = large + (1 - large) * progress
+    const target = window.scrollY > 0 ? 1 : large
     const tween = gsap.to(logo, {
       scale: target,
       duration: duration.base,
