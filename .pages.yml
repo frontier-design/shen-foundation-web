@@ -204,7 +204,7 @@ content:
     format: json
     filename:
       template: "{fields.title}.json"
-      field: create
+      field: false
     view:
       fields: [title]
       primary: title
@@ -239,7 +239,7 @@ content:
     format: json
     filename:
       template: "{fields.subtitle}.json"
-      field: create
+      field: false
     view:
       fields: [title, subtitle, status]
       primary: title
@@ -336,7 +336,7 @@ content:
     format: json
     filename:
       template: "{fields.title}.json"
-      field: create
+      field: false
     view:
       fields: [title, captionLabel, status]
       primary: title
@@ -407,7 +407,7 @@ content:
     format: json
     filename:
       template: "{fields.name}.json"
-      field: create
+      field: false
     view:
       fields: [name]
       primary: name
