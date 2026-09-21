@@ -4,5 +4,11 @@
   "captionLabel": "Talk",
   "startDate": "2026-10-08",
   "captionLocation": "Guggenheim, New York",
-  "image": "/media/event.webp"
+  "image": "/media/event.webp",
+  "sections": [
+    {
+      "title": "About",
+      "content": "Artist Florian Luthi reflects on a decade of work spanning sculpture, photography, and site-specific interventions. The talk traces the evolution of his material vocabulary and the questions of place and memory that anchor his recent exhibitions."
+    }
+  ]
 }
