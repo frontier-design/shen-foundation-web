@@ -344,7 +344,7 @@ function Navigation() {
     prevPathRef.current = pathname
 
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    const large = () => columnsSpanWidth(4) / logoNaturalWidth()
+    const large = () => columnsSpanWidth(3) / logoNaturalWidth()
 
     // While the loader is up, hold the enlarged logo in the nav corner on every
     // route so the loading screen always shows the big logo.
@@ -439,7 +439,7 @@ function Navigation() {
     // Animate back to the scale the current scroll position calls for, then
     // hand control back to the scrub (avoids a snap on menu close).
     const end = window.innerHeight * 0.7
-    const large = columnsSpanWidth(4) / logoNaturalWidth()
+    const large = columnsSpanWidth(3) / logoNaturalWidth()
     const progress = Math.min(Math.max(window.scrollY / end, 0), 1)
     const target = large + (1 - large) * progress
     const tween = gsap.to(logo, {
