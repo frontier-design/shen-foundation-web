@@ -4,6 +4,9 @@
       "artist": "Anicka Yi"
     },
     {
+      "artist": "title"
+    },
+    {
       "artist": "Haegue Yang"
     },
     {
@@ -17,9 +20,6 @@
     },
     {
       "artist": "Ron Terada"
-    },
-    {
-      "artist": "title"
     }
   ]
 }
