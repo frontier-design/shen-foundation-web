@@ -290,7 +290,7 @@ content:
         options:
           format: yyyy-MM-dd
       - name: captionLocation
-        label: Caption location
+        label: Location
         type: string
       - name: tags
         label: Tags
@@ -357,8 +357,9 @@ content:
         options:
           values: [ongoing, archive]
       - name: captionLabel
-        label: Caption label
+        label: Event type
         type: string
+        description: "e.g. Talk, Workshop, Tour. Becomes a filter tab on the Events page."
       - name: startDate
         label: Start date
         type: date
@@ -373,7 +374,7 @@ content:
         options:
           format: yyyy-MM-dd
       - name: captionLocation
-        label: Caption location
+        label: Location
         type: string
       - name: image
         label: Thumbnail image (landscape)
@@ -383,7 +384,7 @@ content:
           categories: [image]
           path: public/media
       - name: sections
-        label: Accordion sections
+        label: Sections
         type: object
         list:
           collapsible:
