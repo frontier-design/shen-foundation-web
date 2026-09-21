@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 const CONTRAST_TARGET = 2.6;
 const SAMPLE = 64;
-const MIN_SATURATION = 0.35;
+const MIN_SATURATION_STEPS = [0.35, 0.2, 0.1, 0.04];
 const MIN_LIGHTNESS = 0.12;
 const MAX_LIGHTNESS = 0.92;
 const MIN_OUTPUT_SATURATION = 0.85;
@@ -59,7 +59,7 @@ function hslToRgb(h, s, l) {
   ];
 }
 
-function extractVibrant(data) {
+function extractAtThreshold(data, minSaturation) {
   const buckets = Array.from({ length: HUE_BUCKETS }, () => ({
     r: 0,
     g: 0,
@@ -73,7 +73,7 @@ function extractVibrant(data) {
     const g = data[i + 1];
     const b = data[i + 2];
     const [h, s, l] = rgbToHsl(r, g, b);
-    if (s < MIN_SATURATION || l < MIN_LIGHTNESS || l > MAX_LIGHTNESS) continue;
+    if (s < minSaturation || l < MIN_LIGHTNESS || l > MAX_LIGHTNESS) continue;
     const weight = s * s;
     const bucket =
       buckets[Math.min(HUE_BUCKETS - 1, Math.floor((h / 360) * HUE_BUCKETS))];
@@ -95,6 +95,14 @@ function extractVibrant(data) {
     Math.round(best.g / best.weight),
     Math.round(best.b / best.weight),
   ];
+}
+
+function extractVibrant(data) {
+  for (const threshold of MIN_SATURATION_STEPS) {
+    const color = extractAtThreshold(data, threshold);
+    if (color) return color;
+  }
+  return null;
 }
 
 function ensureContrast([r, g, b]) {
