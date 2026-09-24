@@ -12,6 +12,8 @@
     {
       "artist": "Mire Lee"
     },
-    {}
+    {
+      "artist": "title"
+    }
   ]
 }
