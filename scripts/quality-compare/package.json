@@ -1,0 +1,10 @@
+{
+  "name": "quality-compare",
+  "private": true,
+  "type": "module",
+  "description": "Generates an image quality comparison page into .quality-compare/ (gitignored).",
+  "bin": "compare.mjs",
+  "dependencies": {
+    "sharp": "0.35.5"
+  }
+}

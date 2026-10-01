@@ -27,3 +27,51 @@ Publish sends *everything* currently on `preview` live at once, including other 
 - `.github/workflows/publish.yml` merges `preview` into `main` and pushes. If there's a merge conflict it fails without pushing; resolve the conflict on `preview`, then publish again.
 - `.github/workflows/sync-preview.yml` copies anything pushed to `main` directly (for example, a Pages CMS edit accidentally saved on `main`) back into `preview`, so the branches don't drift. If that merge conflicts, it fails without pushing; merge `main` into `preview` by hand. Its own pushes and Publish's use `GITHUB_TOKEN`, which doesn't trigger workflows, so the two can't loop.
 - Preview builds are detected from Vercel's `VERCEL_GIT_COMMIT_REF` / `VERCEL_ENV` in `vite.config.js`. They add the noindex tag and the preview badge.
+
+## Image quality comparison
+
+`scripts/quality-compare/` generates a page with 100% crops of images as uploaded, as the stored master, and as delivered versions (AVIF/WebP at several qualities and widths), with file sizes. Use it to check that artworks don't visibly degrade before changing compression settings.
+
+### Run it locally
+
+```sh
+npm --prefix scripts/quality-compare ci   # once: installs sharp for the script only
+npm run quality-compare                   # the five reference images, today's settings
+```
+
+The page is written to `.quality-compare/index.html` (gitignored) and opens in your browser. Nothing is written to `public/` or included in the site build.
+
+Options (`npm run quality-compare -- --help` lists them all):
+
+```sh
+npm run quality-compare -- \
+  --image /media/danh-vo-guldenhof-hero.jpeg@0.45,0.86 \
+  --image /media/covey-gong-portrait.jpeg \
+  --formats avif,webp --qualities 80,85,90 --widths 1280,1920
+```
+
+- `--image` takes a path under `public/` (or any file), optionally followed by crop centres as fractions of the width and height (`@x,y;x,y`). Without crops, the busiest and smoothest areas are picked automatically.
+- `--config file.json` takes a list of images with labels and named crops; `scripts/quality-compare/defaults.json` is the reference set and the default settings.
+- `--master-max` and `--master-quality` change the stored-master settings; `--out` changes the output folder; `--no-open` skips opening the browser.
+
+### Share a result with the client
+
+The generated folder is tens of MB, so it goes on a temporary branch that is never merged into `preview` or `main`:
+
+```sh
+npm run quality-compare -- --no-open
+git switch -c qc-<topic> preview
+mkdir -p public/quality-compare && cp -R .quality-compare/. public/quality-compare/
+git add public/quality-compare && git commit -m "Temporary quality comparison: <topic>"
+git push -u origin qc-<topic>
+git switch preview
+```
+
+Vercel builds the branch at `https://shen-foundation-web-git-qc-<topic>-frontier-design.vercel.app/quality-compare/index.html`. Preview deployments require a Vercel login, so send the client a link from the deployment's **Share** button in the Vercel dashboard instead. Editors shouldn't select the `qc-` branch in Pages CMS.
+
+When you're done, delete the branch everywhere:
+
+```sh
+git push origin --delete qc-<topic>
+git branch -D qc-<topic>
+```

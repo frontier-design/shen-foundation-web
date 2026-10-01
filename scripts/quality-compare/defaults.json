@@ -1,0 +1,48 @@
+{
+  "formats": ["avif", "webp"],
+  "qualities": [80, 85, 90],
+  "widths": [1280, 1920],
+  "master": { "maxEdge": 3200, "jpegQuality": 90, "keepIfSavingBelow": 0.1 },
+  "images": [
+    {
+      "src": "/media/abbas-akshavan-1.jpg",
+      "label": "Abbas Akhavan — heavy grain",
+      "crops": [
+        { "name": "Detail: capitals against black", "x": 0.62, "y": 0.17 },
+        { "name": "Tones: green floor fading to black", "x": 0.8, "y": 0.74 }
+      ]
+    },
+    {
+      "src": "/media/danh-vo-guldenhof-hero.jpeg",
+      "label": "Danh Vo Güldenhof hero — 5279×5754, dense foliage",
+      "crops": [
+        { "name": "Detail: flowers", "x": 0.45, "y": 0.86 },
+        { "name": "Tones: leaves against sky", "x": 0.62, "y": 0.12 }
+      ]
+    },
+    {
+      "src": "/media/covey-gong-portrait.jpeg",
+      "label": "Covey Gong — dark interior, smooth shadows",
+      "crops": [
+        { "name": "Detail: floor sculpture", "x": 0.15, "y": 0.83 },
+        { "name": "Tones: dark wall gradient", "x": 0.3, "y": 0.3 }
+      ]
+    },
+    {
+      "src": "/media/hero-carousel/carousel-image-2.png",
+      "label": "PNG artwork — installation under painted dome",
+      "crops": [
+        { "name": "Detail: painted ceiling", "x": 0.35, "y": 0.12 },
+        { "name": "Detail: branch sculpture", "x": 0.78, "y": 0.45 }
+      ]
+    },
+    {
+      "src": "/media/test/florian-luthi.jpg",
+      "label": "Florian Luthi — sharpest photo, rock and forest",
+      "crops": [
+        { "name": "Detail: rock face", "x": 0.88, "y": 0.5 },
+        { "name": "Tones: hazy sky into trees", "x": 0.3, "y": 0.18 }
+      ]
+    }
+  ]
+}

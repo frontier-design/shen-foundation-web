@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="data:,">
+<title>Image quality comparison</title>
+<style>
+  :root { color-scheme: light dark; --bg: #f4f4f2; --fg: #121212; --muted: #6b6b6b; --line: #d6d6d2; --card: #fff; --box-w: 360px; --box-h: 270px; }
+  @media (prefers-color-scheme: dark) { :root { --bg: #161616; --fg: #ededed; --muted: #9a9a9a; --line: #333; --card: #1f1f1f; } }
+  * { box-sizing: border-box; }
+  body { margin: 0; font: 14px/1.45 system-ui, sans-serif; background: var(--bg); color: var(--fg); }
+  header.top { position: sticky; top: 0; z-index: 5; background: var(--bg); border-bottom: 1px solid var(--line); padding: 12px 16px; display: flex; flex-wrap: wrap; gap: 8px 20px; align-items: center; }
+  header.top h1 { font-size: 16px; margin: 0; }
+  fieldset { border: 0; padding: 0; margin: 0; display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+  fieldset legend { float: left; margin-right: 6px; color: var(--muted); }
+  label.opt { border: 1px solid var(--line); border-radius: 999px; padding: 3px 10px; cursor: pointer; user-select: none; }
+  label.opt:has(input:checked) { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+  label.opt input { position: absolute; opacity: 0; pointer-events: none; }
+  main { padding: 16px; max-width: 1800px; margin: 0 auto; }
+  .note { color: var(--muted); max-width: 90ch; }
+  section.image { margin: 28px 0 48px; }
+  section.image h2 { font-size: 18px; margin: 0 0 4px; }
+  h3 { font-size: 14px; margin: 18px 0 8px; }
+  .row { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--box-w)), 1fr)); gap: 12px; }
+  .row.ref { grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--box-w)), var(--box-w))); }
+  figure { margin: 0; background: var(--card); border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+  .box { position: relative; width: 100%; height: var(--box-h); overflow: hidden; background: #808080; cursor: zoom-in; }
+  .box img { position: absolute; left: 0; top: 0; max-width: none; }
+  body.pixelated .box img { image-rendering: pixelated; }
+  figcaption { padding: 6px 8px; display: flex; justify-content: space-between; gap: 8px; font-variant-numeric: tabular-nums; }
+  figcaption b { font-weight: 600; }
+  figcaption span { color: var(--muted); white-space: nowrap; }
+  .grid-label { color: var(--muted); margin: 10px 0 4px; }
+  @media (max-width: 600px) { :root { --box-h: 240px; } }
+</style>
+</head>
+<body>
+<header class="top">
+  <h1>Image quality comparison</h1>
+  <fieldset id="scale"><legend>View</legend>
+    <label class="opt"><input type="radio" name="scale" value="css100" checked>100% (1 image px = 1 CSS px)</label>
+    <label class="opt"><input type="radio" name="scale" value="device">1:1 device pixels</label>
+    <label class="opt"><input type="radio" name="scale" value="same">Same area as largest width</label>
+    <label class="opt"><input type="radio" name="scale" value="zoom2">200% pixelated</label>
+  </fieldset>
+  <fieldset id="filter"><legend>Show</legend></fieldset>
+</header>
+<main>
+  <p class="note" id="settings"></p>
+  <p class="note">Each box is a crop centred on the same point of the picture. <b>Original</b> is the file as uploaded. <b>Master</b> is what the optimizer would store. <b>Delivered</b> versions are encoded from the master. Sizes are whole-file sizes. Vercel Image Optimization uses its own encoder settings, so re-check a chosen setting against real <code>/_vercel/image</code> output before relying on it. “100%” shows each version at its own resolution, so a narrower version covers more of the scene; use “Same area” to compare the same region at equal display size. Click a crop to open the full file.</p>
+  <div id="app"></div>
+</main>
+<script>
+const PAGE = /*__PAGE__*/null;
+const kb = (n) => (n >= 1048576 ? (n / 1048576).toFixed(2) + ' MB' : Math.round(n / 1024) + ' KB');
+const refWidth = Math.max(...PAGE.widths);
+document.getElementById('settings').textContent = PAGE.settingsNote;
+document.title = 'Image quality comparison — ' + PAGE.generatedAt;
+
+const filter = document.getElementById('filter');
+for (const value of [...PAGE.formats, ...PAGE.widths.map(String)]) {
+  const label = document.createElement('label');
+  label.className = 'opt';
+  label.innerHTML = '<input type="checkbox" checked>' + (PAGE.formats.includes(value) ? value.toUpperCase() : value + 'w');
+  label.querySelector('input').value = value;
+  filter.appendChild(label);
+}
+
+function fig(label, meta, file, bytes, crop, tags) {
+  const f = document.createElement('figure');
+  f.dataset.tags = tags || '';
+  const box = document.createElement('div');
+  box.className = 'box';
+  const img = document.createElement('img');
+  img.loading = 'lazy';
+  img.decoding = 'async';
+  img.alt = label;
+  img.src = file;
+  img.dataset.fx = crop.x;
+  img.dataset.fy = crop.y;
+  img.addEventListener('load', () => place(img));
+  box.appendChild(img);
+  box.addEventListener('click', () => window.open(file, '_blank', 'noopener'));
+  const cap = document.createElement('figcaption');
+  cap.innerHTML = '<b></b><span></span>';
+  cap.querySelector('b').textContent = label;
+  cap.querySelector('span').textContent = kb(bytes) + ' · ' + meta;
+  f.append(box, cap);
+  return f;
+}
+function scaleFor(img) {
+  const mode = document.querySelector('input[name=scale]:checked').value;
+  if (mode === 'device') return 1 / (window.devicePixelRatio || 1);
+  if (mode === 'zoom2') return 2;
+  if (mode === 'same') return refWidth / img.naturalWidth;
+  return 1;
+}
+function place(img) {
+  if (!img.naturalWidth) return;
+  const s = scaleFor(img);
+  const box = img.parentElement;
+  const w = img.naturalWidth * s;
+  const h = img.naturalHeight * s;
+  img.style.width = w + 'px';
+  img.style.height = h + 'px';
+  img.style.left = Math.round(box.clientWidth / 2 - img.dataset.fx * w) + 'px';
+  img.style.top = Math.round(box.clientHeight / 2 - img.dataset.fy * h) + 'px';
+}
+function placeAll() {
+  document.body.classList.toggle('pixelated', document.querySelector('input[name=scale]:checked').value === 'zoom2');
+  document.querySelectorAll('.box img').forEach(place);
+}
+function applyFilter() {
+  const on = new Set([...filter.querySelectorAll('input:checked')].map((i) => i.value));
+  document.querySelectorAll('[data-tags]').forEach((el) => {
+    const t = el.dataset.tags.split(' ').filter(Boolean);
+    el.hidden = t.length > 0 && !t.every((x) => on.has(x));
+  });
+  placeAll();
+}
+
+const app = document.getElementById('app');
+for (const im of PAGE.images) {
+  const sec = document.createElement('section');
+  sec.className = 'image';
+  const h2 = document.createElement('h2');
+  h2.textContent = im.label;
+  const p = document.createElement('p');
+  p.className = 'note';
+  p.textContent = 'Original: ' + im.original.width + '×' + im.original.height + ' ' + im.original.format.toUpperCase() + ', ' + kb(im.original.bytes) + ' · Master: ' + im.master.width + '×' + im.master.height + ', ' + kb(im.master.bytes) + ' (' + im.master.settings + ')';
+  sec.append(h2, p);
+  for (const crop of im.crops) {
+    const h = document.createElement('h3');
+    h.textContent = crop.name;
+    sec.appendChild(h);
+    const ref = document.createElement('div');
+    ref.className = 'row ref';
+    ref.append(
+      fig('Original', im.original.width + '×' + im.original.height, im.original.file, im.original.bytes, crop, ''),
+      fig('Master', im.master.width + '×' + im.master.height, im.master.file, im.master.bytes, crop, ''),
+    );
+    sec.appendChild(ref);
+    for (const fmt of PAGE.formats) {
+      for (const w of PAGE.widths) {
+        const vs = im.variants.filter((v) => v.fmt === fmt && v.w === w);
+        if (!vs.length) continue;
+        const lab = document.createElement('div');
+        lab.className = 'grid-label';
+        lab.dataset.tags = fmt + ' ' + w;
+        lab.textContent = fmt.toUpperCase() + ' · ' + w + 'w' + (vs[0].capped ? ' (capped at master width ' + vs[0].width + 'px)' : '');
+        const row = document.createElement('div');
+        row.className = 'row';
+        for (const v of vs) row.appendChild(fig(fmt.toUpperCase() + ' q' + v.q, v.width + '×' + v.height, v.file, v.bytes, crop, fmt + ' ' + w));
+        sec.append(lab, row);
+      }
+    }
+  }
+  app.appendChild(sec);
+}
+document.querySelectorAll('#scale input').forEach((i) => i.addEventListener('change', placeAll));
+filter.querySelectorAll('input').forEach((i) => i.addEventListener('change', applyFilter));
+window.addEventListener('resize', placeAll);
+</script>
+</body>
+</html>

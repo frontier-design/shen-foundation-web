@@ -27,3 +27,6 @@ dist-ssr
 .claude
 
 CLAUDE.md
+
+# Generated image quality comparison pages (scripts/quality-compare)
+.quality-compare/
