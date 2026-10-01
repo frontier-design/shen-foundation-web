@@ -11,6 +11,7 @@ if (!CustomEase.get('reveal')) CustomEase.create('reveal', easing.gsapReveal)
 import GridOverlay from './components/GridOverlay.jsx'
 import Navigation from './components/Navigation.jsx'
 import Footer from './components/Footer.jsx'
+import PreviewBanner from './components/PreviewBanner.jsx'
 import Home from './pages/Home'
 import Exhibition from './pages/Exhibition'
 import ExhibitionsIndex from './pages/Exhibitions'
@@ -175,6 +176,7 @@ function App() {
       <GlobalStyle />
       {import.meta.env.DEV && <GridOverlay />}
       <Navigation />
+      {import.meta.env.VITE_PREVIEW && <PreviewBanner />}
       <RouteView pathname={base} />
       {incoming !== null ? (
         <OverlayLayer key={incoming} onAnimationEnd={finishTransition}>

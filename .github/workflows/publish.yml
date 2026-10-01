@@ -1,0 +1,40 @@
+name: Publish to live site
+
+on:
+  workflow_dispatch:
+    inputs:
+      payload:
+        description: Pages CMS payload as JSON (unused)
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: branch-sync
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Merge preview into main
+        run: |
+          git config user.name "Pages CMS Publish"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if ! git merge --no-edit origin/preview; then
+            conflicts="$(git diff --name-only --diff-filter=U | tr '\n' ' ')"
+            git merge --abort
+            echo "::error title=Publish failed::Merge conflict between preview and main in: ${conflicts:-unknown files}. Nothing was published. Resolve the conflict on preview, then publish again."
+            exit 1
+          fi
+
+      - name: Push main
+        run: git push origin main

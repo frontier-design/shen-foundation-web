@@ -391,3 +391,13 @@ content:
 settings:
   content:
     merge: true
+
+actions:
+  - name: publish
+    label: Publish to live site
+    workflow: publish.yml
+    ref: current
+    confirm:
+      title: Publish to live site?
+      message: This makes everything currently on the preview site live. The live site updates about a minute later.
+      button: Publish

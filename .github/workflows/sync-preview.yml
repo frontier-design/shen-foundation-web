@@ -1,0 +1,37 @@
+name: Sync main into preview
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+concurrency:
+  group: branch-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out preview
+        uses: actions/checkout@v4
+        with:
+          ref: preview
+          fetch-depth: 0
+
+      - name: Merge main into preview
+        run: |
+          git config user.name "Preview Sync"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if ! git merge --no-edit origin/main; then
+            conflicts="$(git diff --name-only --diff-filter=U | tr '\n' ' ')"
+            git merge --abort
+            echo "::error title=Sync failed::Merge conflict between main and preview in: ${conflicts:-unknown files}. Nothing was pushed. Merge main into preview manually."
+            exit 1
+          fi
+
+      - name: Push preview
+        run: git push origin preview
