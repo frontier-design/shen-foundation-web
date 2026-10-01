@@ -2,7 +2,7 @@
   "title": "Lygia Clark",
   "slug": "soft-machines",
   "subtitle": "Soft Machines",
-  "heroImage": "/media/HeroCarousel/carousel-image-4.jpg",
+  "heroImage": "/media/hero-carousel/carousel-image-4.jpg",
   "status": "archive",
   "startDate": "2024-01-12",
   "endDate": "2024-03-30",
@@ -13,7 +13,7 @@
       "image": "/media/carousel-image-1.webp"
     },
     {
-      "image": "/media/HeroCarousel/carousel-image-2.png"
+      "image": "/media/hero-carousel/carousel-image-2.png"
     }
   ]
 }
