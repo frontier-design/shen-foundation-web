@@ -84,7 +84,7 @@ content:
                 options:
                   collection: exhibitions
                   search: title,subtitle
-                  value: subtitle
+                  value: "{subtitle}"
                   label: "{title} — {subtitle}"
           - name: event
             label: Event
@@ -96,7 +96,7 @@ content:
                 options:
                   collection: events
                   search: title
-                  value: title
+                  value: "{title}"
                   label: "{title}"
 
   - name: artistsPage
@@ -122,7 +122,7 @@ content:
             options:
               collection: artists
               search: title
-              value: title
+              value: "{title}"
               label: "{title}"
 
   - name: aboutPage
