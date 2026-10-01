@@ -3,7 +3,7 @@
     "enabled": true,
     "feature": {
       "type": "exhibition",
-      "exhibition": "curtain-call"
+      "exhibition": "content/exhibitions/danh-vo-guldenhof.json"
     },
     "image": "/media/DVGuldenhoflanding.jpeg"
   },
