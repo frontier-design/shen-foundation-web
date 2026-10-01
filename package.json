@@ -8,7 +8,8 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "quality-compare": "node scripts/quality-compare/compare.mjs"
+    "quality-compare": "node scripts/quality-compare/compare.mjs",
+    "optimize-images": "node scripts/optimize-images/optimize.mjs"
   },
   "dependencies": {
     "dompurify": "^3.4.16",

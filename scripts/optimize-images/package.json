@@ -1,0 +1,10 @@
+{
+  "name": "optimize-images",
+  "private": true,
+  "type": "module",
+  "description": "Resizes, recompresses and cleans metadata of images in public/media (see README).",
+  "dependencies": {
+    "exiftool-vendored": "38.3.0",
+    "sharp": "0.35.5"
+  }
+}

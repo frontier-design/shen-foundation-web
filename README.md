@@ -28,6 +28,41 @@ Publish sends *everything* currently on `preview` live at once, including other 
 - `.github/workflows/sync-preview.yml` copies anything pushed to `main` directly (for example, a Pages CMS edit accidentally saved on `main`) back into `preview`, so the branches don't drift. If that merge conflicts, it fails without pushing; merge `main` into `preview` by hand. Its own pushes and Publish's use `GITHUB_TOKEN`, which doesn't trigger workflows, so the two can't loop.
 - Preview builds are detected from Vercel's `VERCEL_GIT_COMMIT_REF` / `VERCEL_ENV` in `vite.config.js`. They add the noindex tag and the preview badge.
 
+## Image optimization
+
+`scripts/optimize-images/optimize.mjs` keeps the images in `public/media/` high quality but not oversized. Image quality comes first: artworks must not visibly degrade.
+
+What it does to each image that hasn't been processed before:
+
+- **Resizes** anything with a longest edge over 3200px (aspect ratio kept, never enlarged).
+- **JPEG:** re-encodes at quality 90 with full colour detail (4:4:4), but only if the image was resized or the file gets at least 10% smaller. Otherwise the pixels are left exactly as they are.
+- **WebP:** re-encoded (quality 90) only when it has to be resized.
+- **PNG:** optimized losslessly with [oxipng](https://github.com/shssoichiro/oxipng) (palette and every pixel preserved), and replaced only if the result is smaller.
+- **Metadata:** removes GPS location, camera details, serial numbers, dates and software tags. It keeps colour profiles, the rotation flag (when pixels aren't re-encoded), and credits: EXIF `Copyright` and `Artist`, IPTC `CopyrightNotice`, `Credit` and `By-line`, and XMP `dc:rights`, `dc:creator` and `photoshop:Credit`. WebP and PNG can't hold IPTC, so for those only the EXIF/XMP credits are kept.
+- Every pixel-exact step (metadata cleanup, oxipng) is verified by decoding the image before and after; if anything differs, or a colour profile or credit would be lost, the file is left untouched and reported as an error.
+
+Formats it can't safely handle (HEIC, TIFF, GIF, SVG, AVIF) are left alone and listed; HEIC and TIFF must be converted to JPEG before uploading because browsers can't show them. Filenames that aren't lowercase and hyphenated are listed as warnings but never renamed automatically.
+
+### Never optimize a file
+
+Add it to `scripts/optimize-images/exclude.json`. Paths start with `/media/`; `*` matches within a folder and `**` across folders:
+
+```json
+{ "exclude": ["/media/press-kit/**", "/media/artwork-master.jpg"] }
+```
+
+Excluded files are never modified, not even their metadata.
+
+### Run it locally
+
+```sh
+npm --prefix scripts/optimize-images ci     # once
+npm run optimize-images -- --dry-run        # report what would change
+npm run optimize-images                     # apply
+```
+
+`scripts/optimize-images/manifest.json` records the checksum of every processed file, so a file is never re-encoded twice (including after it's renamed). A file that is replaced with new content under the same name is processed again. Changing the settings doesn't reprocess existing files, to avoid compressing them twice. oxipng is downloaded on first use from its official release, pinned to one version and checked against a SHA-256 checksum.
+
 ## Image quality comparison
 
 `scripts/quality-compare/` generates a page with 100% crops of images as uploaded, as the stored master, and as delivered versions (AVIF/WebP at several qualities and widths), with file sizes. Use it to check that artworks don't visibly degrade before changing compression settings.

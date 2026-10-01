@@ -1,0 +1,4 @@
+{
+  "description": "Files the image optimizer must never modify. Paths start with /media/; * matches within a folder, ** across folders.",
+  "exclude": []
+}
