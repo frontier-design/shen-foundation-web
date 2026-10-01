@@ -23,6 +23,10 @@
     {
       "type": "exhibition",
       "exhibition": "Dynamic Spaces"
+    },
+    {
+      "type": "exhibition",
+      "exhibition": "subtitle"
     }
   ],
   "heroSlides": [
