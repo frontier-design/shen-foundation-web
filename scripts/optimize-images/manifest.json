@@ -1,0 +1,189 @@
+{
+  "files": {
+    "/media/abbas-akshavan-1.jpg": {
+      "sha256": "6726539538879b243cdb16248d8853b3c0734f8f6d282cc146e2a91d44c3aa26",
+      "action": "recompressed",
+      "bytesBefore": 3232646,
+      "bytesAfter": 1194877,
+      "width": 1786,
+      "height": 2500
+    },
+    "/media/about-us-hero-bg.webp": {
+      "sha256": "9efa12b573a613598f9893f2c8633bca27ff5599e13b441874766b458c50255f",
+      "action": "metadata",
+      "bytesBefore": 103598,
+      "bytesAfter": 103504,
+      "width": 2000,
+      "height": 1333
+    },
+    "/media/anicka-yi-life-is-cheap.jpeg": {
+      "sha256": "bca7e95245b79840f7d4d39e46a4a8d01b6654c3d42789eb2539550085367ba7",
+      "action": "metadata",
+      "bytesBefore": 153057,
+      "bytesAfter": 152967,
+      "width": 1200,
+      "height": 800
+    },
+    "/media/carousel-image-1.webp": {
+      "sha256": "bcd80963f33b50748c76bb38720b0c0623c011ef23912b472301e04aae8c6550",
+      "action": "unchanged",
+      "bytesBefore": 354220,
+      "bytesAfter": 354220,
+      "width": 2000,
+      "height": 1333
+    },
+    "/media/carousel-image-3-1.webp": {
+      "sha256": "6a5a927738d080440a724c9469e6cb3fb25f9bd0b4c7ef25dffbf296fdb8fa68",
+      "action": "unchanged",
+      "bytesBefore": 233816,
+      "bytesAfter": 233816,
+      "width": 1200,
+      "height": 900
+    },
+    "/media/carousel-image-3.webp": {
+      "sha256": "6a5a927738d080440a724c9469e6cb3fb25f9bd0b4c7ef25dffbf296fdb8fa68",
+      "action": "unchanged",
+      "bytesBefore": 233816,
+      "bytesAfter": 233816,
+      "width": 1200,
+      "height": 900
+    },
+    "/media/covey-gong-portrait.jpeg": {
+      "sha256": "833c0c28df87ba6f3101bdc540fa46ad3c26b2e1b951f134f98cf560a06fe96b",
+      "action": "metadata",
+      "bytesBefore": 128731,
+      "bytesAfter": 128731,
+      "width": 1400,
+      "height": 935
+    },
+    "/media/danh-vo-guldenhof-hero.jpeg": {
+      "sha256": "24735055a226ca08db3e8f915dab59fe1ceda00ab039d7fe44f85bc995c93616",
+      "action": "resized",
+      "bytesBefore": 3186553,
+      "bytesAfter": 2352508,
+      "width": 2936,
+      "height": 3200
+    },
+    "/media/danh-vo-guldenhof-landing.jpeg": {
+      "sha256": "ffa1506551ab90adc84359484674782830335a1be9098f1fc6fa8f1bc597093f",
+      "action": "metadata",
+      "bytesBefore": 156784,
+      "bytesAfter": 156784,
+      "width": 600,
+      "height": 800
+    },
+    "/media/danhvo.jpeg": {
+      "sha256": "bf24b8a00c6cb5d27c7dca94071a82cafbd2daa78dd1129ccb93df90d60703e3",
+      "action": "metadata",
+      "bytesBefore": 140070,
+      "bytesAfter": 140070,
+      "width": 916,
+      "height": 1280
+    },
+    "/media/eleanor-shen.webp": {
+      "sha256": "f0ffc4d72590a4fb3fbfeca68bc9204f8656a0fbbb89967eadb0c2fa277353dd",
+      "action": "metadata",
+      "bytesBefore": 50382,
+      "bytesAfter": 50288,
+      "width": 943,
+      "height": 1200
+    },
+    "/media/event-2.webp": {
+      "sha256": "5fc869c404d7fa5f0f89ddc4d2beb9e93beb3647f3001ae095ff125572f8dd89",
+      "action": "unchanged",
+      "bytesBefore": 34608,
+      "bytesAfter": 34608,
+      "width": 1050,
+      "height": 700
+    },
+    "/media/fogo-island-arts-residency.jpeg": {
+      "sha256": "3eefc42ce923533d4123959ca0b06550f9ecc2215f0019c2c8824efca06191d5",
+      "action": "metadata",
+      "bytesBefore": 46875,
+      "bytesAfter": 46875,
+      "width": 800,
+      "height": 533
+    },
+    "/media/haegue-yang-3.jpeg": {
+      "sha256": "e9e929ca989d258a8cd1afdc9a52254cb8fe3250e215b90f303ddb475fd5c44a",
+      "action": "metadata",
+      "bytesBefore": 66950,
+      "bytesAfter": 66950,
+      "width": 427,
+      "height": 640
+    },
+    "/media/hero-carousel/carousel-image-2.png": {
+      "sha256": "76f36805edd5d3230d876e84a011d0fc130f731ac074a6a0b484bcbb530ac663",
+      "action": "lossless",
+      "bytesBefore": 1980183,
+      "bytesAfter": 1844326,
+      "width": 2400,
+      "height": 1500
+    },
+    "/media/hero-carousel/carousel-image-3.webp": {
+      "sha256": "6a5a927738d080440a724c9469e6cb3fb25f9bd0b4c7ef25dffbf296fdb8fa68",
+      "action": "unchanged",
+      "bytesBefore": 233816,
+      "bytesAfter": 233816,
+      "width": 1200,
+      "height": 900
+    },
+    "/media/hero-carousel/carousel-image-4.jpg": {
+      "sha256": "65b420e82e85de4b1e118b0ccb4b0ebf334011598475203145c700469ce2d69b",
+      "action": "recompressed",
+      "bytesBefore": 237461,
+      "bytesAfter": 195341,
+      "width": 2200,
+      "height": 1467
+    },
+    "/media/kitty-scott.webp": {
+      "sha256": "7361e7c078399fff002db6b0426b40cc53e04ae8a80138e86ca8695bacb335ad",
+      "action": "metadata",
+      "bytesBefore": 14886,
+      "bytesAfter": 14792,
+      "width": 374,
+      "height": 534
+    },
+    "/media/presentation-examples/suki.webp": {
+      "sha256": "3d6bef2bdee7ebc20f6bc98554d5d2c7ba17f6400aca6a9afed8188b2e20bd68",
+      "action": "unchanged",
+      "bytesBefore": 35552,
+      "bytesAfter": 35552,
+      "width": 2000,
+      "height": 1245
+    },
+    "/media/sung-tieu-portrait.jpeg": {
+      "sha256": "232990db0294be49dd9d36acd75e812c5e759cf45fe4656bc028a9558bec6ef4",
+      "action": "metadata",
+      "bytesBefore": 492908,
+      "bytesAfter": 492908,
+      "width": 2000,
+      "height": 1326
+    },
+    "/media/test/florian-luthi.jpg": {
+      "sha256": "fcf62a1d2e551a27f533354a873f939e09e967d89c07c22c8b69e6122fd6022a",
+      "action": "metadata",
+      "bytesBefore": 974048,
+      "bytesAfter": 953360,
+      "width": 2000,
+      "height": 1606
+    }
+  },
+  "settings": {
+    "maxEdge": 3200,
+    "jpegQuality": 90,
+    "webpQuality": 90,
+    "minSaving": 0.1,
+    "keepTags": [
+      "EXIF:Copyright",
+      "EXIF:Artist",
+      "IPTC:CopyrightNotice",
+      "IPTC:Credit",
+      "IPTC:By-line",
+      "XMP-dc:Rights",
+      "XMP-dc:Creator",
+      "XMP-photoshop:Credit"
+    ],
+    "oxipng": "10.2.1"
+  }
+}
