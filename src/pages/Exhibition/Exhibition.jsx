@@ -1,7 +1,8 @@
 import styled, { css } from 'styled-components'
 import { Grid, GridCell, GRID } from '../../grid'
 import { colors, type, easing, duration } from '../../theme.js'
-import { getExhibition, mediaUrl, accentImage, exhibitionArtist, artistSlug } from '../../content.js'
+import { getExhibition, mediaUrl, accentImage, exhibitionArtist, artistSlug, toPlainText } from '../../content.js'
+import RichText from '../../components/RichText.jsx'
 import { linkProps } from '../../router.jsx'
 import { useImageAccent } from '../../hooks/useImageAccent.js'
 
@@ -77,7 +78,7 @@ const MetaLine = styled.p`
   margin: 0;
 `
 
-const Body = styled.p`
+const Body = styled(RichText)`
   ${type.body}
   color: ${colors.black};
   margin: clamp(31px, 3.9vw, 69px) 0 0;
@@ -202,18 +203,17 @@ function Exhibition({ slug }) {
             {item.captionDate ? <MetaLine>{item.captionDate}</MetaLine> : null}
             {item.captionLocation ? <MetaLine>{item.captionLocation}</MetaLine> : null}
           </Meta>
-          {item.body ? (
-            <Body>
-              {item.body}
-              {artist ? (
-                <>
-                  {' '}
+          {toPlainText(item.body) ? (
+            <Body
+              html={item.body}
+              trailing={
+                artist ? (
                   <ArtistLink {...linkProps(`/artists/${artistSlug(artist)}`)}>
                     Learn more about the artist →
                   </ArtistLink>
-                </>
-              ) : null}
-            </Body>
+                ) : null
+              }
+            />
           ) : null}
         </GridCell>
       </Header>

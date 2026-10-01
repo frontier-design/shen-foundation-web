@@ -2,7 +2,8 @@ import { useEffect, useRef } from 'react'
 import styled, { css } from 'styled-components'
 import { Grid, GridCell, GRID } from '../../grid'
 import { colors, type, easing, duration, aspect } from '../../theme.js'
-import { getArtist, mediaUrl, accentImage, artistExhibitions, exhibitionSlug } from '../../content.js'
+import { getArtist, mediaUrl, accentImage, artistExhibitions, exhibitionSlug, toPlainText } from '../../content.js'
+import RichText from '../../components/RichText.jsx'
 import { useImageAccent } from '../../hooks/useImageAccent.js'
 import { linkProps } from '../../router.jsx'
 
@@ -52,11 +53,10 @@ const Name = styled.h1`
   text-align: left;
 `
 
-const Bio = styled.p`
+const Bio = styled(RichText)`
   ${type.body}
   color: ${colors.black};
   margin: 0;
-  white-space: pre-line;
   text-wrap: pretty;
 
   @media ${GRID.MEDIA_MOBILE} {
@@ -213,7 +213,7 @@ function IndividualArtist({ slug }) {
       <Layout>
         <Left $start={1} $span={5} $startTablet={1} $spanTablet={8}>
           {item.title ? <Name>{item.title}</Name> : null}
-          {item.bio ? <Bio>{item.bio}</Bio> : null}
+          {toPlainText(item.bio) ? <Bio html={item.bio} /> : null}
         </Left>
 
         <Right ref={rightRef} $start={7} $end={-1} $startTablet={1} $spanTablet={8}>

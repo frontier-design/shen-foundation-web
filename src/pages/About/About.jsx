@@ -1,7 +1,8 @@
 import styled, { css } from 'styled-components'
 import { Grid, GridCell, GRID } from '../../grid'
 import { colors, type } from '../../theme.js'
-import { getPage, mediaUrl } from '../../content.js'
+import { getPage, mediaUrl, toPlainText } from '../../content.js'
+import RichText from '../../components/RichText.jsx'
 
 const bleed = (side, padding) =>
   side === 'right'
@@ -97,13 +98,12 @@ const Title = styled.h1`
   }
 `
 
-const HeroBody = styled.p`
+const HeroBody = styled(RichText)`
   ${type.body}
   color: ${colors.black};
   margin: clamp(24px, 3vw, 40px) 0 0;
   max-width: 46ch;
   text-wrap: pretty;
-  white-space: pre-line;
 `
 
 const Intro = styled(Grid).attrs({ as: 'section' })`
@@ -126,11 +126,10 @@ const IntroTitle = styled.h2`
   }
 `
 
-const IntroBody = styled.p`
+const IntroBody = styled(RichText)`
   ${type.body}
   color: ${colors.black};
   margin: 0;
-  white-space: pre-line;
 `
 
 const People = styled(Grid).attrs({ as: 'section' })`
@@ -192,12 +191,11 @@ const PersonRole = styled.p`
   }
 `
 
-const PersonBio = styled.p`
+const PersonBio = styled(RichText)`
   ${type.body}
   color: ${colors.black};
   margin-top: clamp(24px, 3vw, 40px);
   text-wrap: pretty;
-  white-space: pre-line;
   max-width: 95%;
 
   @media ${GRID.MEDIA_TABLET} {
@@ -213,9 +211,9 @@ function IntroItem({ item }) {
           <IntroTitle>{item.title}</IntroTitle>
         </GridCell>
       ) : null}
-      {item?.body ? (
+      {toPlainText(item?.body) ? (
         <GridCell $start={7} $end={-1} $startTablet={1} $spanTablet={8}>
-          <IntroBody>{item.body}</IntroBody>
+          <IntroBody html={item.body} />
         </GridCell>
       ) : null}
     </IntroBlock>
@@ -240,7 +238,7 @@ function PersonItem({ item, index }) {
       ) : null}
       {item?.name ? <PersonName>{item.name}</PersonName> : null}
       {item?.role ? <PersonRole>{item.role}</PersonRole> : null}
-      {item?.bio ? <PersonBio>{item.bio}</PersonBio> : null}
+      {toPlainText(item?.bio) ? <PersonBio html={item.bio} /> : null}
     </Person>
   )
 }
@@ -251,7 +249,7 @@ function About() {
   if (!page) return null
 
   const heroSrc = mediaUrl(page.heroImage)
-  const intro = (page.intro || []).filter((item) => item?.title || item?.body)
+  const intro = (page.intro || []).filter((item) => item?.title || toPlainText(item?.body))
   const people = page.people || []
 
   return (
@@ -265,7 +263,7 @@ function About() {
 
         <Card $start={1} $span={6} $startTablet={1} $spanTablet={8} $rowStart={2}>
           <Title>About Us</Title>
-          {page.heroBody ? <HeroBody>{page.heroBody}</HeroBody> : null}
+          {toPlainText(page.heroBody) ? <HeroBody html={page.heroBody} /> : null}
         </Card>
       </Hero>
 

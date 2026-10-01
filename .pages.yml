@@ -143,10 +143,12 @@ content:
           path: public/media
       - name: heroBody
         label: About Us body copy
-        type: text
-        description: "Shown under the 'About Us' title in the white hero card."
+        type: rich-text
+        description: "Shown under the 'About Us' title in the white hero card. Keep it under about 600 characters so it fits the card. Supports bold, italic, links and lists. Headings, quotes, tables and code show as plain text."
         options:
-          maxlength: 600
+          format: html
+          media: false
+          switcher: false
       - name: intro
         label: Intro section
         type: object
@@ -163,10 +165,12 @@ content:
               maxlength: 120
           - name: body
             label: Body
-            type: text
-            description: "Shown beside the title."
+            type: rich-text
+            description: "Shown beside the title. Supports bold, italic, links and lists. Headings, quotes, tables and code show as plain text."
             options:
-              maxlength: 1200
+              format: html
+              media: false
+              switcher: false
       - name: people
         label: People
         type: object
@@ -187,9 +191,12 @@ content:
               maxlength: 120
           - name: bio
             label: Bio
-            type: text
+            type: rich-text
+            description: "Supports bold, italic, links and lists. Headings, quotes, tables and code show as plain text."
             options:
-              maxlength: 2000
+              format: html
+              media: false
+              switcher: false
           - name: photo
             label: Photo
             type: image
@@ -222,9 +229,12 @@ content:
           maxlength: 120
       - name: bio
         label: Bio
-        type: text
+        type: rich-text
+        description: "Supports bold, italic, links and lists. Headings, quotes, tables and code show as plain text."
         options:
-          maxlength: 2000
+          format: html
+          media: false
+          switcher: false
       - name: thumbnail
         label: Thumbnail
         type: image
@@ -294,9 +304,12 @@ content:
         type: string
       - name: body
         label: Body text
-        type: text
+        type: rich-text
+        description: "Supports bold, italic, links and lists. Headings, quotes, tables and code show as plain text."
         options:
-          maxlength: 1200
+          format: html
+          media: false
+          switcher: false
       - name: gallery
         label: Gallery
         type: object
@@ -386,7 +399,12 @@ content:
             type: string
           - name: content
             label: Content
-            type: text
+            type: rich-text
+            description: "Supports bold, italic, links and lists. Headings, quotes, tables and code show as plain text."
+            options:
+              format: html
+              media: false
+              switcher: false
 
 settings:
   content:

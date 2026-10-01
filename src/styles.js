@@ -1,7 +1,7 @@
 import { createGlobalStyle } from "styled-components";
 import BallPill from "./assets/fonts/BallPill.woff2";
 import PPWriter from "./assets/fonts/PP-Writer.woff2";
-import { colors, fonts } from "./theme.js";
+import { colors, fonts, fontWeight } from "./theme.js";
 
 const GlobalStyle = createGlobalStyle`
   @font-face {
@@ -15,7 +15,7 @@ const GlobalStyle = createGlobalStyle`
   @font-face {
     font-family: "PP Writer";
     src: url(${PPWriter}) format("woff2");
-    font-weight: normal;
+    font-weight: ${fontWeight.regular};
     font-style: normal;
     font-display: swap;
   }

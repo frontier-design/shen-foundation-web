@@ -2,7 +2,8 @@ import { useState } from 'react'
 import styled from 'styled-components'
 import { Grid, GridCell, GRID } from '../../grid'
 import { colors, fonts, type, easing, duration } from '../../theme.js'
-import { getEvent, mediaUrl } from '../../content.js'
+import { getEvent, mediaUrl, toPlainText } from '../../content.js'
+import RichText from '../../components/RichText.jsx'
 import { goBack } from '../../router.jsx'
 
 const Section = styled.main`
@@ -202,11 +203,10 @@ const SectionContentInner = styled.div`
   min-height: 0;
 `
 
-const SectionContent = styled.div`
+const SectionContent = styled(RichText)`
   ${type.body}
   color: ${colors.black};
   padding-bottom: clamp(20px, 2.4vw, 32px);
-  white-space: pre-line;
   opacity: ${(props) => (props.$open ? 1 : 0)};
   transition: opacity ${duration.base}s ${easing.reveal};
 `
@@ -254,10 +254,10 @@ function Event({ slug }) {
                       {section.title}
                       <SectionToggle $open={open} aria-hidden="true" />
                     </SectionButton>
-                    {section.content ? (
+                    {toPlainText(section.content) ? (
                       <SectionCollapse $open={open}>
                         <SectionContentInner>
-                          <SectionContent $open={open}>{section.content}</SectionContent>
+                          <SectionContent $open={open} html={section.content} />
                         </SectionContentInner>
                       </SectionCollapse>
                     ) : null}

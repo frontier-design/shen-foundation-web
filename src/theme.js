@@ -12,6 +12,11 @@ export const fonts = {
   body: "'PP Writer', Georgia, 'Times New Roman', serif",
 };
 
+export const fontWeight = {
+  regular: 400,
+  bold: 700,
+};
+
 export const easing = {
   reveal: "cubic-bezier(0.16, 1, 0.3, 1)",
   gsapReveal: "M0,0 C0.16,1 0.3,1 1,1",
@@ -129,6 +134,6 @@ export const type = {
   `,
 };
 
-export const theme = { colors, fonts, type, easing, duration };
+export const theme = { colors, fonts, fontWeight, type, easing, duration };
 
 export default theme;

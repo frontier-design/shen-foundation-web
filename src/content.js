@@ -84,6 +84,36 @@ export function mediaList(value) {
   return list.map(mediaUrl).filter(Boolean)
 }
 
+const HTML_TAG = /<\/?[a-z][a-z0-9]*(\s[^>]*)?\/?>/i
+
+export function isHtml(value) {
+  return typeof value === 'string' && HTML_TAG.test(value)
+}
+
+function escapeHtml(value) {
+  return value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+}
+
+export function textToHtml(value) {
+  const text = String(value || '').replace(/\r\n?/g, '\n').trim()
+  if (!text) return ''
+  return text
+    .split(/\n\s*\n/)
+    .map((para) => para.trim())
+    .filter(Boolean)
+    .map((para) => `<p>${escapeHtml(para).replace(/\n/g, '<br>')}</p>`)
+    .join('')
+}
+
+export function toPlainText(value) {
+  if (!value) return ''
+  const s = String(value)
+  if (!isHtml(s)) return s.replace(/\s+/g, ' ').trim()
+  const spaced = s.replace(/<(br\s*\/?|\/(p|li|h[1-6]|blockquote|pre|td|th|tr))>/gi, '$& ')
+  const doc = new DOMParser().parseFromString(spaced, 'text/html')
+  return (doc.body.textContent || '').replace(/\s+/g, ' ').trim()
+}
+
 export function slugify(value) {
   return String(value || '')
     .normalize('NFD')
