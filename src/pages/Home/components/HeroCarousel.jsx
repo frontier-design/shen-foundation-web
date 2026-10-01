@@ -52,10 +52,10 @@ const HiddenLink = styled.a`
   pointer-events: none;
 `
 
-const HOLD_BEFORE = 2.5
+const HOLD_BEFORE = 4.5
 const WIPE = duration.slow
 const HOLD_HALF = 1.6
-const HOLD_FULL = 2.5
+const HOLD_FULL = 4.5
 
 function HeroCarousel({ slides = [] }) {
   const sectionRef = useRef(null)
