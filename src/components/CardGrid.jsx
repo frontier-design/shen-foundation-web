@@ -4,6 +4,7 @@ import { colors, type, easing, duration, aspect } from '../theme.js'
 import { mediaUrl, accentImage, isExhibition, exhibitionSlug, eventSlug } from '../content.js'
 import { useImageAccent } from '../hooks/useImageAccent.js'
 import { linkProps } from '../router.jsx'
+import { imageProps, SIZES } from '../images.js'
 
 const bleed = (side, padding) =>
   side === 'right'
@@ -120,7 +121,7 @@ function GridItem({ item, index }) {
     <>
       {src ? (
         <Media $side={side}>
-          <img src={src} alt={item?.title || ''} />
+          <img {...imageProps(src, SIZES.card)} alt={item?.title || ''} />
         </Media>
       ) : null}
       {item?.title ? <Title>{item.title}</Title> : null}

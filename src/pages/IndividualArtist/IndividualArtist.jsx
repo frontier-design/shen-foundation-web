@@ -6,6 +6,7 @@ import { getArtist, mediaUrl, accentImage, artistExhibitions, exhibitionSlug, to
 import RichText from '../../components/RichText.jsx'
 import { useImageAccent } from '../../hooks/useImageAccent.js'
 import { linkProps } from '../../router.jsx'
+import { imageProps, SIZES } from '../../images.js'
 
 const Section = styled.main`
   width: 100%;
@@ -168,7 +169,7 @@ function ExhibitionEntry({ item }) {
     <CardLink {...linkProps(`/exhibitions/${exhibitionSlug(item)}`)}>
       {src ? (
         <FeedImage>
-          <img src={src} alt={item.subtitle || ''} />
+          <img {...imageProps(src, SIZES.card)} alt={item.subtitle || ''} />
         </FeedImage>
       ) : null}
       <Meta>
@@ -220,7 +221,7 @@ function IndividualArtist({ slug }) {
           <Feed>
             {thumbnail ? (
               <FeedImage $fill>
-                <img src={thumbnail} alt="" />
+                <img {...imageProps(thumbnail, SIZES.halfTall)} alt="" />
               </FeedImage>
             ) : null}
             {shows.map((ex) => (

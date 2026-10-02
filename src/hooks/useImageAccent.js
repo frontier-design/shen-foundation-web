@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { imageUrl, IMAGE_WIDTHS } from "../images.js";
 
 const CONTRAST_TARGET = 2.6;
 const SAMPLE = 64;
@@ -152,7 +153,7 @@ function loadAccent(src) {
       resolve(vibrant ? ensureContrast(vibrant) : null);
     };
 
-    img.src = src;
+    img.src = imageUrl(src, IMAGE_WIDTHS[0]);
   });
 
   accentCache.set(src, promise);

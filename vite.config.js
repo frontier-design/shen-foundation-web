@@ -18,5 +18,6 @@ export default defineConfig({
   plugins: [react(), noindex()],
   define: {
     'import.meta.env.VITE_PREVIEW': JSON.stringify(isPreview),
+    'import.meta.env.VITE_IMAGE_CDN': JSON.stringify(process.env.VERCEL === '1'),
   },
 })

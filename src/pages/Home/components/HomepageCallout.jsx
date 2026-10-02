@@ -3,6 +3,7 @@ import { Grid, GridCell, GRID } from '../../../grid/index.js'
 import { colors, type, easing, duration } from '../../../theme.js'
 import { mediaUrl, accentImage } from '../../../content.js'
 import { linkProps } from '../../../router.jsx'
+import { imageProps, SIZES } from '../../../images.js'
 import { useImageAccent } from '../../../hooks/useImageAccent.js'
 
 const Section = styled.section`
@@ -163,7 +164,7 @@ function HomepageCallout({ callout }) {
 
         <ImageCell $start={7} $end={-1} $startMobile={1} $endMobile={-1}>
           <ImageViewport>
-            {src ? <Image src={src} alt={callout?.title || ''} /> : null}
+            {src ? <Image {...imageProps(src, SIZES.halfTall)} alt={callout?.title || ''} /> : null}
           </ImageViewport>
         </ImageCell>
       </Layout>

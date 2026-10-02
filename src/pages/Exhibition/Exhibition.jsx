@@ -4,6 +4,7 @@ import { colors, type, easing, duration } from '../../theme.js'
 import { getExhibition, mediaUrl, accentImage, exhibitionArtist, artistSlug, toPlainText } from '../../content.js'
 import RichText from '../../components/RichText.jsx'
 import { linkProps } from '../../router.jsx'
+import { imageProps, SIZES } from '../../images.js'
 import { useImageAccent } from '../../hooks/useImageAccent.js'
 
 const Hero = styled.div`
@@ -187,7 +188,7 @@ function Exhibition({ slug }) {
     <main>
       {heroSrc ? (
         <Hero data-nav-tone-left="dark" data-nav-tone-right="dark">
-          <img src={heroSrc} alt={item.title || ''} />
+          <img {...imageProps(heroSrc, SIZES.fullBleed)} alt={item.title || ''} />
         </Hero>
       ) : null}
 
@@ -233,7 +234,7 @@ function Exhibition({ slug }) {
             return (
               <GridCell key={index} {...placement}>
                 <GalleryFigure $side={side}>
-                  <img src={src} alt={entry.caption || ''} />
+                  <img {...imageProps(src, SIZES.card)} alt={entry.caption || ''} />
                   {entry.caption ? (
                     <GalleryCaption>
                       <span>{entry.caption}</span>

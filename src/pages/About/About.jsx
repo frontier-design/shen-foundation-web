@@ -3,6 +3,7 @@ import { Grid, GridCell, GRID } from '../../grid'
 import { colors, type } from '../../theme.js'
 import { getPage, mediaUrl, toPlainText } from '../../content.js'
 import RichText from '../../components/RichText.jsx'
+import { imageProps, SIZES } from '../../images.js'
 
 const bleed = (side, padding) =>
   side === 'right'
@@ -233,7 +234,7 @@ function PersonItem({ item, index }) {
     <Person {...placement}>
       {src ? (
         <PersonMedia $side={side}>
-          <img src={src} alt={item?.name || ''} />
+          <img {...imageProps(src, SIZES.card)} alt={item?.name || ''} />
         </PersonMedia>
       ) : null}
       {item?.name ? <PersonName>{item.name}</PersonName> : null}
@@ -257,7 +258,7 @@ function About() {
       <Hero data-nav-tone-left="dark" data-nav-tone-right="dark">
         {heroSrc ? (
           <HeroMedia $start={1} $end={-1} $rowStart={1} $rowEnd={3}>
-            <img src={heroSrc} alt="" />
+            <img {...imageProps(heroSrc, SIZES.fullBleed)} alt="" />
           </HeroMedia>
         ) : null}
 

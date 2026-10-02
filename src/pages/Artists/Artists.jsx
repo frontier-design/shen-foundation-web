@@ -3,6 +3,7 @@ import { Grid, GridCell, GRID } from '../../grid'
 import { colors, type } from '../../theme.js'
 import { getPage, orderedArtists, mediaUrl, artistSlug } from '../../content.js'
 import { linkProps } from '../../router.jsx'
+import { imageProps, SIZES } from '../../images.js'
 
 const ScreenReaderTitle = styled.h1`
   position: absolute;
@@ -94,7 +95,7 @@ function ArtistItem({ item, index }) {
       <CardLink {...linkProps(`/artists/${artistSlug(item)}`)}>
         {src ? (
           <Media $side={side}>
-            <img src={src} alt={item?.title || ''} />
+            <img {...imageProps(src, SIZES.card)} alt={item?.title || ''} />
           </Media>
         ) : null}
         {item?.title ? <Name>{item.title}</Name> : null}

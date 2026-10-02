@@ -38,6 +38,25 @@ const backgroundLuminance = (el) => {
   return 255
 }
 
+const PROXY_MAX = 512
+const proxies = new WeakMap()
+
+// srcset images report density-corrected natural sizes, while drawImage's source
+// rectangle uses the decoded bitmap, so sample from a copy drawn at natural size.
+const proxyFor = (img, nw, nh) => {
+  const key = img.currentSrc || img.src
+  const cached = proxies.get(img)
+  if (cached && cached.key === key && cached.nw === nw && cached.nh === nh) return cached
+  const scale = Math.min(1, PROXY_MAX / Math.max(nw, nh))
+  const canvas = document.createElement('canvas')
+  canvas.width = Math.max(1, Math.round(nw * scale))
+  canvas.height = Math.max(1, Math.round(nh * scale))
+  canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height)
+  const proxy = { key, nw, nh, canvas, scale }
+  proxies.set(img, proxy)
+  return proxy
+}
+
 const imageLuminance = (img, x, y) => {
   const nw = img.naturalWidth
   const nh = img.naturalHeight
@@ -69,7 +88,12 @@ const imageLuminance = (img, x, y) => {
   const ch = Math.min(half * 2, nh - cy)
 
   sampleCtx.clearRect(0, 0, SAMPLE, SAMPLE)
-  sampleCtx.drawImage(img, cx, cy, cw, ch, 0, 0, SAMPLE, SAMPLE)
+  if (img.srcset) {
+    const { canvas, scale } = proxyFor(img, nw, nh)
+    sampleCtx.drawImage(canvas, cx * scale, cy * scale, Math.max(cw * scale, 1), Math.max(ch * scale, 1), 0, 0, SAMPLE, SAMPLE)
+  } else {
+    sampleCtx.drawImage(img, cx, cy, cw, ch, 0, 0, SAMPLE, SAMPLE)
+  }
   const { data } = sampleCtx.getImageData(0, 0, SAMPLE, SAMPLE)
   let sum = 0
   for (let i = 0; i < data.length; i += 4) {

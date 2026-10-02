@@ -72,6 +72,15 @@ npm run optimize-images                     # apply
 
 `scripts/optimize-images/manifest.json` records the checksum of every processed file, so a file is never re-encoded twice (including after it's renamed). A file that is replaced with new content under the same name is processed again. Changing the settings doesn't reprocess existing files, to avoid compressing them twice. oxipng is downloaded on first use from its official release, pinned to one version and checked against a SHA-256 checksum.
 
+## Responsive images
+
+On Vercel, images under `/media/` are delivered through Vercel Image Optimization: each `<img>` gets a `srcset` of `/_vercel/image` URLs at 640, 960, 1280 and 1920px wide, quality 80, and Vercel serves AVIF or WebP depending on what the browser supports. The stored files in `public/media/` act as high-quality masters.
+
+- `src/images.js` builds the URLs (`imageProps(src, SIZES.…)`), and holds the widths, the quality and three `sizes` presets: `fullBleed` (heroes and the carousel), `halfTall` (tall half-width images: callout, event, artist page) and `card` (card grids, gallery, people).
+- `vercel.json` `images` must list the same widths and quality; Vercel rejects any other values.
+- It's only switched on for builds on Vercel (`VERCEL=1`, see `vite.config.js`). `npm run dev` and `npm run preview` use the original files, because `/_vercel/image` only exists on Vercel.
+- To change the delivered quality or widths, update both `src/images.js` and `vercel.json`, and check the result with `npm run quality-compare` first.
+
 ## Image quality comparison
 
 `scripts/quality-compare/` generates a page with 100% crops of images as uploaded, as the stored master, and as delivered versions (AVIF/WebP at several qualities and widths), with file sizes. Use it to check that artworks don't visibly degrade before changing compression settings.

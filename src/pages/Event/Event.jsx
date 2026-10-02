@@ -5,6 +5,7 @@ import { colors, fonts, type, easing, duration } from '../../theme.js'
 import { getEvent, mediaUrl, toPlainText } from '../../content.js'
 import RichText from '../../components/RichText.jsx'
 import { goBack } from '../../router.jsx'
+import { imageProps, SIZES } from '../../images.js'
 
 const Section = styled.main`
   width: 100%;
@@ -225,7 +226,7 @@ function Event({ slug }) {
       <Layout>
         <ImageCell $start={1} $span={6} $startTablet={1} $spanTablet={8}>
           <ImageViewport>
-            {src ? <img src={src} alt={item.title || ''} /> : null}
+            {src ? <img {...imageProps(src, SIZES.halfTall)} alt={item.title || ''} /> : null}
           </ImageViewport>
         </ImageCell>
 

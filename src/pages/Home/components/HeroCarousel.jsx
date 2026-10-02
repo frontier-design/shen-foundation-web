@@ -5,6 +5,7 @@ import { CustomEase } from 'gsap/CustomEase'
 import { GRID, useMediaQuery } from '../../../grid/index.js'
 import { colors, easing, duration } from '../../../theme.js'
 import { navigate } from '../../../router.jsx'
+import { imageProps, SIZES } from '../../../images.js'
 import { isLoadingDone, onLoadingDone } from '../../../loading.js'
 
 gsap.registerPlugin(CustomEase)
@@ -102,6 +103,12 @@ function HeroCarousel({ slides = [] }) {
 
     if (!section || !back || !front || n === 0) return undefined
 
+    const show = (el, src) => {
+      const { srcSet, src: url } = imageProps(src, SIZES.fullBleed)
+      if (srcSet) el.srcset = srcSet
+      el.src = url
+    }
+
     const setCurrent = (i) => {
       currentRef.current = i
       const link = linkRef.current
@@ -112,7 +119,7 @@ function HeroCarousel({ slides = [] }) {
       }
     }
 
-    back.src = srcs[0]
+    show(back, srcs[0])
     backIndexRef.current = 0
     frontIndexRef.current = 0
     setCurrent(0)
@@ -134,9 +141,9 @@ function HeroCarousel({ slides = [] }) {
         if (cancelled) return
         const next = (current + 1) % n
 
-        back.src = srcs[current]
+        show(back, srcs[current])
         backIndexRef.current = current
-        front.src = srcs[next]
+        show(front, srcs[next])
         frontIndexRef.current = next
         gsap.set(front, { clipPath: 'inset(0 0 0 100%)' })
 
@@ -192,8 +199,8 @@ function HeroCarousel({ slides = [] }) {
       aria-label="Featured exhibitions"
       onClick={handleClick}
     >
-      <Layer ref={backRef} src={images[0]} alt="" />
-      <Layer ref={frontRef} alt="" />
+      <Layer ref={backRef} {...imageProps(images[0], SIZES.fullBleed)} alt="" />
+      <Layer ref={frontRef} sizes={SIZES.fullBleed} alt="" />
       <HiddenLink
         ref={linkRef}
         href={slides[0]?.link}
