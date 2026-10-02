@@ -3,7 +3,7 @@
   "images": {
     "sizes": [640, 960, 1280, 1920],
     "qualities": [80],
-    "formats": ["image/avif", "image/webp"],
+    "formats": ["image/webp"],
     "localPatterns": [{ "pathname": "^/media/.*$", "search": "" }],
     "minimumCacheTTL": 2678400
   }

@@ -76,7 +76,7 @@ npm run optimize-images                     # apply
 
 ## Responsive images
 
-On Vercel, images under `/media/` are delivered through Vercel Image Optimization: each `<img>` gets a `srcset` of `/_vercel/image` URLs at 640, 960, 1280 and 1920px wide, quality 80, and Vercel serves AVIF or WebP depending on what the browser supports. The stored files in `public/media/` act as high-quality masters.
+On Vercel, images under `/media/` are delivered through Vercel Image Optimization: each `<img>` gets a `srcset` of `/_vercel/image` URLs at 640, 960, 1280 and 1920px wide, quality 80, served as WebP. AVIF is deliberately off: Vercel's AVIF encoder at the same quality setting measured noticeably lower fidelity than the approved settings (closer to quality 50), while its WebP matches them. The stored files in `public/media/` act as high-quality masters.
 
 - `src/images.js` builds the URLs (`imageProps(src, SIZES.…)`), and holds the widths, the quality and three `sizes` presets: `fullBleed` (heroes and the carousel), `halfTall` (tall half-width images: callout, event, artist page) and `card` (card grids, gallery, people).
 - `vercel.json` `images` must list the same widths and quality; Vercel rejects any other values.
