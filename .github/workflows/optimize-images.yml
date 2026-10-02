@@ -1,0 +1,71 @@
+name: Optimize images
+
+on:
+  push:
+    branches:
+      - preview
+    paths:
+      - public/media/**
+  workflow_dispatch:
+    inputs:
+      payload:
+        description: Pages CMS payload as JSON (unused)
+        required: false
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: optimize-images
+  cancel-in-progress: false
+
+jobs:
+  optimize:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out preview
+        uses: actions/checkout@v4
+        with:
+          ref: preview
+          fetch-depth: 0
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: scripts/optimize-images/package-lock.json
+
+      - name: Cache oxipng
+        uses: actions/cache@v4
+        with:
+          path: scripts/optimize-images/.bin
+          key: oxipng-10.2.1-${{ runner.os }}-${{ runner.arch }}
+
+      - name: Install optimizer dependencies
+        run: npm --prefix scripts/optimize-images ci
+
+      - name: Optimize, commit and push
+        run: |
+          git config user.name "Image Optimizer"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          for attempt in 1 2 3; do
+            status=0
+            node scripts/optimize-images/optimize.mjs || status=$?
+            git add -u public/media
+            git add scripts/optimize-images/manifest.json
+            if git diff --cached --quiet; then
+              echo "Nothing to commit."
+              exit $status
+            fi
+            git commit -q -m "Optimize images" -m "Automated by .github/workflows/optimize-images.yml"
+            if git push origin HEAD:preview; then
+              exit $status
+            fi
+            echo "::warning::preview changed while optimizing; redoing the run on the new tip (attempt $attempt of 3)."
+            git fetch -q origin preview
+            git reset -q --hard origin/preview
+          done
+          echo "::error::Could not push to preview after 3 attempts. Nothing was lost; run this workflow again."
+          exit 1

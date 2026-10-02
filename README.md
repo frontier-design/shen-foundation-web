@@ -53,6 +53,15 @@ Add it to `scripts/optimize-images/exclude.json`. Paths start with `/media/`; `*
 
 Excluded files are never modified, not even their metadata.
 
+### Automatic runs
+
+`.github/workflows/optimize-images.yml` runs the optimizer whenever something under `public/media/` is pushed to `preview` (for example an upload in Pages CMS), and commits the result back to `preview` as "Optimize images", usually within a minute or two. It can also be started by hand from the repo's Actions tab.
+
+- It never loops: its own push uses `GITHUB_TOKEN`, which doesn't trigger workflows, and already-optimized files are skipped.
+- If an editor commits while it's running, its push is rejected; it then redoes the run on the new `preview` tip (up to 3 times). Editors' saves are never overwritten.
+- Publishing within a minute or two of an upload can send the unoptimized file live; it's replaced at the next Publish. Images synced from `main` by `sync-preview.yml` aren't picked up until the next upload or a manual run.
+- The run summary lists what changed and any filenames that aren't lowercase and hyphenated.
+
 ### Run it locally
 
 ```sh
