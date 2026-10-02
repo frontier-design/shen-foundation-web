@@ -160,6 +160,14 @@
       "width": 2000,
       "height": 1326
     },
+    "/media/test.jpg": {
+      "sha256": "2e8cb5970477e8dc1958c837900e0d60733f29fae9c6adfe7919f55fcd1d205a",
+      "action": "recompressed",
+      "bytesBefore": 966693,
+      "bytesAfter": 277297,
+      "width": 1100,
+      "height": 1500
+    },
     "/media/test/florian-luthi.jpg": {
       "sha256": "fcf62a1d2e551a27f533354a873f939e09e967d89c07c22c8b69e6122fd6022a",
       "action": "metadata",
