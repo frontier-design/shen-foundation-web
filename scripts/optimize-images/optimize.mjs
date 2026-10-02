@@ -45,6 +45,7 @@ const OXIPNG = {
 const { values: opts } = parseArgs({
   options: {
     'dry-run': { type: 'boolean', default: false },
+    check: { type: 'boolean', default: false },
     json: { type: 'string' },
     help: { type: 'boolean', default: false },
   },
@@ -53,6 +54,7 @@ if (opts.help) {
   process.stdout.write(`Optimize images in public/media.
 
 Usage: npm run optimize-images [-- --dry-run] [-- --json report.json]
+       npm run optimize-images -- --check   (list images not optimized yet; exit 3 if any)
 
 Resizes images over ${SETTINGS.maxEdge}px, re-encodes JPEG at q${SETTINGS.jpegQuality} (4:4:4),
 WebP only when resizing, PNG losslessly with oxipng, and removes metadata except colour
@@ -61,6 +63,45 @@ gets at least ${SETTINGS.minSaving * 100}% smaller; otherwise only its metadata 
 (pixel-exact). Files listed in exclude.json are never touched. Processed files are recorded
 in manifest.json and never processed again.
 `)
+  process.exit(0)
+}
+
+const PROCESSABLE = /\.(jpe?g|png|webp)$/i
+
+function readJson(file, fallback) {
+  return fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, 'utf8')) : fallback
+}
+
+function globToRegex(pattern) {
+  const p = pattern.startsWith('/') ? pattern : `/${pattern}`
+  const re = p.replace(/[.+^${}()|[\]\\]/g, '\\$&').replace(/\*\*/g, '\u0000').replace(/\*/g, '[^/]*').replace(/\u0000/g, '.*').replace(/\?/g, '[^/]')
+  return new RegExp(`^${re}$`)
+}
+
+const walk = (d) => (fs.existsSync(d) ? fs.readdirSync(d, { withFileTypes: true }).flatMap((e) => (e.isDirectory() ? walk(path.join(d, e.name)) : [path.join(d, e.name)])) : [])
+const sha256 = (buf) => createHash('sha256').update(buf).digest('hex')
+const rel = (file) => '/' + path.relative(path.join(ROOT, 'public'), file).split(path.sep).join('/')
+
+if (opts.check) {
+  const manifest = readJson(MANIFEST, { files: {} })
+  const excludes = (readJson(EXCLUDE, { exclude: [] }).exclude || []).map(globToRegex)
+  const done = new Set(Object.values(manifest.files).map((e) => e.sha256))
+  const pending = []
+  const failed = []
+  for (const file of walk(MEDIA).filter((f) => PROCESSABLE.test(f)).sort()) {
+    const p = rel(file)
+    if (excludes.some((re) => re.test(p))) continue
+    const sha = sha256(fs.readFileSync(file))
+    if (done.has(sha)) continue
+    if (manifest.failed?.[p]?.sha256 === sha) failed.push(`${p} (${manifest.failed[p].note})`)
+    else pending.push(p)
+  }
+  if (failed.length) console.log(`Could not be optimized (published as they are):\n  ${failed.join('\n  ')}`)
+  if (pending.length) {
+    console.log(`Not optimized yet:\n  ${pending.join('\n  ')}`)
+    process.exit(3)
+  }
+  console.log('All images are optimized.')
   process.exit(0)
 }
 
@@ -75,8 +116,6 @@ try {
 sharp.cache(false)
 const EXIFTOOL = path.join(path.dirname(require.resolve('exiftool-vendored.pl/package.json')), 'bin', 'exiftool')
 
-const sha256 = (buf) => createHash('sha256').update(buf).digest('hex')
-const rel = (file) => '/' + path.relative(path.join(ROOT, 'public'), file).split(path.sep).join('/')
 const kb = (n) => `${Math.round(n / 1024)} KB`
 const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'optimize-images-'))
 process.on('exit', () => fs.rmSync(tmpDir, { recursive: true, force: true }))
@@ -104,12 +143,6 @@ async function ensureOxipng() {
   execFileSync('tar', ['-xzf', archive, '-C', dir, '--strip-components=1'])
   fs.chmodSync(bin, 0o755)
   return bin
-}
-
-function globToRegex(pattern) {
-  const p = pattern.startsWith('/') ? pattern : `/${pattern}`
-  const re = p.replace(/[.+^${}()|[\]\\]/g, '\\$&').replace(/\*\*/g, '\u0000').replace(/\*/g, '[^/]*').replace(/\u0000/g, '.*').replace(/\?/g, '[^/]')
-  return new RegExp(`^${re}$`)
 }
 
 async function pixels(input) {
@@ -205,13 +238,13 @@ async function processFile(file, oxipng) {
   return { action, note, before: original.length, after: final.length, width: outMeta.width, height: outMeta.height, sha: sha256(final) }
 }
 
-const walk = (d) => (fs.existsSync(d) ? fs.readdirSync(d, { withFileTypes: true }).flatMap((e) => (e.isDirectory() ? walk(path.join(d, e.name)) : [path.join(d, e.name)])) : [])
 const IMAGE_EXT = /\.(jpe?g|png|webp|gif|avif|heic|heif|tiff?|bmp|svg)$/i
 const READABLE = /^[a-z0-9]+(-[a-z0-9]+)*$/
 
-const manifest = fs.existsSync(MANIFEST) ? JSON.parse(fs.readFileSync(MANIFEST, 'utf8')) : { files: {} }
+const manifest = readJson(MANIFEST, { files: {} })
+manifest.failed = {}
 manifest.settings = { ...SETTINGS, keepTags: KEEP_TAGS, oxipng: OXIPNG.version }
-const excludeConfig = fs.existsSync(EXCLUDE) ? JSON.parse(fs.readFileSync(EXCLUDE, 'utf8')) : { exclude: [] }
+const excludeConfig = readJson(EXCLUDE, { exclude: [] })
 const excludes = (excludeConfig.exclude || []).map(globToRegex)
 const files = walk(MEDIA).filter((f) => IMAGE_EXT.test(f)).sort()
 const known = new Map(Object.entries(manifest.files).map(([p, e]) => [e.sha256, p]))
@@ -251,12 +284,14 @@ for (const file of files) {
     known.set(r.sha, p)
     report.push({ path: p, ...r })
   } catch (e) {
+    manifest.failed[p] = { sha256: sha, note: e.message }
     report.push({ path: p, action: 'error', note: e.message })
   }
 }
 const present = new Set(files.map(rel))
 for (const p of Object.keys(manifest.files)) if (!present.has(p)) delete manifest.files[p]
 manifest.files = Object.fromEntries(Object.entries(manifest.files).sort(([a], [b]) => a.localeCompare(b)))
+if (!Object.keys(manifest.failed).length) delete manifest.failed
 
 if (!opts['dry-run']) {
   fs.writeFileSync(MANIFEST, JSON.stringify(manifest, null, 2) + '\n')

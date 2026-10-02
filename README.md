@@ -19,6 +19,8 @@ The preview site shows a "Preview" badge in the corner and is hidden from search
 
 Publish sends *everything* currently on `preview` live at once, including other people's unfinished edits. Check with anyone else who is editing before you publish.
 
+If you've just uploaded images, Publish may stop with **"Images are still being optimized"**. Nothing is published in that case; wait a minute or two and click Publish again.
+
 ### Developers
 
 - Pull `preview` before starting work; editors commit to it through Pages CMS.
@@ -59,7 +61,7 @@ Excluded files are never modified, not even their metadata.
 
 - It never loops: its own push uses `GITHUB_TOKEN`, which doesn't trigger workflows, and already-optimized files are skipped.
 - If an editor commits while it's running, its push is rejected; it then redoes the run on the new `preview` tip (up to 3 times). Editors' saves are never overwritten.
-- Publishing within a minute or two of an upload can send the unoptimized file live; it's replaced at the next Publish. Images synced from `main` by `sync-preview.yml` aren't picked up until the next upload or a manual run.
+- Publish refuses to run while an Optimize images run is in progress on `preview`, or while `npm run optimize-images -- --check` (run against `preview`) finds images that haven't been optimized yet. Images the optimizer failed on are recorded in the manifest and don't block Publishing; if the check itself can't run, Publish continues with a warning. Images synced from `main` by `sync-preview.yml` aren't picked up until the next upload or a manual run, so Publish waits for that.
 - The run summary lists what changed and any filenames that aren't lowercase and hyphenated.
 
 ### Run it locally
