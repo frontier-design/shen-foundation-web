@@ -2,6 +2,25 @@ import { useSyncExternalStore } from 'react'
 
 const NAVIGATE_EVENT = 'shen:navigate'
 
+if ('scrollRestoration' in window.history) window.history.scrollRestoration = 'manual'
+
+let keySeq = 0
+const newKey = () => `${Date.now().toString(36)}-${(keySeq++).toString(36)}`
+if (!window.history.state?.key) window.history.replaceState({ ...window.history.state, key: newKey() }, '')
+
+let lastNavigation = 'load'
+window.addEventListener('popstate', () => {
+  lastNavigation = 'pop'
+})
+
+export function historyKey() {
+  return window.history.state?.key ?? null
+}
+
+export function lastNavigationType() {
+  return lastNavigation
+}
+
 const subscribe = (callback) => {
   window.addEventListener('popstate', callback)
   window.addEventListener(NAVIGATE_EVENT, callback)
@@ -21,7 +40,8 @@ export function usePathname() {
 
 export function navigate(to) {
   if (to === window.location.pathname) return
-  window.history.pushState({}, '', to)
+  lastNavigation = 'push'
+  window.history.pushState({ key: newKey() }, '', to)
   window.dispatchEvent(new Event(NAVIGATE_EVENT))
 }
 

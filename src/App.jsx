@@ -21,7 +21,7 @@ import Event from './pages/Event'
 import EventsIndex from './pages/Events'
 import About from './pages/About'
 import Test from './pages/Test'
-import { usePathname } from './router.jsx'
+import { usePathname, historyKey, lastNavigationType } from './router.jsx'
 import { markLoadingDone } from './loading.js'
 
 const SITE_TITLE = 'Shen Foundation'
@@ -124,6 +124,8 @@ function App() {
     () => !window.matchMedia('(prefers-reduced-motion: reduce)').matches,
   )
   const loaderRef = useRef(null)
+  const positionsRef = useRef(new Map())
+  const baseKeyRef = useRef(null)
 
   if (prevPath !== pathname) {
     setPrevPath(pathname)
@@ -164,6 +166,22 @@ function App() {
   useLayoutEffect(() => {
     window.scrollTo(0, 0)
   }, [pathname])
+
+  useLayoutEffect(() => {
+    baseKeyRef.current = historyKey()
+    if (lastNavigationType() !== 'pop') return
+    const y = positionsRef.current.get(baseKeyRef.current)
+    if (y) window.scrollTo(0, y)
+  }, [base])
+
+  useEffect(() => {
+    const save = () => {
+      const key = historyKey()
+      if (key && key === baseKeyRef.current) positionsRef.current.set(key, window.scrollY)
+    }
+    window.addEventListener('scroll', save, { passive: true })
+    return () => window.removeEventListener('scroll', save)
+  }, [])
 
   useEffect(() => {
     if (incoming === null) return undefined
