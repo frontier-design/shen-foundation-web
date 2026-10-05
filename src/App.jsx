@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
-import styled, { ThemeProvider, keyframes } from 'styled-components'
+import styled, { ThemeProvider, css, keyframes } from 'styled-components'
 import gsap from 'gsap'
 import { CustomEase } from 'gsap/CustomEase'
 import GlobalStyle from './styles.js'
@@ -54,14 +54,18 @@ const slideIn = keyframes`
   }
 `
 
-const OverlayLayer = styled.div`
-  position: fixed;
-  inset: 0;
-  z-index: 10;
-  overflow: hidden;
-  background-color: ${colors.white};
-  animation: ${slideIn} ${duration.slow}s ${easing.reveal} both;
-  will-change: transform;
+const PageLayer = styled.div`
+  ${(props) =>
+    props.$overlay &&
+    css`
+      position: fixed;
+      inset: 0;
+      z-index: 10;
+      overflow: hidden;
+      background-color: ${colors.white};
+      animation: ${slideIn} ${duration.slow}s ${easing.reveal} both;
+      will-change: transform;
+    `}
 `
 
 const LoadingScreen = styled.div`
@@ -117,7 +121,7 @@ function RouteView({ pathname }) {
 function App() {
   const pathname = usePathname()
   const reduceMotion = useMediaQuery('(prefers-reduced-motion: reduce)')
-  const [base, setBase] = useState(pathname)
+  const [base, setBase] = useState(() => ({ path: pathname, id: 0 }))
   const [incoming, setIncoming] = useState(null)
   const [prevPath, setPrevPath] = useState(pathname)
   const [loaderVisible, setLoaderVisible] = useState(
@@ -129,11 +133,12 @@ function App() {
 
   if (prevPath !== pathname) {
     setPrevPath(pathname)
+    const next = { path: pathname, id: Math.max(base.id, incoming?.id ?? 0) + 1 }
     if (reduceMotion) {
-      setBase(pathname)
+      setBase(next)
       setIncoming(null)
     } else {
-      setIncoming(pathname)
+      setIncoming(next)
     }
   }
 
@@ -190,7 +195,7 @@ function App() {
 
   const finishTransition = (e) => {
     if (e.target !== e.currentTarget) return
-    setBase(pathname)
+    setBase(incoming)
     setIncoming(null)
   }
 
@@ -200,11 +205,13 @@ function App() {
       {import.meta.env.DEV && <GridOverlay />}
       <Navigation />
       {import.meta.env.VITE_PREVIEW && <PreviewBanner />}
-      <RouteView pathname={base} />
+      <PageLayer key={base.id}>
+        <RouteView pathname={base.path} />
+      </PageLayer>
       {incoming !== null ? (
-        <OverlayLayer key={incoming} onAnimationEnd={finishTransition}>
-          <RouteView pathname={incoming} />
-        </OverlayLayer>
+        <PageLayer key={incoming.id} $overlay onAnimationEnd={finishTransition}>
+          <RouteView pathname={incoming.path} />
+        </PageLayer>
       ) : null}
       {loaderVisible ? <LoadingScreen ref={loaderRef} /> : null}
     </ThemeProvider>
