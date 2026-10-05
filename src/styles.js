@@ -31,6 +31,10 @@ const GlobalStyle = createGlobalStyle`
     overflow-x: clip;
   }
 
+  html {
+    scrollbar-gutter: stable;
+  }
+
   body {
     font-family: ${fonts.body};
     color: ${colors.black};

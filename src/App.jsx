@@ -26,6 +26,17 @@ import { markLoadingDone } from './loading.js'
 
 const SITE_TITLE = 'Shen Foundation'
 
+let scrollLocks = 0
+
+function lockScroll() {
+  scrollLocks += 1
+  document.documentElement.style.overflow = 'hidden'
+  return () => {
+    scrollLocks -= 1
+    if (scrollLocks === 0) document.documentElement.style.overflow = ''
+  }
+}
+
 const MobileOnlyFooter = styled.div`
   display: none;
 
@@ -146,11 +157,8 @@ function App() {
   }, [])
 
   useEffect(() => {
-    if (!loaderVisible) return
-    document.body.style.overflow = 'hidden'
-    return () => {
-      document.body.style.overflow = ''
-    }
+    if (!loaderVisible) return undefined
+    return lockScroll()
   }, [loaderVisible])
 
   useLayoutEffect(() => {
@@ -158,11 +166,8 @@ function App() {
   }, [pathname])
 
   useEffect(() => {
-    if (incoming === null) return
-    document.body.style.overflow = 'hidden'
-    return () => {
-      document.body.style.overflow = ''
-    }
+    if (incoming === null) return undefined
+    return lockScroll()
   }, [incoming])
 
   const finishTransition = (e) => {
