@@ -211,6 +211,10 @@ const Logo = styled.svg`
   color: ${(props) => props.$color};
   fill: currentColor;
   transition: color ${duration.fast}s ${easing.reveal};
+
+  @media ${GRID.MEDIA_MOBILE} {
+    height: 36px;
+  }
 `
 
 const Plus = styled.button`
@@ -226,6 +230,11 @@ const Plus = styled.button`
   color: ${(props) => props.$color};
   opacity: ${(props) => (props.$hidden ? 0 : 1)};
   transition: opacity ${duration.base}s ${easing.reveal};
+
+  @media ${GRID.MEDIA_MOBILE} {
+    width: 34px;
+    height: 34px;
+  }
 
   &::before,
   &::after {
