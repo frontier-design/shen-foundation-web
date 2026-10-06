@@ -265,7 +265,7 @@ content:
       - name: thumbnailVideo
         label: Video (optional)
         type: file
-        description: "Plays muted on a loop in place of the thumbnail on the artist's page. The Artists list still shows the thumbnail. MP4 or WebM, ideally under 20 MB; remove location data from phone footage. Keep the image above: it shows while the video loads and for visitors who prefer reduced motion."
+        description: "Optional MP4/WebM (ideally under 20 MB) that plays muted on a loop instead of the thumbnail on the artist's page; keep the thumbnail, which the Artists list still shows."
         options:
           extensions: [mp4, webm]
           path: public/media
