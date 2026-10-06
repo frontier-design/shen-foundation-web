@@ -15,8 +15,13 @@ const Section = styled.main`
 const Layout = styled(Grid)`
   height: 100vh;
   height: 100dvh;
+  grid-template-rows: minmax(0, 1fr);
   align-items: stretch;
   row-gap: 0;
+
+  @media ${GRID.MEDIA_TABLET} {
+    grid-template-rows: none;
+  }
 
   @media ${GRID.MEDIA_MOBILE} {
     height: auto;
