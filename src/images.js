@@ -1,3 +1,5 @@
+import optimized from '../scripts/optimize-images/manifest.json'
+
 export const IMAGE_WIDTHS = [640, 960, 1280, 1920]
 export const IMAGE_QUALITY = 80
 
@@ -24,7 +26,13 @@ export function imageSrcSet(src) {
   return IMAGE_WIDTHS.map((w) => `${imageUrl(src, w)} ${w}w`).join(', ')
 }
 
+function dimensions(src) {
+  const entry = typeof src === 'string' ? optimized.files[src] : null
+  return entry?.width && entry?.height ? { width: entry.width, height: entry.height } : {}
+}
+
 export function imageProps(src, sizes) {
-  if (!optimizable(src)) return { src }
-  return { src: imageUrl(src), srcSet: imageSrcSet(src), sizes }
+  const size = dimensions(src)
+  if (!optimizable(src)) return { src, ...size }
+  return { src: imageUrl(src), srcSet: imageSrcSet(src), sizes, ...size }
 }

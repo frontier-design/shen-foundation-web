@@ -116,6 +116,7 @@ const Gallery = styled(Grid).attrs({ as: 'section' })`
   @media ${GRID.MEDIA_MOBILE} {
     display: flex;
     flex-direction: column;
+    align-items: stretch;
     gap: 0;
   }
 `
