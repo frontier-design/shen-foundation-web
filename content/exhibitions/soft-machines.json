@@ -10,9 +10,11 @@
   "body": "<p>Soft Machines revisited Lygia Clark’s pioneering experiments with participation and the body, from the hinged metal Bichos to the sensorial propositions of her later therapeutic practice. The exhibition traced how Clark dissolved the boundary between object and viewer, treating art as something to be handled, worn, and lived rather than merely looked at.</p>",
   "gallery": [
     {
+      "type": "image",
       "image": "/media/carousel-image-1.webp"
     },
     {
+      "type": "image",
       "image": "/media/hero-carousel/carousel-image-2.png"
     }
   ]

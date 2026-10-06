@@ -347,22 +347,49 @@ content:
           switcher: false
       - name: gallery
         label: Gallery
-        type: object
+        type: block
+        blockKey: type
+        description: "Images and videos, shown in two staggered columns. Drag to reorder."
         list:
           collapsible:
             collapsed: true
             summary: "{caption}"
-        fields:
+        blocks:
           - name: image
             label: Image
-            type: image
-            description: "Any dimensions."
-            options:
-              categories: [image]
-              path: public/media
-          - name: caption
-            label: Caption
-            type: string
+            fields:
+              - name: image
+                label: Image
+                type: image
+                required: true
+                description: "Any dimensions."
+                options:
+                  categories: [image]
+                  path: public/media
+              - name: caption
+                label: Caption
+                type: string
+          - name: video
+            label: Video
+            fields:
+              - name: video
+                label: Video
+                type: file
+                required: true
+                description: "Plays muted on a loop while on screen. Any dimensions. MP4 or WebM, ideally under 20 MB; remove location data from phone footage."
+                options:
+                  extensions: [mp4, webm]
+                  path: public/media
+              - name: poster
+                label: Poster image (recommended)
+                type: image
+                description: "A still from the video. Shown while the video loads and for visitors who prefer reduced motion. Without one, the video's first frame is shown."
+                options:
+                  categories: [image]
+                  path: public/media
+              - name: caption
+                label: Caption
+                type: string
 
   - name: events
     label: Events

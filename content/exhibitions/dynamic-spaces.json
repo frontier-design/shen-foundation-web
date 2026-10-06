@@ -9,9 +9,25 @@
   "captionLocation": "Art Gallery of Ontario, Toronto",
   "body": "<p>Haegue Yang’s Dynamic Spaces gathers a decade of sculptural and installation work that reimagines the relationship between the body, movement, and the built environment. Working across venetian blinds, light, scent, and industrial materials, Yang constructs sensory environments that shift as visitors move through them, asking how space is produced, inhabited, and remembered.</p>",
   "gallery": [
-    { "image": "/media/carousel-image-3.webp", "caption": "" },
-    { "image": "/media/hero-carousel/carousel-image-4.jpg", "caption": "" },
-    { "image": "/media/hero-carousel/carousel-image-2.png", "caption": "" },
-    { "image": "/media/carousel-image-1.webp", "caption": "" }
+    {
+      "type": "image",
+      "image": "/media/carousel-image-3.webp",
+      "caption": ""
+    },
+    {
+      "type": "image",
+      "image": "/media/hero-carousel/carousel-image-4.jpg",
+      "caption": ""
+    },
+    {
+      "type": "image",
+      "image": "/media/hero-carousel/carousel-image-2.png",
+      "caption": ""
+    },
+    {
+      "type": "image",
+      "image": "/media/carousel-image-1.webp",
+      "caption": ""
+    }
   ]
 }

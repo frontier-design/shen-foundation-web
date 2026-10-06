@@ -4,7 +4,7 @@ import { colors, type, easing, duration } from '../../theme.js'
 import { getExhibition, mediaUrl, accentImage, exhibitionArtist, artistSlug, toPlainText } from '../../content.js'
 import RichText from '../../components/RichText.jsx'
 import { linkProps } from '../../router.jsx'
-import { imageProps, SIZES } from '../../images.js'
+import { SIZES } from '../../images.js'
 import Media from '../../components/Media.jsx'
 import { useImageAccent } from '../../hooks/useImageAccent.js'
 
@@ -137,7 +137,8 @@ const GalleryFigure = styled.figure`
     ${bleedBoth(GRID.PADDING_MOBILE)}
   }
 
-  img {
+  img,
+  video {
     display: block;
     width: 100%;
     height: auto;
@@ -226,8 +227,11 @@ function Exhibition({ slug }) {
       {gallery.length > 0 ? (
         <Gallery>
           {gallery.map((entry, index) => {
-            const src = mediaUrl(entry.image)
-            if (!src) return null
+            const isVideoItem = entry.type === 'video'
+            if (entry.type && entry.type !== 'image' && !isVideoItem) return null
+            const src = mediaUrl(isVideoItem ? entry.poster : entry.image)
+            const video = isVideoItem ? mediaUrl(entry.video) : null
+            if (!src && !video) return null
 
             const side = index % 2 === 0 ? 'left' : 'right'
             const placement =
@@ -238,7 +242,7 @@ function Exhibition({ slug }) {
             return (
               <GridCell key={index} {...placement}>
                 <GalleryFigure $side={side}>
-                  <img {...imageProps(src, SIZES.card)} alt={entry.caption || ''} />
+                  <Media image={src} video={video} sizes={SIZES.card} posterWidth={1280} alt={entry.caption || ''} />
                   {entry.caption ? (
                     <GalleryCaption>
                       <span>{entry.caption}</span>
