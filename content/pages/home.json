@@ -31,5 +31,6 @@
     "content/exhibitions/dynamic-spaces.json",
     "content/exhibitions/curtain-call.json",
     "content/exhibitions/soft-machines.json"
-  ]
+  ],
+  "videoStatus": "✗ This video is 155 MB; please export a version under 20 MB and try again. (Oct 6, 16:50)"
 }
