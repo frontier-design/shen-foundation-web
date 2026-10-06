@@ -471,7 +471,7 @@ content:
         list:
           collapsible:
             collapsed: true
-            summary: "#{index} {caption} {image}"
+            summary: "#{index}"
         blocks:
           - name: image
             label: Image
