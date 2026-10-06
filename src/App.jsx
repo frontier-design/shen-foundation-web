@@ -61,10 +61,17 @@ const PageLayer = styled.div`
       position: fixed;
       inset: 0;
       z-index: 10;
-      overflow: hidden;
+      overflow-x: hidden;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      scrollbar-width: none;
       background-color: ${colors.white};
       animation: ${slideIn} ${duration.slow}s ${easing.reveal} both;
       will-change: transform;
+
+      &::-webkit-scrollbar {
+        display: none;
+      }
     `}
 `
 
@@ -130,6 +137,8 @@ function App() {
   const loaderRef = useRef(null)
   const positionsRef = useRef(new Map())
   const baseKeyRef = useRef(null)
+  const overlayRef = useRef(null)
+  const handoffRef = useRef(null)
 
   if (prevPath !== pathname) {
     setPrevPath(pathname)
@@ -174,10 +183,29 @@ function App() {
 
   useLayoutEffect(() => {
     baseKeyRef.current = historyKey()
-    if (lastNavigationType() !== 'pop') return
-    const y = positionsRef.current.get(baseKeyRef.current)
+    const handoff = handoffRef.current
+    handoffRef.current = null
+    const y = handoff ? handoff.y : lastNavigationType() === 'pop' ? positionsRef.current.get(baseKeyRef.current) : 0
     if (y) window.scrollTo(0, y)
   }, [base])
+
+  useLayoutEffect(() => {
+    const overlay = overlayRef.current
+    if (!incoming || !overlay) return undefined
+    const target = lastNavigationType() === 'pop' ? positionsRef.current.get(historyKey()) || 0 : 0
+    const state = { target, touched: false, y: target }
+    handoffRef.current = state
+    overlay.scrollTop = target
+    const touch = () => {
+      state.touched = true
+    }
+    overlay.addEventListener('wheel', touch, { passive: true })
+    overlay.addEventListener('touchmove', touch, { passive: true })
+    return () => {
+      overlay.removeEventListener('wheel', touch)
+      overlay.removeEventListener('touchmove', touch)
+    }
+  }, [incoming])
 
   useEffect(() => {
     const save = () => {
@@ -195,6 +223,8 @@ function App() {
 
   const finishTransition = (e) => {
     if (e.target !== e.currentTarget) return
+    const handoff = handoffRef.current
+    if (handoff) handoff.y = handoff.touched ? e.currentTarget.scrollTop : handoff.target
     setBase(incoming)
     setIncoming(null)
   }
@@ -209,7 +239,7 @@ function App() {
         <RouteView pathname={base.path} />
       </PageLayer>
       {incoming !== null ? (
-        <PageLayer key={incoming.id} $overlay onAnimationEnd={finishTransition}>
+        <PageLayer key={incoming.id} ref={overlayRef} $overlay onAnimationEnd={finishTransition}>
           <RouteView pathname={incoming.path} />
         </PageLayer>
       ) : null}
