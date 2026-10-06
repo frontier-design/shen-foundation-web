@@ -1,11 +1,11 @@
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import styled, { css } from 'styled-components'
-import { Grid, GridCell, GRID } from '../../grid'
+import { Grid, GridCell, GRID, useMediaQuery } from '../../grid'
 import { colors, type, easing, duration, aspect } from '../../theme.js'
 import { getArtist, mediaUrl, accentImage, artistExhibitions, exhibitionSlug, toPlainText } from '../../content.js'
 import RichText from '../../components/RichText.jsx'
 import { useImageAccent } from '../../hooks/useImageAccent.js'
-import { useWheelForward } from '../../hooks/useWheelForward.js'
+import { useScrollColumn } from '../../hooks/useScrollColumn.js'
 import { linkProps } from '../../router.jsx'
 import { SIZES } from '../../images.js'
 import { blobVideo } from '../../videos.js'
@@ -28,17 +28,70 @@ const Layout = styled(Grid)`
   }
 `
 
-const Left = styled(GridCell)`
-  display: grid;
-  grid-template-rows: 1fr auto;
+const NAME_TOP = 'clamp(96px, 12vh, 180px)'
+const FADE = '96px'
+const FIVE_COLUMNS = `calc((min(${GRID.MAX_WIDTH}px, 100vw) - ${2 * GRID.PADDING + 11 * GRID.GAP}px) / 12 * 5 + ${4 * GRID.GAP}px)`
+
+const column = css`
   height: 100%;
   min-height: 0;
-  padding-top: clamp(96px, 12vh, 180px);
-  padding-bottom: clamp(24px, 3vw, 40px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  &:focus-visible {
+    outline: 1px solid ${colors.gray};
+    outline-offset: -1px;
+  }
+`
+
+// The bio scrolls in its own column on desktop. Text fades out under the nav
+// logo, and a soft fade at the bottom edge shows that more text follows.
+const Left = styled(GridCell)`
+  ${column}
+  margin-left: -${GRID.PADDING}px;
+  padding-left: ${GRID.PADDING}px;
+  --fade-bottom: #000;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 84px, #000 calc(${NAME_TOP} + 32px), #000 calc(100% - ${FADE}), var(--fade-bottom));
+  mask-image: linear-gradient(to bottom, transparent 84px, #000 calc(${NAME_TOP} + 32px), #000 calc(100% - ${FADE}), var(--fade-bottom));
+
+  &[data-more='below'],
+  &[data-more='both'] {
+    --fade-bottom: transparent;
+  }
 
   @media ${GRID.MEDIA_TABLET} {
     height: auto;
+    overflow: visible;
+    margin-left: 0;
+    padding-left: 0;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+`
+
+// First screen: the name centred above the bio, the bio ending at the bottom.
+// A long bio starts no higher than 60% down the first screen and continues
+// below the fold.
+const LeftContent = styled.div`
+  display: grid;
+  grid-template-rows: minmax(calc(60dvh - ${NAME_TOP}), 1fr) auto;
+  min-height: 100%;
+  max-width: ${FIVE_COLUMNS};
+  padding-top: ${NAME_TOP};
+  padding-bottom: clamp(24px, 3vw, 40px);
+
+  @media ${GRID.MEDIA_TABLET} {
     grid-template-rows: auto auto;
+    max-width: none;
     padding-top: clamp(96px, 14vh, 140px);
     padding-bottom: 0;
     row-gap: clamp(32px, 8vw, 48px);
@@ -69,15 +122,8 @@ const Bio = styled(RichText)`
 `
 
 const Right = styled(GridCell)`
-  height: 100%;
-  min-height: 0;
-  overflow-y: auto;
-  scrollbar-width: none;
+  ${column}
   margin-right: -${GRID.PADDING}px;
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
 
   @media ${GRID.MEDIA_TABLET} {
     height: auto;
@@ -187,11 +233,38 @@ function ExhibitionEntry({ item }) {
   )
 }
 
+const SCROLL_KEYS = new Set([' ', 'PageDown', 'PageUp', 'ArrowDown', 'ArrowUp', 'Home', 'End'])
+const LINE = 40
+
+// With nothing focused, scrolling keys move the right column (the default one);
+// a focused column scrolls itself natively.
+function useDefaultKeyboardColumn(ref, enabled) {
+  useEffect(() => {
+    if (!enabled) return undefined
+    const onKey = (e) => {
+      const panel = ref.current
+      const idle = e.target === document.body || e.target === document.documentElement
+      if (!panel || !idle || e.defaultPrevented || e.altKey || e.ctrlKey || e.metaKey || !SCROLL_KEYS.has(e.key)) return
+      const page = panel.clientHeight * 0.9
+      const deltas = { ' ': e.shiftKey ? -page : page, PageDown: page, PageUp: -page, ArrowDown: LINE, ArrowUp: -LINE }
+      e.preventDefault()
+      if (e.key === 'Home') panel.scrollTo({ top: 0 })
+      else if (e.key === 'End') panel.scrollTo({ top: panel.scrollHeight })
+      else panel.scrollBy({ top: deltas[e.key], behavior: e.key.startsWith('Arrow') ? 'auto' : 'smooth' })
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [ref, enabled])
+}
+
 function IndividualArtist({ slug }) {
   const item = getArtist(slug)
-  const sectionRef = useRef(null)
+  const leftRef = useRef(null)
   const rightRef = useRef(null)
-  useWheelForward(sectionRef, rightRef)
+  const stacked = useMediaQuery(GRID.MEDIA_TABLET)
+  useScrollColumn(leftRef, 'artist-left')
+  useScrollColumn(rightRef, 'artist-right')
+  useDefaultKeyboardColumn(rightRef, !stacked)
 
   if (!item) return null
 
@@ -200,14 +273,32 @@ function IndividualArtist({ slug }) {
   const shows = artistExhibitions(item)
 
   return (
-    <Section ref={sectionRef} data-nav-tone-left="light" data-nav-tone-right="dark">
+    <Section data-nav-tone-left="light" data-nav-tone-right="dark">
       <Layout>
-        <Left $start={1} $span={5} $startTablet={1} $spanTablet={8}>
-          {item.title ? <Name>{item.title}</Name> : null}
-          {toPlainText(item.bio) ? <Bio html={item.bio} /> : null}
+        <Left
+          ref={leftRef}
+          $start={1}
+          $span={6}
+          $startTablet={1}
+          $spanTablet={8}
+          data-artist-column="left"
+          {...(stacked ? {} : { tabIndex: 0, 'aria-label': item.title ? `About ${item.title}` : 'About the artist' })}
+        >
+          <LeftContent>
+            {item.title ? <Name>{item.title}</Name> : null}
+            {toPlainText(item.bio) ? <Bio html={item.bio} /> : null}
+          </LeftContent>
         </Left>
 
-        <Right ref={rightRef} $start={7} $end={-1} $startTablet={1} $spanTablet={8}>
+        <Right
+          ref={rightRef}
+          $start={7}
+          $end={-1}
+          $startTablet={1}
+          $spanTablet={8}
+          data-artist-column="right"
+          {...(stacked ? {} : { tabIndex: 0, 'aria-label': 'Portrait and exhibitions' })}
+        >
           <Feed>
             {thumbnail || thumbnailVideo ? (
               <FeedImage $fill>
