@@ -1,5 +1,11 @@
 import { backgroundPlayerUrl } from './embedUrl.js'
 
+// YouTube shows its title, or a pause icon after a restart, over the first seconds.
+const YOUTUBE_REVEAL_AFTER = 4.5
+// Seek back this far before the end, before YouTube's end screen can appear.
+const YOUTUBE_LOOP_MARGIN = 0.5
+const FADE = 0.6
+
 const FRAME_STYLE = {
   position: 'absolute',
   top: '50%',
@@ -10,12 +16,14 @@ const FRAME_STYLE = {
   border: '0',
   pointerEvents: 'none',
   opacity: '0',
-  transition: 'opacity 0.6s ease',
+  transition: `opacity ${FADE}s ease`,
 }
 
 // Adds a muted looping YouTube/Vimeo player to `container`, sized to cover it.
 // It stays invisible until the provider reports that it's playing, so the image
-// underneath shows until then (and for good if the video can't play).
+// underneath shows until then, and for good if the video can't play. YouTube
+// overlays its title at the start and a pause icon after every restart, so
+// YouTube videos fade back to the image around each loop until those are gone.
 export function createBackgroundPlayer(container, info, { autoplay = true } = {}) {
   const { embed, ratio } = info
   const youtube = embed.provider === 'youtube'
@@ -32,6 +40,15 @@ export function createBackgroundPlayer(container, info, { autoplay = true } = {}
 
   let wanted = autoplay
   let shown = false
+  let duration = 0
+  let time = 0
+  let state = -1
+  let looping = false
+
+  const hide = () => {
+    shown = false
+    iframe.style.opacity = '0'
+  }
 
   const post = (message) => iframe.contentWindow?.postMessage(JSON.stringify(message), '*')
   const command = (name) =>
@@ -51,10 +68,23 @@ export function createBackgroundPlayer(container, info, { autoplay = true } = {}
       listen()
       return
     }
-    const playing = youtube
-      ? (data?.event === 'onStateChange' && data.info === 1) || (data?.event === 'infoDelivery' && data.info?.playerState === 1)
-      : ['play', 'playProgress', 'timeupdate'].includes(data?.event)
-    if (playing && !shown) {
+    let playing
+    if (youtube) {
+      const info = (data?.event === 'infoDelivery' || data?.event === 'initialDelivery') && data.info ? data.info : {}
+      if (data?.event === 'onStateChange') state = data.info
+      if (typeof info.playerState === 'number') state = info.playerState
+      if (info.duration) duration = info.duration
+      if (typeof info.currentTime === 'number') time = info.currentTime
+      const ending = state === 0 || (duration > YOUTUBE_REVEAL_AFTER * 2 && time > duration - YOUTUBE_LOOP_MARGIN - FADE)
+      if (ending && shown) hide()
+      if (!looping && (state === 0 || (duration > YOUTUBE_REVEAL_AFTER * 2 && time > duration - YOUTUBE_LOOP_MARGIN))) {
+        looping = true
+        time = 0
+        post({ event: 'command', func: 'seekTo', args: [0, true] })
+      } else if (looping && time < 1) looping = false
+      playing = state === 1 && time >= Math.min(YOUTUBE_REVEAL_AFTER, duration / 2 || YOUTUBE_REVEAL_AFTER)
+    } else playing = ['play', 'playProgress', 'timeupdate'].includes(data?.event)
+    if (playing && !shown && !looping) {
       shown = true
       iframe.style.opacity = '1'
     }

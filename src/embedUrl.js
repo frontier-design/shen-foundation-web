@@ -57,13 +57,14 @@ export function embedPlayerUrl(embed) {
     : `https://player.vimeo.com/video/${embed.id}?autoplay=1&dnt=1${embed.hash ? `&h=${embed.hash}` : ''}`
 }
 
-// Muted, looping, chrome-less player for background use. Vimeo hides its
-// controls in background mode only on paid plans.
+// Muted, chrome-less player for background use. YouTube loops are handled by
+// the page (see backgroundPlayer.js); Vimeo hides its controls in background
+// mode only on paid plans.
 export function backgroundPlayerUrl(embed, origin) {
   if (embed.provider === 'youtube') {
-    const params = new URLSearchParams({ autoplay: '1', mute: '1', loop: '1', playlist: embed.id, controls: '0', playsinline: '1', rel: '0', disablekb: '1', iv_load_policy: '3', enablejsapi: '1', ...(origin ? { origin } : {}) })
+    const params = new URLSearchParams({ autoplay: '1', mute: '1', controls: '0', playsinline: '1', rel: '0', disablekb: '1', fs: '0', iv_load_policy: '3', cc_load_policy: '0', enablejsapi: '1', ...(origin ? { origin } : {}) })
     return `https://www.youtube-nocookie.com/embed/${embed.id}?${params}`
   }
-  const params = new URLSearchParams({ background: '1', autoplay: '1', muted: '1', loop: '1', dnt: '1', api: '1', ...(embed.hash ? { h: embed.hash } : {}) })
+  const params = new URLSearchParams({ background: '1', autoplay: '1', muted: '1', loop: '1', controls: '0', title: '0', byline: '0', portrait: '0', badge: '0', vimeo_logo: '0', pip: '0', dnt: '1', api: '1', ...(embed.hash ? { h: embed.hash } : {}) })
   return `https://player.vimeo.com/video/${embed.id}?${params}`
 }
