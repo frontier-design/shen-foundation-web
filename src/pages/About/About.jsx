@@ -3,7 +3,8 @@ import { Grid, GridCell, GRID } from '../../grid'
 import { colors, type } from '../../theme.js'
 import { getPage, mediaUrl, toPlainText } from '../../content.js'
 import RichText from '../../components/RichText.jsx'
-import { imageProps, SIZES } from '../../images.js'
+import { SIZES } from '../../images.js'
+import Media from '../../components/Media.jsx'
 
 const bleed = (side, padding) =>
   side === 'right'
@@ -51,7 +52,8 @@ const HeroMedia = styled(GridCell)`
     margin-right: -${GRID.PADDING_MOBILE}px;
   }
 
-  img {
+  img,
+  video {
     position: absolute;
     inset: 0;
     display: block;
@@ -162,7 +164,8 @@ const PersonMedia = styled.div`
     margin-right: -${GRID.PADDING_MOBILE}px;
   }
 
-  img {
+  img,
+  video {
     display: block;
     width: 100%;
     height: 100%;
@@ -224,6 +227,7 @@ function IntroItem({ item }) {
 function PersonItem({ item, index }) {
   const side = index % 2 === 0 ? 'left' : 'right'
   const src = mediaUrl(item?.photo)
+  const video = mediaUrl(item?.photoVideo)
 
   const placement =
     side === 'left'
@@ -232,9 +236,9 @@ function PersonItem({ item, index }) {
 
   return (
     <Person {...placement}>
-      {src ? (
+      {src || video ? (
         <PersonMedia $side={side}>
-          <img {...imageProps(src, SIZES.card)} alt={item?.name || ''} />
+          <Media image={src} video={video} sizes={SIZES.card} posterWidth={1280} alt={item?.name || ''} />
         </PersonMedia>
       ) : null}
       {item?.name ? <PersonName>{item.name}</PersonName> : null}
@@ -250,15 +254,16 @@ function About() {
   if (!page) return null
 
   const heroSrc = mediaUrl(page.heroImage)
+  const heroVideo = mediaUrl(page.heroVideo)
   const intro = (page.intro || []).filter((item) => item?.title || toPlainText(item?.body))
   const people = page.people || []
 
   return (
     <main>
       <Hero data-nav-tone-left="dark" data-nav-tone-right="dark">
-        {heroSrc ? (
+        {heroSrc || heroVideo ? (
           <HeroMedia $start={1} $end={-1} $rowStart={1} $rowEnd={3}>
-            <img {...imageProps(heroSrc, SIZES.fullBleed)} alt="" />
+            <Media image={heroSrc} video={heroVideo} sizes={SIZES.fullBleed} alt="" />
           </HeroMedia>
         ) : null}
 

@@ -2,7 +2,7 @@
 media:
   input: public/media
   output: /media
-  categories: [image]
+  extensions: [jpg, jpeg, png, webp, avif, gif, mp4, webm]
   rename: safe
 
 content:
@@ -64,6 +64,13 @@ content:
             description: "Portrait only. Landscape images are not accepted here."
             options:
               categories: [image]
+              path: public/media
+          - name: imageVideo
+            label: Video (optional, portrait)
+            type: file
+            description: "Plays muted on a loop in place of the image. Portrait only. MP4 or WebM, ideally under 20 MB; remove location data from phone footage. Keep the image above: it shows while the video loads and for visitors who prefer reduced motion."
+            options:
+              extensions: [mp4, webm]
               path: public/media
       - name: grid
         label: Homepage grid
@@ -141,6 +148,13 @@ content:
         options:
           categories: [image]
           path: public/media
+      - name: heroVideo
+        label: Hero video (optional)
+        type: file
+        description: "Plays muted on a loop in place of the hero image. MP4 or WebM, ideally under 20 MB; remove location data from phone footage. Keep the image above: it shows while the video loads and for visitors who prefer reduced motion."
+        options:
+          extensions: [mp4, webm]
+          path: public/media
       - name: heroBody
         label: About Us body copy
         type: rich-text
@@ -203,6 +217,13 @@ content:
             options:
               categories: [image]
               path: public/media
+          - name: photoVideo
+            label: Video (optional)
+            type: file
+            description: "Plays muted on a loop in place of the photo. Use sparingly. MP4 or WebM, ideally under 20 MB; remove location data from phone footage. Keep the image above: it shows while the video loads and for visitors who prefer reduced motion."
+            options:
+              extensions: [mp4, webm]
+              path: public/media
 
   - name: artists
     label: Artists
@@ -240,6 +261,13 @@ content:
         type: image
         options:
           categories: [image]
+          path: public/media
+      - name: thumbnailVideo
+        label: Video (optional)
+        type: file
+        description: "Plays muted on a loop in place of the thumbnail on the artist's page. The Artists list still shows the thumbnail. MP4 or WebM, ideally under 20 MB; remove location data from phone footage. Keep the image above: it shows while the video loads and for visitors who prefer reduced motion."
+        options:
+          extensions: [mp4, webm]
           path: public/media
 
   - name: exhibitions
@@ -285,6 +313,13 @@ content:
         description: "Landscape only. Also used as the project thumbnail in grids. Portrait images are not accepted."
         options:
           categories: [image]
+          path: public/media
+      - name: heroVideo
+        label: Hero video (optional, landscape)
+        type: file
+        description: "Plays muted on a loop in place of the hero image, on this exhibition's page and in the homepage carousel. Grids still show the hero image. MP4 or WebM, ideally under 20 MB; remove location data from phone footage. Keep the image above: it shows while the video loads and for visitors who prefer reduced motion."
+        options:
+          extensions: [mp4, webm]
           path: public/media
       - name: startDate
         label: Start date
@@ -385,6 +420,13 @@ content:
         description: "Landscape only. Portrait images are not accepted."
         options:
           categories: [image]
+          path: public/media
+      - name: imageVideo
+        label: Video (optional, landscape)
+        type: file
+        description: "Plays muted on a loop in place of the image on this event's page. Grids still show the image. MP4 or WebM, ideally under 20 MB; remove location data from phone footage. Keep the image above: it shows while the video loads and for visitors who prefer reduced motion."
+        options:
+          extensions: [mp4, webm]
           path: public/media
       - name: sections
         label: Sections

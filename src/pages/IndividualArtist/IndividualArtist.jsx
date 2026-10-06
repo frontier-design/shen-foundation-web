@@ -8,6 +8,7 @@ import { useImageAccent } from '../../hooks/useImageAccent.js'
 import { useWheelForward } from '../../hooks/useWheelForward.js'
 import { linkProps } from '../../router.jsx'
 import { imageProps, SIZES } from '../../images.js'
+import Media from '../../components/Media.jsx'
 
 const Section = styled.main`
   width: 100%;
@@ -113,7 +114,8 @@ const FeedImage = styled.div`
           aspect-ratio: ${aspect.landscape};
         `}
 
-  img {
+  img,
+  video {
     display: block;
     width: 100%;
     height: 100%;
@@ -192,6 +194,7 @@ function IndividualArtist({ slug }) {
   if (!item) return null
 
   const thumbnail = mediaUrl(item.thumbnail)
+  const thumbnailVideo = mediaUrl(item.thumbnailVideo)
   const shows = artistExhibitions(item)
 
   return (
@@ -204,9 +207,9 @@ function IndividualArtist({ slug }) {
 
         <Right ref={rightRef} $start={7} $end={-1} $startTablet={1} $spanTablet={8}>
           <Feed>
-            {thumbnail ? (
+            {thumbnail || thumbnailVideo ? (
               <FeedImage $fill>
-                <img {...imageProps(thumbnail, SIZES.halfTall)} alt="" />
+                <Media image={thumbnail} video={thumbnailVideo} sizes={SIZES.halfTall} alt="" />
               </FeedImage>
             ) : null}
             {shows.map((ex) => (

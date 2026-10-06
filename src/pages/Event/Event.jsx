@@ -5,7 +5,8 @@ import { colors, fonts, type, easing, duration } from '../../theme.js'
 import { getEvent, mediaUrl, toPlainText } from '../../content.js'
 import RichText from '../../components/RichText.jsx'
 import { goBack } from '../../router.jsx'
-import { imageProps, SIZES } from '../../images.js'
+import { SIZES } from '../../images.js'
+import Media from '../../components/Media.jsx'
 import { useWheelForward } from '../../hooks/useWheelForward.js'
 
 const Section = styled.main`
@@ -54,7 +55,8 @@ const ImageViewport = styled.div`
   overflow: hidden;
   background-color: ${colors.gray};
 
-  img {
+  img,
+  video {
     display: block;
     width: 100%;
     height: 100%;
@@ -234,6 +236,7 @@ function Event({ slug }) {
   if (!item) return null
 
   const src = mediaUrl(item.image)
+  const video = mediaUrl(item.imageVideo)
   const sections = item.sections || []
 
   return (
@@ -241,7 +244,7 @@ function Event({ slug }) {
       <Layout>
         <ImageCell $start={1} $span={6} $startTablet={1} $spanTablet={8}>
           <ImageViewport>
-            {src ? <img {...imageProps(src, SIZES.halfTall)} alt={item.title || ''} /> : null}
+            <Media image={src} video={video} sizes={SIZES.halfTall} alt={item.title || ''} />
           </ImageViewport>
         </ImageCell>
 

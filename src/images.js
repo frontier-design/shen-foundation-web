@@ -36,3 +36,13 @@ export function imageProps(src, sizes) {
   if (!optimizable(src)) return { src, ...size }
   return { src: imageUrl(src), srcSet: imageSrcSet(src), sizes, ...size }
 }
+
+const VIDEO = /\.(mp4|webm)$/i
+
+export function isVideo(src) {
+  return typeof src === 'string' && VIDEO.test(src)
+}
+
+export function videoProps(src) {
+  return { src, ...dimensions(src) }
+}

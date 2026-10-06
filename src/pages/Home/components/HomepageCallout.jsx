@@ -3,7 +3,8 @@ import { Grid, GridCell, GRID } from '../../../grid/index.js'
 import { colors, type, easing, duration } from '../../../theme.js'
 import { mediaUrl, accentImage } from '../../../content.js'
 import { linkProps } from '../../../router.jsx'
-import { imageProps, SIZES } from '../../../images.js'
+import { SIZES } from '../../../images.js'
+import Media from '../../../components/Media.jsx'
 import { useImageAccent } from '../../../hooks/useImageAccent.js'
 
 const Section = styled.section`
@@ -119,7 +120,7 @@ const ImageViewport = styled.div`
   background-color: ${colors.gray};
 `
 
-const Image = styled.img`
+const Image = styled(Media)`
   position: absolute;
   top: 0;
   left: 0;
@@ -130,6 +131,7 @@ const Image = styled.img`
 
 function HomepageCallout({ callout }) {
   const src = mediaUrl(callout?.image)
+  const video = mediaUrl(callout?.video)
   const link = callout?.link || undefined
   const accent = useImageAccent(accentImage(callout) || src, colors.gray)
 
@@ -164,7 +166,7 @@ function HomepageCallout({ callout }) {
 
         <ImageCell $start={7} $end={-1} $startMobile={1} $endMobile={-1}>
           <ImageViewport>
-            {src ? <Image {...imageProps(src, SIZES.halfTall)} alt={callout?.title || ''} /> : null}
+            <Image image={src} video={video} sizes={SIZES.halfTall} alt={callout?.title || ''} />
           </ImageViewport>
         </ImageCell>
       </Layout>

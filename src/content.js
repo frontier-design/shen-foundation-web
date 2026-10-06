@@ -271,6 +271,7 @@ export function homeCallout(callout) {
     return {
       ...eventToCard(doc),
       image: callout.image || doc.image,
+      video: mediaUrl(callout.imageVideo),
       link: `/events/${eventSlug(doc)}`,
     }
   }
@@ -280,6 +281,7 @@ export function homeCallout(callout) {
   return {
     ...exhibitionToCard(doc),
     image: callout.image || doc.heroImage,
+    video: mediaUrl(callout.imageVideo),
     link: `/exhibitions/${exhibitionSlug(doc)}`,
   }
 }

@@ -5,6 +5,7 @@ import { getExhibition, mediaUrl, accentImage, exhibitionArtist, artistSlug, toP
 import RichText from '../../components/RichText.jsx'
 import { linkProps } from '../../router.jsx'
 import { imageProps, SIZES } from '../../images.js'
+import Media from '../../components/Media.jsx'
 import { useImageAccent } from '../../hooks/useImageAccent.js'
 
 const Hero = styled.div`
@@ -17,7 +18,8 @@ const Hero = styled.div`
     height: 50dvh;
   }
 
-  img {
+  img,
+  video {
     display: block;
     width: 100%;
     height: 100%;
@@ -178,6 +180,7 @@ const GalleryCaption = styled.figcaption`
 function Exhibition({ slug }) {
   const item = getExhibition(slug)
   const heroSrc = mediaUrl(item?.heroImage)
+  const heroVideo = mediaUrl(item?.heroVideo)
   const accent = useImageAccent(accentImage(item), colors.gray)
 
   if (!item) return null
@@ -187,9 +190,9 @@ function Exhibition({ slug }) {
 
   return (
     <main>
-      {heroSrc ? (
+      {heroSrc || heroVideo ? (
         <Hero data-nav-tone-left="dark" data-nav-tone-right="dark">
-          <img {...imageProps(heroSrc, SIZES.fullBleed)} alt={item.title || ''} />
+          <Media image={heroSrc} video={heroVideo} sizes={SIZES.fullBleed} alt={item.title || ''} />
         </Hero>
       ) : null}
 
