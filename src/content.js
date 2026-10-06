@@ -307,9 +307,11 @@ export function homeHeroSlides(slides = []) {
       const ex = refSlug(typeof row === 'string' ? row : row?.exhibition)
       const doc = ex && getExhibition(ex)
       const image = doc && mediaUrl(doc.heroImage)
-      if (!image) return null
+      const video = doc && mediaUrl(doc.heroVideo)
+      if (!image && !video) return null
       return {
         image,
+        video,
         link: `/exhibitions/${exhibitionSlug(doc)}`,
         title: doc.subtitle || doc.title || '',
       }
