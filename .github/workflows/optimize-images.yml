@@ -6,6 +6,7 @@ on:
       - preview
     paths:
       - public/media/**
+      - content/**
   workflow_dispatch:
     inputs:
       payload:
@@ -52,14 +53,16 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           for attempt in 1 2 3; do
             status=0
+            node scripts/optimize-images/embeds.mjs || status=$?
             node scripts/optimize-images/optimize.mjs || status=$?
             git add -u public/media
-            git add scripts/optimize-images/manifest.json
+            if [ -d public/media/embeds ]; then git add -A public/media/embeds; fi
+            git add scripts/optimize-images/manifest.json scripts/optimize-images/embeds.json
             if git diff --cached --quiet; then
               echo "Nothing to commit."
               exit $status
             fi
-            git commit -q -m "Optimize images" -m "Automated by .github/workflows/optimize-images.yml"
+            git commit -q -m "Optimize images and fetch video thumbnails" -m "Automated by .github/workflows/optimize-images.yml"
             if git push origin HEAD:preview; then
               exit $status
             fi

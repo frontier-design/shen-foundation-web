@@ -49,6 +49,10 @@ Formats it can't safely handle (HEIC, TIFF, GIF, SVG, AVIF) are left alone and l
 
 MP4 and WebM videos are never re-encoded or modified. The optimizer only records each video's width, height (corrected for phone rotation) and duration in the manifest, so the site can reserve space for it before it loads. Compress videos before uploading: export MP4 (H.264), ideally under 20 MB. The run summary warns about videos over 20 MB, and strongly over 50 MB (GitHub rejects files over 100 MB, and every version of a video stays in the repository's history). Other video formats (MOV, AVI, …) are listed as unsupported; export them as MP4. Video metadata isn't cleaned, so remove location data when exporting phone footage.
 
+### YouTube and Vimeo videos
+
+Exhibition galleries and events can show YouTube or Vimeo videos by link. Nothing is loaded from YouTube or Vimeo until a visitor presses play (then `youtube-nocookie.com`, or Vimeo with `dnt=1`). `scripts/optimize-images/embeds.mjs` finds every YouTube/Vimeo `url` in `content/`, fetches its thumbnail, title and aspect ratio through the provider's oEmbed API, saves the thumbnail to `public/media/embeds/` and records it in `scripts/optimize-images/embeds.json`; thumbnails of links that are no longer used are removed. The Optimize images workflow runs it on every content change, and Publish waits until every link has been fetched. Links that fail (private, deleted, embedding disabled) are recorded with the error, retried on each run, and shown with a plain placeholder unless an editor adds a thumbnail.
+
 ### Never optimize a file
 
 Add it to `scripts/optimize-images/exclude.json`. Paths start with `/media/`; `*` matches within a folder and `**` across folders:
@@ -61,7 +65,7 @@ Excluded files are never modified, not even their metadata.
 
 ### Automatic runs
 
-`.github/workflows/optimize-images.yml` runs the optimizer whenever something under `public/media/` is pushed to `preview` (for example an upload in Pages CMS), and commits the result back to `preview` as "Optimize images", usually within a minute or two. It can also be started by hand from the repo's Actions tab.
+`.github/workflows/optimize-images.yml` runs the optimizer (and the video thumbnail fetcher) whenever something under `public/media/` or `content/` is pushed to `preview` (for example an upload in Pages CMS), and commits the result back to `preview` as "Optimize images", usually within a minute or two. It can also be started by hand from the repo's Actions tab.
 
 - It never loops: its own push uses `GITHUB_TOKEN`, which doesn't trigger workflows, and already-optimized files are skipped.
 - If an editor commits while it's running, its push is rejected; it then redoes the run on the new `preview` tip (up to 3 times). Editors' saves are never overwritten.
