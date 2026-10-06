@@ -30,3 +30,6 @@ CLAUDE.md
 
 # Generated image quality comparison pages (scripts/quality-compare)
 .quality-compare/
+
+.env
+.env.local

@@ -1,5 +1,7 @@
 {
-  "rewrites": [{ "source": "/(.*)", "destination": "/" }],
+  "rewrites": [
+    { "source": "/((?!api/).*)", "destination": "/" }
+  ],
   "images": {
     "sizes": [640, 960, 1280, 1920],
     "qualities": [80],
