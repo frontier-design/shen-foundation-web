@@ -14,6 +14,28 @@ content:
     operations:
       delete: false
       rename: false
+    actions:
+      - name: add-video
+        label: Add video
+        workflow: add-video.yml
+        ref: preview
+        confirm:
+          title: Add a video
+          message: "Save your changes first. Paste a Google Drive or Dropbox link to one MP4 (H.264) file under 20 MB, shared with 'Anyone with the link'. It takes about a minute; then reload this page and check Video status."
+          button: Add video
+        fields:
+          - name: spot
+            label: Which spot?
+            type: select
+            required: true
+            default: callout
+            options:
+              - label: "Homepage callout"
+                value: callout
+          - name: link
+            label: Video link (Google Drive or Dropbox)
+            type: text
+            required: true
     fields:
       - name: heroSlides
         label: Hero carousel
@@ -66,12 +88,17 @@ content:
               categories: [image]
               path: public/media
           - name: imageVideo
-            label: Video link (optional)
+            label: Video (optional)
             type: string
-            description: "YouTube or Vimeo link. Plays silently on a loop."
+            description: "Added with \"Add video\" at the top of this page. Clear this field to remove the video."
             pattern:
-              regex: '^$|(youtube\.com/(watch\?(.*&)?v=|shorts/|embed/|live/)[A-Za-z0-9_-]{11}|youtu\.be/[A-Za-z0-9_-]{11}|youtube-nocookie\.com/embed/[A-Za-z0-9_-]{11}|vimeo\.com/(.*/)?[0-9]+)'
-              message: "Paste a YouTube or Vimeo video link."
+              regex: '^$|^https://[a-z0-9]+\.public\.blob\.vercel-storage\.com/videos/[a-z0-9-]+/\d+x\d+\.(mp4|webm)$|(youtube\.com/(watch\?(.*&)?v=|shorts/|embed/|live/)[A-Za-z0-9_-]{11}|youtu\.be/[A-Za-z0-9_-]{11}|youtube-nocookie\.com/embed/[A-Za-z0-9_-]{11}|vimeo\.com/(.*/)?[0-9]+)'
+              message: "Use \"Add video\" at the top of this page to add a video."
+      - name: videoStatus
+        label: Video status
+        type: text
+        readonly: true
+        description: "The result of the last \"Add video\". Filled in automatically: reload this page when it has finished."
       - name: grid
         label: Homepage grid
         type: block
@@ -140,6 +167,33 @@ content:
     operations:
       delete: false
       rename: false
+    actions:
+      - name: add-video
+        label: Add video
+        workflow: add-video.yml
+        ref: preview
+        confirm:
+          title: Add a video
+          message: "Save your changes first. Paste a Google Drive or Dropbox link to one MP4 (H.264) file under 20 MB, shared with 'Anyone with the link'. It takes about a minute; then reload this page and check Video status."
+          button: Add video
+        fields:
+          - name: spot
+            label: Which spot?
+            type: select
+            required: true
+            default: hero
+            options:
+              - label: "Hero"
+                value: hero
+              - label: "A person's photo"
+                value: person
+          - name: link
+            label: Video link (Google Drive or Dropbox)
+            type: text
+            required: true
+          - name: person
+            label: "Person's name (only for a person's photo)"
+            type: text
     fields:
       - name: heroImage
         label: Hero image (full bleed)
@@ -149,12 +203,17 @@ content:
           categories: [image]
           path: public/media
       - name: heroVideo
-        label: Video link (optional)
+        label: Video (optional)
         type: string
-        description: "YouTube or Vimeo link. Plays silently on a loop."
+        description: "Added with \"Add video\" at the top of this page. Clear this field to remove the video."
         pattern:
-          regex: '^$|(youtube\.com/(watch\?(.*&)?v=|shorts/|embed/|live/)[A-Za-z0-9_-]{11}|youtu\.be/[A-Za-z0-9_-]{11}|youtube-nocookie\.com/embed/[A-Za-z0-9_-]{11}|vimeo\.com/(.*/)?[0-9]+)'
-          message: "Paste a YouTube or Vimeo video link."
+          regex: '^$|^https://[a-z0-9]+\.public\.blob\.vercel-storage\.com/videos/[a-z0-9-]+/\d+x\d+\.(mp4|webm)$|(youtube\.com/(watch\?(.*&)?v=|shorts/|embed/|live/)[A-Za-z0-9_-]{11}|youtu\.be/[A-Za-z0-9_-]{11}|youtube-nocookie\.com/embed/[A-Za-z0-9_-]{11}|vimeo\.com/(.*/)?[0-9]+)'
+          message: "Use \"Add video\" at the top of this page to add a video."
+      - name: videoStatus
+        label: Video status
+        type: text
+        readonly: true
+        description: "The result of the last \"Add video\". Filled in automatically: reload this page when it has finished."
       - name: heroBody
         label: About Us body copy
         type: rich-text
@@ -218,12 +277,12 @@ content:
               categories: [image]
               path: public/media
           - name: photoVideo
-            label: Video link (optional)
+            label: Video (optional)
             type: string
-            description: "YouTube or Vimeo link. Plays silently on a loop."
+            description: "Added with \"Add video\" at the top of this page. Clear this field to remove the video."
             pattern:
-              regex: '^$|(youtube\.com/(watch\?(.*&)?v=|shorts/|embed/|live/)[A-Za-z0-9_-]{11}|youtu\.be/[A-Za-z0-9_-]{11}|youtube-nocookie\.com/embed/[A-Za-z0-9_-]{11}|vimeo\.com/(.*/)?[0-9]+)'
-              message: "Paste a YouTube or Vimeo video link."
+              regex: '^$|^https://[a-z0-9]+\.public\.blob\.vercel-storage\.com/videos/[a-z0-9-]+/\d+x\d+\.(mp4|webm)$|(youtube\.com/(watch\?(.*&)?v=|shorts/|embed/|live/)[A-Za-z0-9_-]{11}|youtu\.be/[A-Za-z0-9_-]{11}|youtube-nocookie\.com/embed/[A-Za-z0-9_-]{11}|vimeo\.com/(.*/)?[0-9]+)'
+              message: "Use \"Add video\" at the top of this page to add a video."
 
   - name: artists
     label: Artists
@@ -241,6 +300,29 @@ content:
       default:
         sort: title
         order: asc
+    actions:
+      - name: add-video
+        label: Add video
+        workflow: add-video.yml
+        ref: preview
+        scope: entry
+        confirm:
+          title: Add a video
+          message: "Save your changes first. Paste a Google Drive or Dropbox link to one MP4 (H.264) file under 20 MB, shared with 'Anyone with the link'. It takes about a minute; then reload this page and check Video status."
+          button: Add video
+        fields:
+          - name: spot
+            label: Which spot?
+            type: select
+            required: true
+            default: thumbnail
+            options:
+              - label: "Thumbnail"
+                value: thumbnail
+          - name: link
+            label: Video link (Google Drive or Dropbox)
+            type: text
+            required: true
     fields:
       - name: title
         label: Artist
@@ -263,12 +345,17 @@ content:
           categories: [image]
           path: public/media
       - name: thumbnailVideo
-        label: Video link (optional)
+        label: Video (optional)
         type: string
-        description: "YouTube or Vimeo link. Plays silently on a loop."
+        description: "Added with \"Add video\" at the top of this page. Clear this field to remove the video."
         pattern:
-          regex: '^$|(youtube\.com/(watch\?(.*&)?v=|shorts/|embed/|live/)[A-Za-z0-9_-]{11}|youtu\.be/[A-Za-z0-9_-]{11}|youtube-nocookie\.com/embed/[A-Za-z0-9_-]{11}|vimeo\.com/(.*/)?[0-9]+)'
-          message: "Paste a YouTube or Vimeo video link."
+          regex: '^$|^https://[a-z0-9]+\.public\.blob\.vercel-storage\.com/videos/[a-z0-9-]+/\d+x\d+\.(mp4|webm)$|(youtube\.com/(watch\?(.*&)?v=|shorts/|embed/|live/)[A-Za-z0-9_-]{11}|youtu\.be/[A-Za-z0-9_-]{11}|youtube-nocookie\.com/embed/[A-Za-z0-9_-]{11}|vimeo\.com/(.*/)?[0-9]+)'
+          message: "Use \"Add video\" at the top of this page to add a video."
+      - name: videoStatus
+        label: Video status
+        type: text
+        readonly: true
+        description: "The result of the last \"Add video\". Filled in automatically: reload this page when it has finished."
 
   - name: exhibitions
     label: Exhibitions
@@ -286,6 +373,34 @@ content:
       default:
         sort: title
         order: asc
+    actions:
+      - name: add-video
+        label: Add video
+        workflow: add-video.yml
+        ref: preview
+        scope: entry
+        confirm:
+          title: Add a video
+          message: "Save your changes first. Paste a Google Drive or Dropbox link to one MP4 (H.264) file under 20 MB, shared with 'Anyone with the link'. It takes about a minute; then reload this page and check Video status."
+          button: Add video
+        fields:
+          - name: spot
+            label: Which spot?
+            type: select
+            required: true
+            default: hero
+            options:
+              - label: "Hero (also plays in the homepage carousel)"
+                value: hero
+              - label: "Add to gallery"
+                value: gallery
+          - name: link
+            label: Video link (Google Drive or Dropbox)
+            type: text
+            required: true
+          - name: caption
+            label: Gallery caption (optional)
+            type: text
     fields:
       - name: title
         label: Title
@@ -315,12 +430,17 @@ content:
           categories: [image]
           path: public/media
       - name: heroVideo
-        label: Video link (optional)
+        label: Video (optional)
         type: string
-        description: "YouTube or Vimeo link; loops silently, also in carousel."
+        description: "Added with \"Add video\" at the top of this page (it also plays in the homepage carousel). Clear this field to remove the video."
         pattern:
-          regex: '^$|(youtube\.com/(watch\?(.*&)?v=|shorts/|embed/|live/)[A-Za-z0-9_-]{11}|youtu\.be/[A-Za-z0-9_-]{11}|youtube-nocookie\.com/embed/[A-Za-z0-9_-]{11}|vimeo\.com/(.*/)?[0-9]+)'
-          message: "Paste a YouTube or Vimeo video link."
+          regex: '^$|^https://[a-z0-9]+\.public\.blob\.vercel-storage\.com/videos/[a-z0-9-]+/\d+x\d+\.(mp4|webm)$|(youtube\.com/(watch\?(.*&)?v=|shorts/|embed/|live/)[A-Za-z0-9_-]{11}|youtu\.be/[A-Za-z0-9_-]{11}|youtube-nocookie\.com/embed/[A-Za-z0-9_-]{11}|vimeo\.com/(.*/)?[0-9]+)'
+          message: "Use \"Add video\" at the top of this page to add a video."
+      - name: videoStatus
+        label: Video status
+        type: text
+        readonly: true
+        description: "The result of the last \"Add video\". Filled in automatically: reload this page when it has finished."
       - name: startDate
         label: Start date
         type: date
@@ -349,7 +469,7 @@ content:
         label: Gallery
         type: block
         blockKey: type
-        description: "Images and YouTube/Vimeo videos. Drag to reorder."
+        description: "Images and videos. Drag to reorder. Add videos with \"Add video\" at the top of this page; they are added at the end."
         list:
           collapsible:
             collapsed: true
@@ -390,6 +510,27 @@ content:
               - name: caption
                 label: Caption
                 type: string
+          - name: video
+            label: Video
+            fields:
+              - name: video
+                label: Video
+                type: string
+                required: true
+                description: "Added with \"Add video\" at the top of this page."
+                pattern:
+                  regex: '^https://[a-z0-9]+\.public\.blob\.vercel-storage\.com/videos/[a-z0-9-]+/\d+x\d+\.(mp4|webm)$'
+                  message: "Use \"Add video\" at the top of this page to add a video."
+              - name: poster
+                label: Poster image (optional)
+                type: image
+                description: "Shown before the video starts and for visitors who turn off motion."
+                options:
+                  categories: [image]
+                  path: public/media
+              - name: caption
+                label: Caption
+                type: string
 
   - name: events
     label: Events
@@ -407,6 +548,29 @@ content:
       default:
         sort: title
         order: asc
+    actions:
+      - name: add-video
+        label: Add video
+        workflow: add-video.yml
+        ref: preview
+        scope: entry
+        confirm:
+          title: Add a video
+          message: "Save your changes first. Paste a Google Drive or Dropbox link to one MP4 (H.264) file under 20 MB, shared with 'Anyone with the link'. It takes about a minute; then reload this page and check Video status."
+          button: Add video
+        fields:
+          - name: spot
+            label: Which spot?
+            type: select
+            required: true
+            default: background
+            options:
+              - label: "Background video"
+                value: background
+          - name: link
+            label: Video link (Google Drive or Dropbox)
+            type: text
+            required: true
     fields:
       - name: title
         label: Title
@@ -449,12 +613,17 @@ content:
           categories: [image]
           path: public/media
       - name: imageVideo
-        label: Background video link (optional)
+        label: Background video (optional)
         type: string
-        description: "YouTube or Vimeo link. Plays silently on a loop."
+        description: "Added with \"Add video\" at the top of this page. Clear this field to remove the video."
         pattern:
-          regex: '^$|(youtube\.com/(watch\?(.*&)?v=|shorts/|embed/|live/)[A-Za-z0-9_-]{11}|youtu\.be/[A-Za-z0-9_-]{11}|youtube-nocookie\.com/embed/[A-Za-z0-9_-]{11}|vimeo\.com/(.*/)?[0-9]+)'
-          message: "Paste a YouTube or Vimeo video link."
+          regex: '^$|^https://[a-z0-9]+\.public\.blob\.vercel-storage\.com/videos/[a-z0-9-]+/\d+x\d+\.(mp4|webm)$|(youtube\.com/(watch\?(.*&)?v=|shorts/|embed/|live/)[A-Za-z0-9_-]{11}|youtu\.be/[A-Za-z0-9_-]{11}|youtube-nocookie\.com/embed/[A-Za-z0-9_-]{11}|vimeo\.com/(.*/)?[0-9]+)'
+          message: "Use \"Add video\" at the top of this page to add a video."
+      - name: videoStatus
+        label: Video status
+        type: text
+        readonly: true
+        description: "The result of the last \"Add video\". Filled in automatically: reload this page when it has finished."
       - name: embed
         label: Video with sound (optional)
         type: object
