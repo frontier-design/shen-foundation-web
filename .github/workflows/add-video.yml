@@ -1,0 +1,54 @@
+name: Add video
+run-name: Add video to ${{ fromJSON(inputs.payload).context.path }}
+
+# Started by the "Add video" action in Pages CMS. Downloads the video from the
+# Google Drive or Dropbox link, checks it plays in all browsers (MP4/H.264 or
+# WebM, max 20 MB), uploads it unchanged to Vercel Blob and writes the link and
+# a "Video status" message into the entry on preview.
+
+on:
+  workflow_dispatch:
+    inputs:
+      payload:
+        description: Pages CMS payload as JSON
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: add-video-${{ fromJSON(inputs.payload).context.path }}
+  cancel-in-progress: false
+
+jobs:
+  add-video:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out preview
+        uses: actions/checkout@v4
+        with:
+          ref: preview
+          persist-credentials: false
+          sparse-checkout: |
+            api/_lib
+            scripts/add-video
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: scripts/add-video/package-lock.json
+
+      - name: Install
+        run: npm ci --prefix scripts/add-video
+
+      - name: Add video
+        env:
+          PAYLOAD: ${{ inputs.payload }}
+          GITHUB_CONTENT_TOKEN: ${{ github.token }}
+          VIDEO_JOB_SECRET: ${{ secrets.VIDEO_JOB_SECRET }}
+          VIDEO_TOKEN_URL: https://shen-foundation-web.vercel.app/api/video/token
+        run: node scripts/add-video/add-video.mjs
