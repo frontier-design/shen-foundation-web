@@ -19,6 +19,8 @@ const SETTINGS = {
   jpegQuality: 90,
   webpQuality: 90,
   minSaving: 0.1,
+  videoWarnMB: 20,
+  videoStrongWarnMB: 50,
 }
 
 const KEEP_TAGS = [
@@ -54,7 +56,7 @@ if (opts.help) {
   process.stdout.write(`Optimize images in public/media.
 
 Usage: npm run optimize-images [-- --dry-run] [-- --json report.json]
-       npm run optimize-images -- --check   (list images not optimized yet; exit 3 if any)
+       npm run optimize-images -- --check   (list images/videos not processed yet; exit 3 if any)
 
 Resizes images over ${SETTINGS.maxEdge}px, re-encodes JPEG at q${SETTINGS.jpegQuality} (4:4:4),
 WebP only when resizing, PNG losslessly with oxipng, and removes metadata except colour
@@ -62,11 +64,16 @@ profiles and ${KEEP_TAGS.join(', ')}. A file is only re-encoded when it was resi
 gets at least ${SETTINGS.minSaving * 100}% smaller; otherwise only its metadata is cleaned
 (pixel-exact). Files listed in exclude.json are never touched. Processed files are recorded
 in manifest.json and never processed again.
+
+Videos (MP4, WebM) are never re-encoded or modified: only their width, height and duration
+are recorded, and videos over ${SETTINGS.videoWarnMB} MB get a size warning.
 `)
   process.exit(0)
 }
 
 const PROCESSABLE = /\.(jpe?g|png|webp)$/i
+const VIDEO = /\.(mp4|webm)$/i
+const OTHER_VIDEO = /\.(mov|m4v|avi|wmv|flv|mpe?g|ogv|mkv|ts|3gp|3g2)$/i
 
 function readJson(file, fallback) {
   return fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, 'utf8')) : fallback
@@ -88,7 +95,7 @@ if (opts.check) {
   const done = new Set(Object.values(manifest.files).map((e) => e.sha256))
   const pending = []
   const failed = []
-  for (const file of walk(MEDIA).filter((f) => PROCESSABLE.test(f)).sort()) {
+  for (const file of walk(MEDIA).filter((f) => PROCESSABLE.test(f) || VIDEO.test(f)).sort()) {
     const p = rel(file)
     if (excludes.some((re) => re.test(p))) continue
     const sha = sha256(fs.readFileSync(file))
@@ -101,7 +108,7 @@ if (opts.check) {
     console.log(`Not optimized yet:\n  ${pending.join('\n  ')}`)
     process.exit(3)
   }
-  console.log('All images are optimized.')
+  console.log('All images and videos are processed.')
   process.exit(0)
 }
 
@@ -117,6 +124,7 @@ sharp.cache(false)
 const EXIFTOOL = path.join(path.dirname(require.resolve('exiftool-vendored.pl/package.json')), 'bin', 'exiftool')
 
 const kb = (n) => `${Math.round(n / 1024)} KB`
+const mb = (n) => `${(n / 1024 / 1024).toFixed(1)} MB`
 const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'optimize-images-'))
 process.on('exit', () => fs.rmSync(tmpDir, { recursive: true, force: true }))
 
@@ -238,6 +246,20 @@ async function processFile(file, oxipng) {
   return { action, note, before: original.length, after: final.length, width: outMeta.width, height: outMeta.height, sha: sha256(final) }
 }
 
+function probeVideo(file) {
+  const tags = JSON.parse(exiftool(['-j', '-n', '-ImageWidth', '-ImageHeight', '-Rotation', '-Duration', file]))[0] || {}
+  const { ImageWidth: w, ImageHeight: h, Rotation: rotation = 0, Duration: duration } = tags
+  if (!(w > 0 && h > 0)) throw new Error('could not read the video size; is the file a valid MP4/WebM?')
+  const turned = Math.abs(rotation) % 180 === 90
+  return { width: turned ? h : w, height: turned ? w : h, duration: duration > 0 ? Math.round(duration * 10) / 10 : undefined }
+}
+
+function videoSizeNote(bytes) {
+  if (bytes > SETTINGS.videoStrongWarnMB * 1024 * 1024) return { level: 'strong', text: `${mb(bytes)}: over ${SETTINGS.videoStrongWarnMB} MB. Every visitor downloads this and it stays in git history forever. Use a YouTube or Vimeo embed for long videos, or export a shorter clip at a lower bitrate.` }
+  if (bytes > SETTINGS.videoWarnMB * 1024 * 1024) return { level: 'warn', text: `${mb(bytes)}: over the recommended ${SETTINGS.videoWarnMB} MB. Consider exporting a shorter clip or at a lower bitrate.` }
+  return null
+}
+
 const IMAGE_EXT = /\.(jpe?g|png|webp|gif|avif|heic|heif|tiff?|bmp|svg)$/i
 const READABLE = /^[a-z0-9]+(-[a-z0-9]+)*$/
 
@@ -246,12 +268,13 @@ manifest.failed = {}
 manifest.settings = { ...SETTINGS, keepTags: KEEP_TAGS, oxipng: OXIPNG.version }
 const excludeConfig = readJson(EXCLUDE, { exclude: [] })
 const excludes = (excludeConfig.exclude || []).map(globToRegex)
-const files = walk(MEDIA).filter((f) => IMAGE_EXT.test(f)).sort()
+const files = walk(MEDIA).filter((f) => IMAGE_EXT.test(f) || VIDEO.test(f) || OTHER_VIDEO.test(f)).sort()
 const known = new Map(Object.entries(manifest.files).map(([p, e]) => [e.sha256, p]))
 
 let oxipng = null
 const report = []
 const nameWarnings = []
+const videoWarnings = []
 for (const file of files) {
   const p = rel(file)
   const segments = p.replace(/^\/media\//, '').split('/')
@@ -273,6 +296,25 @@ for (const file of files) {
     continue
   }
   const ext = path.extname(file).toLowerCase()
+  if (VIDEO.test(ext)) {
+    try {
+      const size = fs.statSync(file).size
+      const v = probeVideo(file)
+      const warning = videoSizeNote(size)
+      if (warning) videoWarnings.push({ path: p, ...warning })
+      manifest.files[p] = { sha256: sha, action: 'video', bytesBefore: size, bytesAfter: size, width: v.width, height: v.height, ...(v.duration ? { duration: v.duration } : {}) }
+      known.set(sha, p)
+      report.push({ path: p, action: 'video', before: size, after: size, width: v.width, height: v.height, note: [`${v.width}×${v.height}${v.duration ? `, ${v.duration}s` : ''}`, warning?.text].filter(Boolean).join('; ') })
+    } catch (e) {
+      manifest.failed[p] = { sha256: sha, note: e.message }
+      report.push({ path: p, action: 'error', note: e.message })
+    }
+    continue
+  }
+  if (OTHER_VIDEO.test(ext)) {
+    report.push({ path: p, action: 'unsupported', note: 'not all browsers can play this format; export as MP4 (H.264) and upload that instead' })
+    continue
+  }
   if (!/\.(jpe?g|png|webp)$/.test(ext)) {
     report.push({ path: p, action: 'unsupported', note: /\.(heic|heif|tiff?|bmp)$/.test(ext) ? 'browsers cannot display this format; convert to JPEG before uploading' : 'format is not optimized' })
     continue
@@ -301,13 +343,19 @@ const changed = report.filter((r) => ['resized', 'recompressed', 'lossless', 'me
 const saved = changed.reduce((s, r) => s + (r.before - r.after), 0)
 const lines = report.map((r) => `${r.action.padEnd(12)} ${r.before != null ? `${kb(r.before).padStart(8)} -> ${kb(r.after).padStart(8)}` : ''.padEnd(20)}  ${r.path}${r.note ? `  (${r.note})` : ''}`)
 console.log(lines.join('\n'))
-console.log(`\n${opts['dry-run'] ? '[dry run] ' : ''}${changed.length} changed, ${kb(saved)} saved, ${report.filter((r) => r.action === 'error').length} errors`)
+const videos = report.filter((r) => r.action === 'video')
+console.log(`\n${opts['dry-run'] ? '[dry run] ' : ''}${changed.length} changed, ${kb(saved)} saved, ${videos.length} new videos recorded, ${report.filter((r) => r.action === 'error').length} errors`)
+for (const w of videoWarnings) {
+  console.log(`\n${w.level === 'strong' ? 'VERY LARGE VIDEO' : 'Large video'}: ${w.path}\n  ${w.text}`)
+  if (process.env.GITHUB_ACTIONS) console.log(`::warning title=${w.level === 'strong' ? 'Very large video' : 'Large video'}::${w.path} is ${w.text}`)
+}
 if (nameWarnings.length) console.log(`\nNames that aren't lowercase and hyphenated (not renamed automatically):\n  ${nameWarnings.join('\n  ')}`)
 
 if (process.env.GITHUB_STEP_SUMMARY) {
   const rows = report.filter((r) => r.action !== 'skipped').map((r) => `| \`${r.path}\` | ${r.action} | ${r.before != null ? `${kb(r.before)} → ${kb(r.after)}` : ''} | ${r.note || ''} |`)
-  const md = [`### Image optimization`, '', `${changed.length} changed, ${kb(saved)} saved.`, '', rows.length ? ['| File | Action | Size | Note |', '|---|---|---|---|', ...rows].join('\n') : 'Nothing to do.', nameWarnings.length ? `\n**Names that aren't lowercase and hyphenated:** ${nameWarnings.map((n) => `\`${n}\``).join(', ')}` : ''].join('\n')
+  const sizeWarnings = videoWarnings.map((w) => `- ${w.level === 'strong' ? '**Very large video**' : '**Large video**'} \`${w.path}\`: ${w.text}`)
+  const md = [`### Image optimization`, '', `${changed.length} changed, ${kb(saved)} saved, ${videos.length} new videos recorded.`, '', ...(sizeWarnings.length ? [...sizeWarnings, ''] : []), rows.length ? ['| File | Action | Size | Note |', '|---|---|---|---|', ...rows].join('\n') : 'Nothing to do.', nameWarnings.length ? `\n**Names that aren't lowercase and hyphenated:** ${nameWarnings.map((n) => `\`${n}\``).join(', ')}` : ''].join('\n')
   fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, md + '\n')
 }
-if (opts.json) fs.writeFileSync(path.resolve(opts.json), JSON.stringify({ report, nameWarnings }, null, 2))
+if (opts.json) fs.writeFileSync(path.resolve(opts.json), JSON.stringify({ report, nameWarnings, videoWarnings }, null, 2))
 process.exitCode = report.some((r) => r.action === 'error') ? 1 : 0

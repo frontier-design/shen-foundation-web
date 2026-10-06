@@ -19,7 +19,7 @@ The preview site shows a "Preview" badge in the corner and is hidden from search
 
 Publish sends *everything* currently on `preview` live at once, including other people's unfinished edits. Check with anyone else who is editing before you publish.
 
-If you've just uploaded images, Publish may stop with **"Images are still being optimized"**. Nothing is published in that case; wait a minute or two and click Publish again.
+If you've just uploaded images or videos, Publish may stop with **"Images are still being optimized"**. Nothing is published in that case; wait a minute or two and click Publish again.
 
 ### Developers
 
@@ -45,6 +45,10 @@ What it does to each image that hasn't been processed before:
 
 Formats it can't safely handle (HEIC, TIFF, GIF, SVG, AVIF) are left alone and listed; HEIC and TIFF must be converted to JPEG before uploading because browsers can't show them. Filenames that aren't lowercase and hyphenated are listed as warnings but never renamed automatically.
 
+### Videos
+
+MP4 and WebM videos are never re-encoded or modified. The optimizer only records each video's width, height (corrected for phone rotation) and duration in the manifest, so the site can reserve space for it before it loads. Compress videos before uploading: export MP4 (H.264), ideally under 20 MB. The run summary warns about videos over 20 MB, and strongly over 50 MB (GitHub rejects files over 100 MB, and every version of a video stays in the repository's history). Other video formats (MOV, AVI, …) are listed as unsupported; export them as MP4. Video metadata isn't cleaned, so remove location data when exporting phone footage.
+
 ### Never optimize a file
 
 Add it to `scripts/optimize-images/exclude.json`. Paths start with `/media/`; `*` matches within a folder and `**` across folders:
@@ -61,7 +65,7 @@ Excluded files are never modified, not even their metadata.
 
 - It never loops: its own push uses `GITHUB_TOKEN`, which doesn't trigger workflows, and already-optimized files are skipped.
 - If an editor commits while it's running, its push is rejected; it then redoes the run on the new `preview` tip (up to 3 times). Editors' saves are never overwritten.
-- Publish refuses to run while an Optimize images run is in progress on `preview`, or while `npm run optimize-images -- --check` (run against `preview`) finds images that haven't been optimized yet. Images the optimizer failed on are recorded in the manifest and don't block Publishing; if the check itself can't run, Publish continues with a warning. Images synced from `main` by `sync-preview.yml` aren't picked up until the next upload or a manual run, so Publish waits for that.
+- Publish refuses to run while an Optimize images run is in progress on `preview`, or while `npm run optimize-images -- --check` (run against `preview`) finds images that haven't been optimized yet or videos whose size hasn't been recorded. Files the optimizer failed on are recorded in the manifest and don't block Publishing; if the check itself can't run, Publish continues with a warning. Images synced from `main` by `sync-preview.yml` aren't picked up until the next upload or a manual run, so Publish waits for that.
 - The run summary lists what changed and any filenames that aren't lowercase and hyphenated.
 
 ### Run it locally

@@ -48,7 +48,7 @@ jobs:
             echo "$out"
             if [ "$status" -eq 3 ]; then
               files=$(echo "$out" | sed -n 's/^  //p' | tr '\n' ' ')
-              block "These images on preview haven't been optimized yet: ${files}Wait a minute or two and click Publish again. If this keeps happening, run the Optimize images workflow from the repository's Actions tab."
+              block "These images or videos on preview haven't been processed yet: ${files}Wait a minute or two and click Publish again. If this keeps happening, run the Optimize images workflow from the repository's Actions tab."
             elif [ "$status" -ne 0 ]; then
               echo "::warning title=Image check skipped::The image optimization check failed to run (exit $status), so publishing continues without it."
             fi
