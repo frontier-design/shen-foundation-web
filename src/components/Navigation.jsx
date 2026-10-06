@@ -164,9 +164,9 @@ const columnsSpanWidth = (count) => {
   return count * colWidth + (count - 1) * gap
 }
 
-// Logo svg is `height: clamp(28px, 3.2vw, 44px)` with a 50:40 (1.25) aspect ratio.
+// Logo svg is `height: clamp(36px, 3.2vw, 44px)` with a 50:40 (1.25) aspect ratio.
 const logoNaturalWidth = () => {
-  const height = Math.min(Math.max(28, 0.032 * window.innerWidth), 44)
+  const height = Math.min(Math.max(36, 0.032 * window.innerWidth), 44)
   return height * (50 / 40)
 }
 
@@ -207,21 +207,17 @@ const LogoLink = styled.a`
 const Logo = styled.svg`
   display: block;
   width: auto;
-  height: clamp(28px, 3.2vw, 44px);
+  height: clamp(36px, 3.2vw, 44px);
   color: ${(props) => props.$color};
   fill: currentColor;
   transition: color ${duration.fast}s ${easing.reveal};
-
-  @media ${GRID.MEDIA_MOBILE} {
-    height: 36px;
-  }
 `
 
 const Plus = styled.button`
   position: relative;
   flex: none;
-  width: clamp(26px, 2.8vw, 34px);
-  height: clamp(26px, 2.8vw, 34px);
+  width: 34px;
+  height: 34px;
   padding: 0;
   border: none;
   background: none;
@@ -230,11 +226,6 @@ const Plus = styled.button`
   color: ${(props) => props.$color};
   opacity: ${(props) => (props.$hidden ? 0 : 1)};
   transition: opacity ${duration.base}s ${easing.reveal};
-
-  @media ${GRID.MEDIA_MOBILE} {
-    width: 34px;
-    height: 34px;
-  }
 
   &::before,
   &::after {
