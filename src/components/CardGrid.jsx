@@ -4,7 +4,8 @@ import { colors, type, easing, duration, aspect } from '../theme.js'
 import { mediaUrl, accentImage, isExhibition, exhibitionSlug, eventSlug } from '../content.js'
 import { useImageAccent } from '../hooks/useImageAccent.js'
 import { linkProps } from '../router.jsx'
-import { imageProps, SIZES } from '../images.js'
+import { SIZES } from '../images.js'
+import MediaContent from './Media.jsx'
 
 const bleed = (side, padding) =>
   side === 'right'
@@ -54,7 +55,8 @@ const Media = styled.div`
     margin-right: -${GRID.PADDING_MOBILE}px;
   }
 
-  img {
+  img,
+  video {
     display: block;
     width: 100%;
     height: 100%;
@@ -119,9 +121,9 @@ function GridItem({ item, index }) {
 
   const content = (
     <>
-      {src ? (
+      {src || item?.video ? (
         <Media $side={side}>
-          <img {...imageProps(src, SIZES.card)} alt={item?.title || ''} />
+          <MediaContent image={src} video={item?.video} sizes={SIZES.card} posterWidth={1280} alt={item?.title || ''} />
         </Media>
       ) : null}
       {item?.title ? <Title>{item.title}</Title> : null}

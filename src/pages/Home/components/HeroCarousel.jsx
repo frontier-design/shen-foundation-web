@@ -8,6 +8,7 @@ import { navigate } from '../../../router.jsx'
 import { imageProps, SIZES } from '../../../images.js'
 import { embedInfo } from '../../../embeds.js'
 import { createBackgroundPlayer } from '../../../backgroundPlayer.js'
+import { blobVideo, createVideoPlayer } from '../../../videos.js'
 import { isLoadingDone, onLoadingDone } from '../../../loading.js'
 
 gsap.registerPlugin(CustomEase)
@@ -104,8 +105,9 @@ function HeroCarousel({ slides = [] }) {
     const layerA = layerARef.current
     const layerB = layerBRef.current
     const list = JSON.parse(signature).map(([image, link]) => {
-      const info = link ? embedInfo(link) : null
-      return { image: image || info?.thumbnail || null, video: reduceMotion ? null : info }
+      const uploaded = blobVideo(link)
+      const info = !uploaded && link ? embedInfo(link) : null
+      return { image: image || info?.thumbnail || null, video: reduceMotion ? null : uploaded || info }
     })
     const n = list.length
 
@@ -122,7 +124,7 @@ function HeroCarousel({ slides = [] }) {
       if (!inView || document.hidden) return
       const player = players.get(layer)
       if (player) player.play()
-      else players.set(layer, createBackgroundPlayer(layer, video))
+      else players.set(layer, video.src ? createVideoPlayer(layer, video.src) : createBackgroundPlayer(layer, video))
     }
 
     const stop = (layer) => {

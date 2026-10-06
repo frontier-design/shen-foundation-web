@@ -3,7 +3,9 @@ import { Grid, GridCell, GRID } from '../../grid'
 import { colors, type } from '../../theme.js'
 import { getPage, orderedArtists, mediaUrl, artistSlug } from '../../content.js'
 import { linkProps } from '../../router.jsx'
-import { imageProps, SIZES } from '../../images.js'
+import { SIZES } from '../../images.js'
+import { blobVideo } from '../../videos.js'
+import MediaContent from '../../components/Media.jsx'
 
 const ScreenReaderTitle = styled.h1`
   position: absolute;
@@ -62,7 +64,8 @@ const Media = styled.div`
     margin-right: -${GRID.PADDING_MOBILE}px;
   }
 
-  img {
+  img,
+  video {
     display: block;
     width: 100%;
     height: 100%;
@@ -84,6 +87,7 @@ const Name = styled.h2`
 function ArtistItem({ item, index }) {
   const side = index % 2 === 0 ? 'left' : 'right'
   const src = mediaUrl(item?.thumbnail)
+  const video = blobVideo(item?.thumbnailVideo)?.src
 
   const placement =
     side === 'left'
@@ -93,9 +97,9 @@ function ArtistItem({ item, index }) {
   return (
     <Item {...placement}>
       <CardLink {...linkProps(`/artists/${artistSlug(item)}`)}>
-        {src ? (
+        {src || video ? (
           <Media $side={side}>
-            <img {...imageProps(src, SIZES.card)} alt={item?.title || ''} />
+            <MediaContent image={src} video={video} sizes={SIZES.card} posterWidth={1280} alt={item?.title || ''} />
           </Media>
         ) : null}
         {item?.title ? <Name>{item.title}</Name> : null}

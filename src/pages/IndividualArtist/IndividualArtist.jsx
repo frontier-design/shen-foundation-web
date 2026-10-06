@@ -7,7 +7,8 @@ import RichText from '../../components/RichText.jsx'
 import { useImageAccent } from '../../hooks/useImageAccent.js'
 import { useWheelForward } from '../../hooks/useWheelForward.js'
 import { linkProps } from '../../router.jsx'
-import { imageProps, SIZES } from '../../images.js'
+import { SIZES } from '../../images.js'
+import { blobVideo } from '../../videos.js'
 import Media from '../../components/Media.jsx'
 
 const Section = styled.main`
@@ -166,13 +167,14 @@ const CardLink = styled.a`
 
 function ExhibitionEntry({ item }) {
   const src = mediaUrl(item.heroImage)
+  const video = blobVideo(item.heroVideo)?.src
   const accent = useImageAccent(accentImage(item), colors.gray)
 
   return (
     <CardLink {...linkProps(`/exhibitions/${exhibitionSlug(item)}`)}>
-      {src ? (
+      {src || video ? (
         <FeedImage>
-          <img {...imageProps(src, SIZES.card)} alt={item.subtitle || ''} />
+          <Media image={src} video={video} sizes={SIZES.card} posterWidth={1280} alt={item.subtitle || ''} />
         </FeedImage>
       ) : null}
       <Meta>

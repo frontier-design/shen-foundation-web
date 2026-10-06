@@ -1,9 +1,10 @@
 import { useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import { useMediaQuery } from '../grid'
-import { imageProps } from '../images.js'
+import { imageProps, imageUrl } from '../images.js'
 import { embedInfo } from '../embeds.js'
 import { createBackgroundPlayer } from '../backgroundPlayer.js'
+import { blobVideo, watchVideo } from '../videos.js'
 
 const REDUCED_MOTION = '(prefers-reduced-motion: reduce)'
 
@@ -55,12 +56,56 @@ function BackgroundVideo({ link, image, sizes, alt, className, style }) {
   )
 }
 
-// An image, or a muted looping YouTube/Vimeo video over that image. Videos load
-// when near the screen and pause off screen; with reduced motion only the image
-// (or the video's thumbnail) is shown.
-function Media({ image, video, sizes, alt = '', className, style, ...rest }) {
+function NativeVideo({ video, poster, play, alt, className, style }) {
+  const ref = useRef(null)
+
+  useEffect(() => {
+    const element = ref.current
+    if (!element || !play) return undefined
+    element.muted = true
+    return watchVideo(element)
+  }, [video.src, play])
+
+  return (
+    <video
+      ref={ref}
+      className={className}
+      style={style}
+      src={poster ? video.src : `${video.src}#t=0.001`}
+      poster={poster}
+      width={video.width}
+      height={video.height}
+      muted
+      loop
+      playsInline
+      crossOrigin="anonymous"
+      preload={poster ? 'none' : 'metadata'}
+      disablePictureInPicture
+      {...(alt ? { role: 'img', 'aria-label': alt } : { 'aria-hidden': true })}
+    />
+  )
+}
+
+// An image, or a muted looping video over that image. Uploaded videos play
+// natively while on screen; YouTube/Vimeo links use the background player.
+// With reduced motion only the image (or the video's first frame) is shown.
+function Media({ image, video, sizes, posterWidth, alt = '', className, style, ...rest }) {
   const reduceMotion = useMediaQuery(REDUCED_MOTION)
-  const info = video ? embedInfo(video) : null
+  const uploaded = blobVideo(video)
+  const info = !uploaded && video ? embedInfo(video) : null
+
+  if (uploaded && !(reduceMotion && image)) {
+    return (
+      <NativeVideo
+        video={uploaded}
+        poster={image ? imageUrl(image, posterWidth) : undefined}
+        play={!reduceMotion}
+        alt={alt}
+        className={className}
+        style={style}
+      />
+    )
+  }
 
   if (info && !reduceMotion) {
     return <BackgroundVideo link={video} image={image} sizes={sizes} alt={alt} className={className} style={style} />

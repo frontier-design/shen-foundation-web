@@ -1,4 +1,5 @@
-import { parseEmbed, embedPageUrl } from './embedUrl.js'
+import { parseEmbed } from './embedUrl.js'
+import { blobVideo } from './videos.js'
 
 const pageModules = import.meta.glob('../content/pages/*.json', {
   eager: true,
@@ -162,6 +163,7 @@ function exhibitionToCard(item) {
   return {
     image: item.heroImage,
     accentImage: item.heroImage,
+    video: blobVideo(item.heroVideo)?.src,
     title: item.title,
     subtitle: item.subtitle,
     slug: item.slug,
@@ -194,6 +196,7 @@ function eventToCard(item) {
   return {
     image: item.image,
     accentImage: item.image,
+    video: blobVideo(item.imageVideo)?.src,
     title: item.title,
     slug: item.slug,
     status: item.status || 'ongoing',
@@ -309,8 +312,7 @@ export function homeHeroSlides(slides = []) {
       const ex = refSlug(typeof row === 'string' ? row : row?.exhibition)
       const doc = ex && getExhibition(ex)
       const image = doc && mediaUrl(doc.heroImage)
-      const embed = doc && parseEmbed(doc.heroVideo)
-      const video = embed ? embedPageUrl(embed) : null
+      const video = doc && (blobVideo(doc.heroVideo) || parseEmbed(doc.heroVideo)) ? doc.heroVideo.trim() : null
       if (!image && !video) return null
       return {
         image,
