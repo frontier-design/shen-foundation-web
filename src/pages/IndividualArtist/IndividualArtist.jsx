@@ -92,13 +92,9 @@ const LeftContent = styled.div`
   @media ${GRID.MEDIA_TABLET} {
     grid-template-rows: auto auto;
     max-width: none;
-    padding-top: clamp(96px, 14vh, 140px);
+    padding-top: 0;
     padding-bottom: 0;
     row-gap: clamp(32px, 8vw, 48px);
-  }
-
-  @media ${GRID.MEDIA_MOBILE} {
-    padding-top: clamp(96px, 15.6vh, 192px);
   }
 `
 
@@ -126,8 +122,25 @@ const Right = styled(GridCell)`
   margin-right: -${GRID.PADDING}px;
 
   @media ${GRID.MEDIA_TABLET} {
-    height: auto;
-    overflow: visible;
+    display: contents;
+  }
+`
+
+const Feed = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  @media ${GRID.MEDIA_TABLET} {
+    display: contents;
+  }
+`
+
+// Stacked (tablet/mobile): the portrait goes above the name and bio, the
+// related exhibitions below them.
+const stackedBlock = (order) => css`
+  @media ${GRID.MEDIA_TABLET} {
+    order: ${order};
+    grid-column: 1 / -1;
     margin: 0 -${GRID.PADDING_TABLET}px;
   }
 
@@ -136,9 +149,14 @@ const Right = styled(GridCell)`
   }
 `
 
-const Feed = styled.div`
+const Portrait = styled.div`
+  ${stackedBlock(-1)}
+`
+
+const Works = styled.div`
   display: flex;
   flex-direction: column;
+  ${stackedBlock(1)}
 `
 
 const FeedImage = styled.div`
@@ -301,13 +319,19 @@ function IndividualArtist({ slug }) {
         >
           <Feed>
             {thumbnail || thumbnailVideo ? (
-              <FeedImage $fill>
-                <Media image={thumbnail} video={thumbnailVideo} sizes={SIZES.halfTall} alt="" />
-              </FeedImage>
+              <Portrait>
+                <FeedImage $fill>
+                  <Media image={thumbnail} video={thumbnailVideo} sizes={SIZES.halfTall} alt="" />
+                </FeedImage>
+              </Portrait>
             ) : null}
-            {shows.map((ex) => (
-              <ExhibitionEntry key={exhibitionSlug(ex)} item={ex} />
-            ))}
+            {shows.length > 0 ? (
+              <Works>
+                {shows.map((ex) => (
+                  <ExhibitionEntry key={exhibitionSlug(ex)} item={ex} />
+                ))}
+              </Works>
+            ) : null}
           </Feed>
         </Right>
       </Layout>
