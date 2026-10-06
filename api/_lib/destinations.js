@@ -6,13 +6,11 @@ const MAX_CAPTION = 300
 const slugify = (value) =>
   String(value || '')
     .normalize('NFD')
-    .replace(/[̀-ͯ]/g, '')
+    .replace(/[\u0300-\u036f]/g, '')
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-+|-+$/g, '')
 
-const refSlug = (value) => slugify(String(value || '').split('/').pop().replace(/\.json$/, ''))
-const fileSlug = (path) => path.split('/').pop().replace(/\.json$/, '')
 const docName = (doc) => [doc.title, doc.subtitle].filter(Boolean).join(' — ')
 
 export function parseDestination(id) {
@@ -86,89 +84,4 @@ export function applyVideo(destination, data, url, caption = '') {
   })
   node[destination.path.at(-1)] = url
   return next
-}
-
-const currentValue = (data, path) => path.reduce((node, key) => node?.[key], data)
-
-export function buildDestinations(files) {
-  const home = files.get(HOME) || {}
-  const about = files.get(ABOUT) || {}
-  const docs = (folder) =>
-    [...files]
-      .filter(([path]) => path.startsWith(`content/${folder}/`))
-      .map(([path, data]) => ({ slug: fileSlug(path), data }))
-      .sort((a, b) => docName(a.data).localeCompare(docName(b.data)))
-
-  const exhibitions = docs('exhibitions')
-  const events = docs('events')
-  const inCarousel = new Set((home.heroSlides || []).map(refSlug))
-
-  const featureName = () => {
-    const feature = home.callout?.feature
-    const ref = refSlug(feature?.[feature?.type])
-    const pool = feature?.type === 'event' ? events : exhibitions
-    const match = pool.find(
-      ({ slug, data }) => slug === ref || slugify(feature?.type === 'event' ? data.title : data.subtitle) === ref,
-    )
-    return match ? docName(match.data) : null
-  }
-
-  const item = (id, label, data, name, extra = {}) => {
-    const destination = parseDestination(id)
-    return {
-      id,
-      label,
-      name,
-      replaces: destination.path ? Boolean(currentValue(data, destination.path)) : false,
-      ...extra,
-    }
-  }
-
-  return [
-    {
-      group: 'Homepage',
-      items: [
-        item('home-callout', 'Homepage callout', home, 'home-callout', {
-          note: featureName() ? `Currently featuring ${featureName()}` : undefined,
-        }),
-      ],
-    },
-    {
-      group: 'Exhibitions',
-      items: exhibitions.flatMap(({ slug, data }) => [
-        item(`exhibition-hero:${slug}`, `${docName(data)}: hero video`, data, slug, {
-          note: inCarousel.has(slug) || inCarousel.has(slugify(data.subtitle))
-            ? 'Also plays in the homepage carousel'
-            : undefined,
-        }),
-        item(`exhibition-gallery:${slug}`, `${docName(data)}: add to gallery`, data, slug, { caption: true }),
-      ]),
-    },
-    {
-      group: 'Events',
-      items: events.map(({ slug, data }) =>
-        item(`event:${slug}`, `${data.title || slug}: background video`, data, slug),
-      ),
-    },
-    {
-      group: 'Artists',
-      items: docs('artists').map(({ slug, data }) =>
-        item(`artist:${slug}`, `${data.title || slug}: thumbnail video`, data, slug),
-      ),
-    },
-    {
-      group: 'About page',
-      items: [
-        item('about-hero', 'About page: hero video', about, 'about'),
-        ...(about.people || []).map((person, index) =>
-          item(
-            `about-person:${index}:${slugify(person.name)}`,
-            `About page: ${person.name || `person ${index + 1}`} photo video`,
-            about,
-            `about-${slugify(person.name) || index + 1}`,
-          ),
-        ),
-      ],
-    },
-  ].filter((group) => group.items.length > 0)
 }

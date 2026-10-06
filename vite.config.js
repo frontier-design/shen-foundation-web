@@ -69,12 +69,4 @@ export default defineConfig({
     'import.meta.env.VITE_PREVIEW': JSON.stringify(isPreview),
     'import.meta.env.VITE_IMAGE_CDN': JSON.stringify(process.env.VERCEL === '1'),
   },
-  build: {
-    rollupOptions: {
-      input: {
-        main: fileURLToPath(new URL('index.html', import.meta.url)),
-        upload: fileURLToPath(new URL('upload.html', import.meta.url)),
-      },
-    },
-  },
 })
