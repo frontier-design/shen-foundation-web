@@ -20,12 +20,12 @@ const Layout = styled(Grid)`
   row-gap: 0;
 
   @media ${GRID.MEDIA_TABLET} {
+    height: auto;
     grid-template-rows: none;
+    align-items: start;
   }
 
   @media ${GRID.MEDIA_MOBILE} {
-    height: auto;
-    align-items: start;
     row-gap: clamp(32px, 8vw, 48px);
   }
 `
@@ -35,7 +35,9 @@ const ImageCell = styled(GridCell)`
   margin-left: -${GRID.PADDING}px;
 
   @media ${GRID.MEDIA_TABLET} {
-    margin-left: -${GRID.PADDING_TABLET}px;
+    height: 100vh;
+    height: 100dvh;
+    margin: 0 -${GRID.PADDING_TABLET}px;
   }
 
   @media ${GRID.MEDIA_MOBILE} {
@@ -77,10 +79,14 @@ const Content = styled(GridCell)`
     display: none;
   }
 
-  @media ${GRID.MEDIA_MOBILE} {
+  @media ${GRID.MEDIA_TABLET} {
     height: auto;
     overflow: visible;
     padding-left: 0;
+    padding-top: clamp(48px, 6vw, 100px);
+  }
+
+  @media ${GRID.MEDIA_MOBILE} {
     padding-top: 0;
   }
 `
