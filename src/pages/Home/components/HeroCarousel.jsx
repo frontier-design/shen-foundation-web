@@ -74,7 +74,7 @@ function HeroCarousel({ slides = [] }) {
   const currentRef = useRef(0)
   const slidesRef = useRef(slides)
   const reduceMotion = useMediaQuery('(prefers-reduced-motion: reduce)')
-  const signature = slides.map((s) => `${s.image || ''}>${s.video || ''}`).join('>>')
+  const signature = JSON.stringify(slides.map((s) => [s.image || '', s.video || '']))
 
   useEffect(() => {
     slidesRef.current = slides
@@ -103,13 +103,10 @@ function HeroCarousel({ slides = [] }) {
     const section = sectionRef.current
     const layerA = layerARef.current
     const layerB = layerBRef.current
-    const list = signature
-      ? signature.split('>>').map((entry) => {
-          const [image, link] = entry.split('>')
-          const info = link ? embedInfo(link) : null
-          return { image: image || info?.thumbnail || null, video: reduceMotion ? null : info }
-        })
-      : []
+    const list = JSON.parse(signature).map(([image, link]) => {
+      const info = link ? embedInfo(link) : null
+      return { image: image || info?.thumbnail || null, video: reduceMotion ? null : info }
+    })
     const n = list.length
 
     if (!section || !layerA || !layerB || n === 0) return undefined
