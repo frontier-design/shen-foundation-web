@@ -20,6 +20,20 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
+      - name: Wait for videos being added
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          for attempt in $(seq 1 40); do
+            running=$(gh run list --repo "$GITHUB_REPOSITORY" --workflow add-video.yml --limit 20 --json status --jq '[.[] | select(.status != "completed")] | length' 2>/dev/null || echo 0)
+            if [ "$running" -eq 0 ]; then exit 0; fi
+            echo "Waiting for $running Add video run(s) to finish…"
+            sleep 15
+          done
+          echo "::error title=A video is still being added::An Add video run has been going for over 10 minutes. Nothing was published. Check its Video status in Pages CMS, then click Publish again."
+          printf '### Not published: a video is still being added\n\nAn Add video run has been going for over 10 minutes. Check its Video status in Pages CMS, then click Publish again.\n' >> "$GITHUB_STEP_SUMMARY"
+          exit 1
+
       - name: Check out main
         uses: actions/checkout@v4
         with:
