@@ -61,8 +61,8 @@ const Left = styled(GridCell)`
   margin-left: -${GRID.PADDING}px;
   padding-left: ${GRID.PADDING}px;
   --fade-bottom: #000;
-  -webkit-mask-image: linear-gradient(to bottom, transparent 84px, #000 calc(${NAME_TOP} + 32px), #000 calc(100% - ${FADE}), var(--fade-bottom));
-  mask-image: linear-gradient(to bottom, transparent 84px, #000 calc(${NAME_TOP} + 32px), #000 calc(100% - ${FADE}), var(--fade-bottom));
+  -webkit-mask-image: linear-gradient(to bottom, transparent 80px, #000 calc(${NAME_TOP} - 2px), #000 calc(100% - ${FADE}), var(--fade-bottom));
+  mask-image: linear-gradient(to bottom, transparent 80px, #000 calc(${NAME_TOP} - 2px), #000 calc(100% - ${FADE}), var(--fade-bottom));
 
   &[data-more='below'],
   &[data-more='both'] {
@@ -79,9 +79,9 @@ const Left = styled(GridCell)`
   }
 `
 
-// First screen: the name centred above the bio, the bio ending at the bottom.
-// A long bio starts no higher than 60% down the first screen and continues
-// below the fold.
+// First screen: the name at the top (like an event title), the bio ending at
+// the bottom. A long bio starts no higher than 60% down the first screen and
+// continues below the fold.
 const LeftContent = styled.div`
   display: grid;
   grid-template-rows: minmax(calc(60dvh - ${NAME_TOP}), 1fr) auto;
@@ -93,23 +93,31 @@ const LeftContent = styled.div`
   @media ${GRID.MEDIA_TABLET} {
     grid-template-rows: auto auto;
     max-width: none;
-    padding-top: 0;
+    padding-top: max(0px, clamp(48px, 6vw, 100px) - clamp(32px, 8vw, 48px));
     padding-bottom: 0;
     row-gap: clamp(32px, 8vw, 48px);
+  }
+
+  @media ${GRID.MEDIA_MOBILE} {
+    padding-top: 0;
   }
 `
 
 const Heading = styled.div`
   display: flex;
   flex-direction: column;
-  align-self: center;
+  align-self: start;
 `
 
 const Name = styled.h1`
-  ${type.displayLarge}
+  ${type.gridTitle}
   color: ${colors.black};
   margin: 0;
-  text-align: left;
+
+  @media ${GRID.MEDIA_MOBILE} {
+    ${type.displayLarge}
+    text-wrap: wrap;
+  }
 `
 
 const Bio = styled(RichText)`
