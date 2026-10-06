@@ -6,7 +6,7 @@
       "exhibition": "content/exhibitions/danh-vo-guldenhof.json"
     },
     "image": "/media/danh-vo-guldenhof-landing.jpeg",
-    "imageVideo": "https://www.youtube.com/watch?v=o51GWNMOiDs"
+    "imageVideo": "https://faq0catz0eljtbgc.public.blob.vercel-storage.com/videos/home-ahou2gx7/1920x1200-52004091.mp4"
   },
   "grid": [
     {
@@ -32,5 +32,5 @@
     "content/exhibitions/curtain-call.json",
     "content/exhibitions/soft-machines.json"
   ],
-  "videoStatus": "✗ Something went wrong on our side, not with your video. Try again in a few minutes; if it keeps failing, tell the web team. (Oct 6, 17:05)"
+  "videoStatus": "✓ Video added to the homepage callout (52 MB). It will appear on the preview site in about a minute. A version under 20 MB would load more smoothly. (Oct 6, 17:09)"
 }
