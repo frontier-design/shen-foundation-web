@@ -1,3 +1,11 @@
 {
-  "embeds": {}
+  "embeds": {
+    "youtube:o51GWNMOiDs": {
+      "url": "https://www.youtube.com/watch?v=o51GWNMOiDs",
+      "title": "Body Tracking Trial Software",
+      "width": 200,
+      "height": 150,
+      "thumbnail": "/media/embeds/youtube-79946a6700ab.jpg"
+    }
+  }
 }
