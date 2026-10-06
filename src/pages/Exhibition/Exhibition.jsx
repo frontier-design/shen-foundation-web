@@ -187,7 +187,7 @@ function Exhibition({ slug }) {
 
   if (!item) return null
 
-  const gallery = item.gallery || []
+  const gallery = (item.gallery || []).filter(Boolean)
   const artist = exhibitionArtist(item)
 
   return (

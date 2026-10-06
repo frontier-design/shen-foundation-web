@@ -223,9 +223,8 @@ content:
           media: false
           switcher: false
       - name: intro
-        label: Intro section
+        label: Intro section (under the hero)
         type: object
-        description: "Title and body blocks directly under the hero. Drag to reorder."
         list:
           collapsible:
             collapsed: true
@@ -392,7 +391,7 @@ content:
             options:
               - label: "Hero (also plays in the homepage carousel)"
                 value: hero
-              - label: "Add to gallery"
+              - label: "Add to gallery (at the end; drag it into place in Gallery)"
                 value: gallery
           - name: link
             label: Video link (Google Drive or Dropbox)
@@ -469,11 +468,10 @@ content:
         label: Gallery
         type: block
         blockKey: type
-        description: "Images and videos. Drag to reorder. Add videos with \"Add video\" at the top of this page; they are added at the end."
         list:
           collapsible:
             collapsed: true
-            summary: "{caption}"
+            summary: "#{index} {caption} {image}"
         blocks:
           - name: image
             label: Image

@@ -292,6 +292,7 @@ export function homeCallout(callout) {
 
 export function homeGridCards(grid = []) {
   return grid
+    .filter(Boolean)
     .map((row) => {
       if (refType(row) === 'event') {
         const ev = refSlug(row.event)
