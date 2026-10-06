@@ -32,6 +32,33 @@ async function github(path, init = {}) {
 
 const decode = (base64) => Buffer.from(base64, 'base64').toString('utf8')
 
+// The text of every content/**/*.json file on `ref`.
+export async function contentTexts(ref) {
+  const tree = await github(`/git/trees/${encodeURIComponent(ref)}?recursive=1`)
+  if (tree.truncated) throw new GitHubError(500, `Tree of ${ref} is truncated`)
+  const files = tree.tree.filter((entry) => entry.type === 'blob' && /^content\/.+\.json$/.test(entry.path))
+  return Promise.all(files.map(async ({ sha }) => decode((await github(`/git/blobs/${sha}`)).content)))
+}
+
+// SHAs of commits on `ref` since `since` that touched content/.
+export async function recentContentCommits(ref, since) {
+  const shas = []
+  for (let page = 1; page <= 10; page++) {
+    const commits = await github(
+      `/commits?sha=${encodeURIComponent(ref)}&path=content&since=${since.toISOString()}&per_page=100&page=${page}`,
+    )
+    shas.push(...commits.map((commit) => commit.sha))
+    if (commits.length < 100) break
+  }
+  return shas
+}
+
+// The content/ diffs of one commit; `complete` is false when GitHub left one out.
+export async function contentPatches(sha) {
+  const files = ((await github(`/commits/${sha}`)).files || []).filter((file) => file.filename.startsWith('content/'))
+  return { patches: files.map((file) => file.patch || ''), complete: files.every((file) => typeof file.patch === 'string') }
+}
+
 export async function readFile(path) {
   if (!CONTENT_FILE.test(path)) throw new GitHubError(400, 'Not a content file')
   const file = await github(`/contents/${path}?ref=${BRANCH}`)
