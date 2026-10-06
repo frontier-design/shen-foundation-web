@@ -57,13 +57,13 @@ const proxyFor = (img, nw, nh) => {
   return proxy
 }
 
-const imageLuminance = (img, x, y) => {
-  const nw = img.naturalWidth
-  const nh = img.naturalHeight
-  const rect = img.getBoundingClientRect()
+// Average luminance of `source` (an image or video frame of nw×nh pixels) around
+// viewport point (x, y), as laid out in `el`'s box with its object-fit.
+const sourceLuminance = (el, source, nw, nh, x, y) => {
+  const rect = el.getBoundingClientRect()
   if (!nw || !nh || !rect.width || !rect.height) return null
 
-  const fit = getComputedStyle(img).objectFit || 'fill'
+  const fit = getComputedStyle(el).objectFit || 'fill'
   const boxX = Math.min(Math.max(x - rect.left, 0), rect.width)
   const boxY = Math.min(Math.max(y - rect.top, 0), rect.height)
 
@@ -88,11 +88,11 @@ const imageLuminance = (img, x, y) => {
   const ch = Math.min(half * 2, nh - cy)
 
   sampleCtx.clearRect(0, 0, SAMPLE, SAMPLE)
-  if (img.srcset) {
-    const { canvas, scale } = proxyFor(img, nw, nh)
+  if (source.srcset) {
+    const { canvas, scale } = proxyFor(source, nw, nh)
     sampleCtx.drawImage(canvas, cx * scale, cy * scale, Math.max(cw * scale, 1), Math.max(ch * scale, 1), 0, 0, SAMPLE, SAMPLE)
   } else {
-    sampleCtx.drawImage(img, cx, cy, cw, ch, 0, 0, SAMPLE, SAMPLE)
+    sampleCtx.drawImage(source, cx, cy, cw, ch, 0, 0, SAMPLE, SAMPLE)
   }
   const { data } = sampleCtx.getImageData(0, 0, SAMPLE, SAMPLE)
   let sum = 0
@@ -100,6 +100,30 @@ const imageLuminance = (img, x, y) => {
     sum += relLuminance(data[i], data[i + 1], data[i + 2])
   }
   return sum / (data.length / 4)
+}
+
+const imageLuminance = (img, x, y) => sourceLuminance(img, img, img.naturalWidth, img.naturalHeight, x, y)
+
+const posters = new Map()
+
+const loadedPoster = (url) => {
+  let poster = posters.get(url)
+  if (!poster) {
+    poster = new Image()
+    poster.decoding = 'async'
+    poster.src = url
+    posters.set(url, poster)
+  }
+  return poster.complete && poster.naturalWidth ? poster : null
+}
+
+// Samples the current frame; before the first frame is ready, the poster.
+const videoLuminance = (video, x, y) => {
+  if (video.readyState >= 2 && video.videoWidth) {
+    return sourceLuminance(video, video, video.videoWidth, video.videoHeight, x, y)
+  }
+  const poster = video.poster && loadedPoster(video.poster)
+  return poster ? sourceLuminance(video, poster, poster.naturalWidth, poster.naturalHeight, x, y) : null
 }
 
 const lumaAt = (x, y, iconEl) => {
@@ -110,9 +134,9 @@ const lumaAt = (x, y, iconEl) => {
   if (!el) return null
 
   let luma = null
-  if (el.tagName === 'IMG') {
+  if (el.tagName === 'IMG' || el.tagName === 'VIDEO') {
     try {
-      luma = imageLuminance(el, x, y)
+      luma = el.tagName === 'IMG' ? imageLuminance(el, x, y) : videoLuminance(el, x, y)
     } catch {
       luma = null
     }
