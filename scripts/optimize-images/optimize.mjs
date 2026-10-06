@@ -255,7 +255,7 @@ function probeVideo(file) {
 }
 
 function videoSizeNote(bytes) {
-  if (bytes > SETTINGS.videoStrongWarnMB * 1024 * 1024) return { level: 'strong', text: `${mb(bytes)}: over ${SETTINGS.videoStrongWarnMB} MB. Every visitor downloads this and it stays in git history forever. Use a YouTube or Vimeo embed for long videos, or export a shorter clip at a lower bitrate.` }
+  if (bytes > SETTINGS.videoStrongWarnMB * 1024 * 1024) return { level: 'strong', text: `${mb(bytes)}: over ${SETTINGS.videoStrongWarnMB} MB. Every visitor downloads this and it stays in git history forever. Add videos with "Add video" in Pages CMS instead (they are stored in Vercel Blob, not git).` }
   if (bytes > SETTINGS.videoWarnMB * 1024 * 1024) return { level: 'warn', text: `${mb(bytes)}: over the recommended ${SETTINGS.videoWarnMB} MB. Consider exporting a shorter clip or at a lower bitrate.` }
   return null
 }

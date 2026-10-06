@@ -67,18 +67,6 @@ jobs:
               echo "::warning title=Image check skipped::The image optimization check failed to run (exit $status), so publishing continues without it."
             fi
           fi
-          embeds=../preview-check/scripts/optimize-images/embeds.mjs
-          if [ -f "$embeds" ]; then
-            status=0
-            out=$(node "$embeds" --check) || status=$?
-            echo "$out"
-            if [ "$status" -eq 3 ]; then
-              links=$(echo "$out" | sed -n 's/^  //p' | tr '\n' ' ')
-              block "These YouTube/Vimeo videos don't have thumbnails yet: ${links}Wait a minute or two and click Publish again."
-            elif [ "$status" -ne 0 ]; then
-              echo "::warning title=Video thumbnail check skipped::The video thumbnail check failed to run (exit $status), so publishing continues without it."
-            fi
-          fi
 
       - name: Merge preview into main
         run: |

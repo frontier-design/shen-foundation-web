@@ -88,14 +88,6 @@
       "width": 943,
       "height": 1200
     },
-    "/media/embeds/youtube-79946a6700ab.jpg": {
-      "sha256": "dde820c084ca2df9c0b9d1698d0346445a1a1329c5dcce336d2782b71a209828",
-      "action": "recompressed",
-      "bytesBefore": 26264,
-      "bytesAfter": 22455,
-      "width": 1280,
-      "height": 720
-    },
     "/media/event-2.webp": {
       "sha256": "5fc869c404d7fa5f0f89ddc4d2beb9e93beb3647f3001ae095ff125572f8dd89",
       "action": "unchanged",

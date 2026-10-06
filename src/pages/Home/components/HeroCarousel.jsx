@@ -6,8 +6,6 @@ import { GRID, useMediaQuery } from '../../../grid/index.js'
 import { colors, easing, duration } from '../../../theme.js'
 import { navigate } from '../../../router.jsx'
 import { imageProps, SIZES } from '../../../images.js'
-import { embedInfo } from '../../../embeds.js'
-import { createBackgroundPlayer } from '../../../backgroundPlayer.js'
 import { blobVideo, createVideoPlayer } from '../../../videos.js'
 import { isLoadingDone, onLoadingDone } from '../../../loading.js'
 
@@ -105,9 +103,7 @@ function HeroCarousel({ slides = [] }) {
     const layerA = layerARef.current
     const layerB = layerBRef.current
     const list = JSON.parse(signature).map(([image, link]) => {
-      const uploaded = blobVideo(link)
-      const info = !uploaded && link ? embedInfo(link) : null
-      return { image: image || info?.thumbnail || null, video: reduceMotion ? null : uploaded || info }
+      return { image: image || null, video: reduceMotion ? null : blobVideo(link) }
     })
     const n = list.length
 
@@ -124,7 +120,7 @@ function HeroCarousel({ slides = [] }) {
       if (!inView || document.hidden) return
       const player = players.get(layer)
       if (player) player.play()
-      else players.set(layer, video.src ? createVideoPlayer(layer, video.src) : createBackgroundPlayer(layer, video))
+      else players.set(layer, createVideoPlayer(layer, video.src))
     }
 
     const stop = (layer) => {
@@ -265,7 +261,7 @@ function HeroCarousel({ slides = [] }) {
       onClick={handleClick}
     >
       <Layer ref={layerARef}>
-        <img {...imageProps(slides[0].image || embedInfo(slides[0].video)?.thumbnail, SIZES.fullBleed)} alt="" />
+        <img {...imageProps(slides[0].image, SIZES.fullBleed)} alt="" />
       </Layer>
       <Layer ref={layerBRef}>
         <img sizes={SIZES.fullBleed} alt="" />

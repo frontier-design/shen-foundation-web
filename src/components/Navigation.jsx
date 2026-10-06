@@ -133,9 +133,6 @@ const lumaAt = (x, y, iconEl) => {
   iconEl.style.pointerEvents = prev
   if (!el) return null
 
-  // A playing YouTube/Vimeo player can't be read; treat it as dark.
-  if (el.tagName === 'IFRAME') return 0
-
   let luma = null
   if (el.tagName === 'IMG' || el.tagName === 'VIDEO') {
     try {

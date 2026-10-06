@@ -1,4 +1,3 @@
-import { parseEmbed } from './embedUrl.js'
 import { blobVideo } from './videos.js'
 
 const pageModules = import.meta.glob('../content/pages/*.json', {
@@ -312,7 +311,7 @@ export function homeHeroSlides(slides = []) {
       const ex = refSlug(typeof row === 'string' ? row : row?.exhibition)
       const doc = ex && getExhibition(ex)
       const image = doc && mediaUrl(doc.heroImage)
-      const video = doc && (blobVideo(doc.heroVideo) || parseEmbed(doc.heroVideo)) ? doc.heroVideo.trim() : null
+      const video = doc && blobVideo(doc.heroVideo)?.src
       if (!image && !video) return null
       return {
         image,

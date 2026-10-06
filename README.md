@@ -47,11 +47,9 @@ Formats it can't safely handle (HEIC, TIFF, GIF, SVG, AVIF) are left alone and l
 
 ### Videos
 
-Videos on the site are YouTube or Vimeo links, not uploaded files: Pages CMS can't upload files much over a few MB. If an MP4 or WebM does end up in `public/media/` (for example added by hand), it is never modified; the optimizer only records its width, height and duration, and warns about files over 20 MB.
+Videos aren't stored in the repo. Editors add them in Pages CMS with the **Add video** button at the top of an exhibition, event, artist, the Home page or the About page: they choose the spot and paste a Google Drive or Dropbox share link. The **Add video** GitHub workflow (`.github/workflows/add-video.yml`, `scripts/add-video/`) downloads the file, checks that it plays in every browser (MP4 with H.264, or WebM with VP8/VP9; at most 100 MB), uploads it unchanged to Vercel Blob as `videos/<entry>-<random>/<width>x<height>-<bytes>.<ext>`, and writes the link into the entry on `preview`. The result, or the reason it failed, appears in the entry's read-only **Video status** field. The site plays these videos muted on a loop while they're on screen; cards only play videos up to 20 MB. Removing a video = clearing its field in Pages CMS; files nobody uses any more are deleted by a weekly cleanup after 30 days.
 
-### YouTube and Vimeo videos
-
-Editors paste a normal YouTube or Vimeo link (or an embed code). In galleries and the event "Video with sound" field the video shows its thumbnail with a play button, and nothing is loaded from YouTube or Vimeo until a visitor presses play (then `youtube-nocookie.com`, or Vimeo with `dnt=1`). The "Video link" fields next to hero, callout, artist, people and event images play the video muted on a loop instead of the image, once it is near the screen (pausing off screen; reduced motion shows the image). Vimeo hides its player controls in that mode only on paid plans. `scripts/optimize-images/embeds.mjs` finds every YouTube/Vimeo `url` in `content/`, fetches its thumbnail, title and aspect ratio through the provider's oEmbed API, saves the thumbnail to `public/media/embeds/` and records it in `scripts/optimize-images/embeds.json`; thumbnails of links that are no longer used are removed. The Optimize images workflow runs it on every content change, and Publish waits until every link has been fetched. Links that fail (private, deleted, embedding disabled) are recorded with the error, retried on each run, and shown with a plain placeholder unless an editor adds a thumbnail.
+If an MP4 or WebM does end up in `public/media/` (for example added by hand), the optimizer never modifies it; it only records its width, height and duration, and warns about files over 20 MB.
 
 ### Never optimize a file
 
@@ -65,7 +63,7 @@ Excluded files are never modified, not even their metadata.
 
 ### Automatic runs
 
-`.github/workflows/optimize-images.yml` runs the optimizer (and the video thumbnail fetcher) whenever something under `public/media/` or `content/` is pushed to `preview` (for example an upload in Pages CMS), and commits the result back to `preview` as "Optimize images", usually within a minute or two. It can also be started by hand from the repo's Actions tab.
+`.github/workflows/optimize-images.yml` runs the optimizer whenever something under `public/media/` is pushed to `preview` (for example an upload in Pages CMS), and commits the result back to `preview` as "Optimize images", usually within a minute or two. It can also be started by hand from the repo's Actions tab.
 
 - It never loops: its own push uses `GITHUB_TOKEN`, which doesn't trigger workflows, and already-optimized files are skipped.
 - If an editor commits while it's running, its push is rejected; it then redoes the run on the new `preview` tip (up to 3 times). Editors' saves are never overwritten.

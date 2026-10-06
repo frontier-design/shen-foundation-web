@@ -92,7 +92,7 @@ content:
             type: string
             description: "Added with \"Add video\" at the top of this page. Clear this field to remove the video."
             pattern:
-              regex: '^$|^https://faq0catz0eljtbgc\.public\.blob\.vercel-storage\.com/videos/[a-z0-9-]+/\d+x\d+(-\d+)?\.(mp4|webm)$|(youtube\.com/(watch\?(.*&)?v=|shorts/|embed/|live/)[A-Za-z0-9_-]{11}|youtu\.be/[A-Za-z0-9_-]{11}|youtube-nocookie\.com/embed/[A-Za-z0-9_-]{11}|vimeo\.com/(.*/)?[0-9]+)'
+              regex: '^$|^https://faq0catz0eljtbgc\.public\.blob\.vercel-storage\.com/videos/[a-z0-9-]+/\d+x\d+(-\d+)?\.(mp4|webm)$'
               message: "Use \"Add video\" at the top of this page to add a video."
       - name: videoStatus
         label: Video status
@@ -207,7 +207,7 @@ content:
         type: string
         description: "Added with \"Add video\" at the top of this page. Clear this field to remove the video."
         pattern:
-          regex: '^$|^https://faq0catz0eljtbgc\.public\.blob\.vercel-storage\.com/videos/[a-z0-9-]+/\d+x\d+(-\d+)?\.(mp4|webm)$|(youtube\.com/(watch\?(.*&)?v=|shorts/|embed/|live/)[A-Za-z0-9_-]{11}|youtu\.be/[A-Za-z0-9_-]{11}|youtube-nocookie\.com/embed/[A-Za-z0-9_-]{11}|vimeo\.com/(.*/)?[0-9]+)'
+          regex: '^$|^https://faq0catz0eljtbgc\.public\.blob\.vercel-storage\.com/videos/[a-z0-9-]+/\d+x\d+(-\d+)?\.(mp4|webm)$'
           message: "Use \"Add video\" at the top of this page to add a video."
       - name: videoStatus
         label: Video status
@@ -281,7 +281,7 @@ content:
             type: string
             description: "Added with \"Add video\" at the top of this page. Clear this field to remove the video."
             pattern:
-              regex: '^$|^https://faq0catz0eljtbgc\.public\.blob\.vercel-storage\.com/videos/[a-z0-9-]+/\d+x\d+(-\d+)?\.(mp4|webm)$|(youtube\.com/(watch\?(.*&)?v=|shorts/|embed/|live/)[A-Za-z0-9_-]{11}|youtu\.be/[A-Za-z0-9_-]{11}|youtube-nocookie\.com/embed/[A-Za-z0-9_-]{11}|vimeo\.com/(.*/)?[0-9]+)'
+              regex: '^$|^https://faq0catz0eljtbgc\.public\.blob\.vercel-storage\.com/videos/[a-z0-9-]+/\d+x\d+(-\d+)?\.(mp4|webm)$'
               message: "Use \"Add video\" at the top of this page to add a video."
 
   - name: artists
@@ -349,7 +349,7 @@ content:
         type: string
         description: "Added with \"Add video\" at the top of this page. Clear this field to remove the video."
         pattern:
-          regex: '^$|^https://faq0catz0eljtbgc\.public\.blob\.vercel-storage\.com/videos/[a-z0-9-]+/\d+x\d+(-\d+)?\.(mp4|webm)$|(youtube\.com/(watch\?(.*&)?v=|shorts/|embed/|live/)[A-Za-z0-9_-]{11}|youtu\.be/[A-Za-z0-9_-]{11}|youtube-nocookie\.com/embed/[A-Za-z0-9_-]{11}|vimeo\.com/(.*/)?[0-9]+)'
+          regex: '^$|^https://faq0catz0eljtbgc\.public\.blob\.vercel-storage\.com/videos/[a-z0-9-]+/\d+x\d+(-\d+)?\.(mp4|webm)$'
           message: "Use \"Add video\" at the top of this page to add a video."
       - name: videoStatus
         label: Video status
@@ -434,7 +434,7 @@ content:
         type: string
         description: "Added with \"Add video\" at the top of this page (it also plays in the homepage carousel). Clear this field to remove the video."
         pattern:
-          regex: '^$|^https://faq0catz0eljtbgc\.public\.blob\.vercel-storage\.com/videos/[a-z0-9-]+/\d+x\d+(-\d+)?\.(mp4|webm)$|(youtube\.com/(watch\?(.*&)?v=|shorts/|embed/|live/)[A-Za-z0-9_-]{11}|youtu\.be/[A-Za-z0-9_-]{11}|youtube-nocookie\.com/embed/[A-Za-z0-9_-]{11}|vimeo\.com/(.*/)?[0-9]+)'
+          regex: '^$|^https://faq0catz0eljtbgc\.public\.blob\.vercel-storage\.com/videos/[a-z0-9-]+/\d+x\d+(-\d+)?\.(mp4|webm)$'
           message: "Use \"Add video\" at the top of this page to add a video."
       - name: videoStatus
         label: Video status
@@ -483,27 +483,6 @@ content:
                 type: image
                 required: true
                 description: "Any dimensions."
-                options:
-                  categories: [image]
-                  path: public/media
-              - name: caption
-                label: Caption
-                type: string
-          - name: embed
-            label: Video (YouTube or Vimeo)
-            fields:
-              - name: url
-                label: Video link
-                type: string
-                required: true
-                description: "YouTube or Vimeo link. Shows a play button."
-                pattern:
-                  regex: '(youtube\.com/(watch\?(.*&)?v=|shorts/|embed/|live/)[A-Za-z0-9_-]{11}|youtu\.be/[A-Za-z0-9_-]{11}|youtube-nocookie\.com/embed/[A-Za-z0-9_-]{11}|vimeo\.com/(.*/)?[0-9]+)'
-                  message: "Paste a YouTube or Vimeo video link."
-              - name: thumbnail
-                label: Thumbnail (optional)
-                type: image
-                description: "Optional. Replaces the automatic thumbnail."
                 options:
                   categories: [image]
                   path: public/media
@@ -617,35 +596,13 @@ content:
         type: string
         description: "Added with \"Add video\" at the top of this page. Clear this field to remove the video."
         pattern:
-          regex: '^$|^https://faq0catz0eljtbgc\.public\.blob\.vercel-storage\.com/videos/[a-z0-9-]+/\d+x\d+(-\d+)?\.(mp4|webm)$|(youtube\.com/(watch\?(.*&)?v=|shorts/|embed/|live/)[A-Za-z0-9_-]{11}|youtu\.be/[A-Za-z0-9_-]{11}|youtube-nocookie\.com/embed/[A-Za-z0-9_-]{11}|vimeo\.com/(.*/)?[0-9]+)'
+          regex: '^$|^https://faq0catz0eljtbgc\.public\.blob\.vercel-storage\.com/videos/[a-z0-9-]+/\d+x\d+(-\d+)?\.(mp4|webm)$'
           message: "Use \"Add video\" at the top of this page to add a video."
       - name: videoStatus
         label: Video status
         type: text
         readonly: true
         description: "The result of the last \"Add video\". Filled in automatically: reload this page when it has finished."
-      - name: embed
-        label: Video with sound (optional)
-        type: object
-        description: "Shown with a play button under the date and location."
-        fields:
-          - name: url
-            label: Video link
-            type: string
-            description: "YouTube or Vimeo link. Shows a play button."
-            pattern:
-              regex: '^$|(youtube\.com/(watch\?(.*&)?v=|shorts/|embed/|live/)[A-Za-z0-9_-]{11}|youtu\.be/[A-Za-z0-9_-]{11}|youtube-nocookie\.com/embed/[A-Za-z0-9_-]{11}|vimeo\.com/(.*/)?[0-9]+)'
-              message: "Paste a YouTube or Vimeo video link."
-          - name: thumbnail
-            label: Thumbnail (optional)
-            type: image
-            description: "Optional. Replaces the automatic thumbnail."
-            options:
-              categories: [image]
-              path: public/media
-          - name: caption
-            label: Caption
-            type: string
       - name: sections
         label: Sections
         type: object
