@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import styled from 'styled-components'
 import { Grid, GridCell, GRID } from '../../grid'
 import { colors, fonts, type, easing, duration } from '../../theme.js'
@@ -6,6 +6,7 @@ import { getEvent, mediaUrl, toPlainText } from '../../content.js'
 import RichText from '../../components/RichText.jsx'
 import { goBack } from '../../router.jsx'
 import { imageProps, SIZES } from '../../images.js'
+import { useWheelForward } from '../../hooks/useWheelForward.js'
 
 const Section = styled.main`
   width: 100%;
@@ -215,6 +216,9 @@ const SectionContent = styled(RichText)`
 function Event({ slug }) {
   const item = getEvent(slug)
   const [openIndex, setOpenIndex] = useState(null)
+  const sectionRef = useRef(null)
+  const contentRef = useRef(null)
+  useWheelForward(sectionRef, contentRef)
 
   if (!item) return null
 
@@ -222,7 +226,7 @@ function Event({ slug }) {
   const sections = item.sections || []
 
   return (
-    <Section data-nav-tone-left="light" data-nav-tone-right="dark">
+    <Section ref={sectionRef} data-nav-tone-left="light" data-nav-tone-right="dark">
       <Layout>
         <ImageCell $start={1} $span={6} $startTablet={1} $spanTablet={8}>
           <ImageViewport>
@@ -230,7 +234,7 @@ function Event({ slug }) {
           </ImageViewport>
         </ImageCell>
 
-        <Content $start={7} $end={-1} $startTablet={1} $spanTablet={8}>
+        <Content ref={contentRef} $start={7} $end={-1} $startTablet={1} $spanTablet={8}>
           <BackButton type="button" aria-label="Go back" onClick={() => goBack('/events')}>
             &larr;
           </BackButton>

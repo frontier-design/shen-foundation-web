@@ -1,10 +1,11 @@
-import { useEffect, useRef } from 'react'
+import { useRef } from 'react'
 import styled, { css } from 'styled-components'
 import { Grid, GridCell, GRID } from '../../grid'
 import { colors, type, easing, duration, aspect } from '../../theme.js'
 import { getArtist, mediaUrl, accentImage, artistExhibitions, exhibitionSlug, toPlainText } from '../../content.js'
 import RichText from '../../components/RichText.jsx'
 import { useImageAccent } from '../../hooks/useImageAccent.js'
+import { useWheelForward } from '../../hooks/useWheelForward.js'
 import { linkProps } from '../../router.jsx'
 import { imageProps, SIZES } from '../../images.js'
 
@@ -186,23 +187,7 @@ function IndividualArtist({ slug }) {
   const item = getArtist(slug)
   const sectionRef = useRef(null)
   const rightRef = useRef(null)
-
-  useEffect(() => {
-    const section = sectionRef.current
-    const right = rightRef.current
-    if (!section || !right) return
-
-    const mq = window.matchMedia(GRID.MEDIA_TABLET)
-
-    const onWheel = (e) => {
-      if (mq.matches || e.ctrlKey) return
-      e.preventDefault()
-      right.scrollTop += e.deltaY
-    }
-
-    section.addEventListener('wheel', onWheel, { passive: false })
-    return () => section.removeEventListener('wheel', onWheel)
-  }, [])
+  useWheelForward(sectionRef, rightRef)
 
   if (!item) return null
 
