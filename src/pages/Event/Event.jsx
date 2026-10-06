@@ -4,7 +4,7 @@ import { Grid, GridCell, GRID } from '../../grid'
 import { colors, fonts, type, easing, duration } from '../../theme.js'
 import { getEvent, mediaUrl, toPlainText } from '../../content.js'
 import RichText from '../../components/RichText.jsx'
-import { goBack } from '../../router.jsx'
+import BackButton from '../../components/BackButton.jsx'
 import { SIZES } from '../../images.js'
 import Media from '../../components/Media.jsx'
 import { useWheelForward } from '../../hooks/useWheelForward.js'
@@ -91,21 +91,6 @@ const Content = styled(GridCell)`
   @media ${GRID.MEDIA_MOBILE} {
     padding-top: 0;
   }
-`
-
-const BackButton = styled.button`
-  ${type.caption}
-  font-family: ${fonts.display};
-  display: inline-flex;
-  align-items: center;
-  align-self: flex-start;
-  padding: 0;
-  margin-bottom: clamp(16px, 1.6vw, 24px);
-  border: none;
-  background: none;
-  cursor: pointer;
-  color: ${colors.black};
-  line-height: 1;
 `
 
 const Title = styled.h1`
@@ -249,9 +234,7 @@ function Event({ slug }) {
         </ImageCell>
 
         <Content ref={contentRef} $start={7} $end={-1} $startTablet={1} $spanTablet={8}>
-          <BackButton type="button" aria-label="Go back" onClick={() => goBack('/events')}>
-            &larr;
-          </BackButton>
+          <BackButton fallback="/events" />
           {item.title ? <Title>{item.title}</Title> : null}
           <Meta>
             {item.captionLabel ? <MetaLabel>{item.captionLabel}</MetaLabel> : null}

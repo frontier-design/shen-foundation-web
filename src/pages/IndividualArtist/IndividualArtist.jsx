@@ -10,6 +10,7 @@ import { linkProps } from '../../router.jsx'
 import { SIZES } from '../../images.js'
 import { blobVideo } from '../../videos.js'
 import Media from '../../components/Media.jsx'
+import BackButton from '../../components/BackButton.jsx'
 
 const Section = styled.main`
   width: 100%;
@@ -98,11 +99,16 @@ const LeftContent = styled.div`
   }
 `
 
+const Heading = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+`
+
 const Name = styled.h1`
   ${type.displayLarge}
   color: ${colors.black};
   margin: 0;
-  align-self: center;
   text-align: left;
 `
 
@@ -303,7 +309,10 @@ function IndividualArtist({ slug }) {
           {...(stacked ? {} : { tabIndex: 0, 'aria-label': item.title ? `About ${item.title}` : 'About the artist' })}
         >
           <LeftContent>
-            {item.title ? <Name>{item.title}</Name> : null}
+            <Heading>
+              <BackButton fallback="/artists" />
+              {item.title ? <Name>{item.title}</Name> : null}
+            </Heading>
             {toPlainText(item.bio) ? <Bio html={item.bio} /> : null}
           </LeftContent>
         </Left>
