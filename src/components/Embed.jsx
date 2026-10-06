@@ -3,8 +3,8 @@ import styled from 'styled-components'
 import { colors, easing, duration } from '../theme.js'
 import { mediaUrl } from '../content.js'
 import { imageProps, SIZES } from '../images.js'
-import { parseEmbed, embedKey, embedPlayerUrl } from '../embedUrl.js'
-import data from '../../scripts/optimize-images/embeds.json'
+import { embedPlayerUrl } from '../embedUrl.js'
+import { embedInfo } from '../embeds.js'
 
 const Frame = styled.div`
   position: relative;
@@ -75,25 +75,24 @@ const PlayIcon = styled.span`
 function Embed({ url, thumbnail, title, sizes = SIZES.card, className }) {
   const [playing, setPlaying] = useState(false)
   const frameRef = useRef(null)
-  const embed = parseEmbed(url)
+  const info = embedInfo(url)
 
   useEffect(() => {
     if (playing) frameRef.current?.focus()
   }, [playing])
 
-  if (!embed) return null
+  if (!info) return null
 
-  const info = data.embeds[embedKey(embed)] || {}
-  const poster = mediaUrl(thumbnail) || info.thumbnail || null
+  const poster = mediaUrl(thumbnail) || info.thumbnail
   const label = title || info.title || 'video'
-  const ratio = info.width && info.height ? `${info.width} / ${info.height}` : '16 / 9'
+  const ratio = `${info.width} / ${info.height}`
 
   return (
     <Frame className={className} style={{ aspectRatio: ratio }}>
       {playing ? (
         <iframe
           ref={frameRef}
-          src={embedPlayerUrl(embed)}
+          src={embedPlayerUrl(info.embed)}
           title={label}
           allow="autoplay; fullscreen; picture-in-picture; encrypted-media"
           allowFullScreen

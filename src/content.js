@@ -1,3 +1,5 @@
+import { parseEmbed, embedPageUrl } from './embedUrl.js'
+
 const pageModules = import.meta.glob('../content/pages/*.json', {
   eager: true,
   import: 'default',
@@ -307,7 +309,8 @@ export function homeHeroSlides(slides = []) {
       const ex = refSlug(typeof row === 'string' ? row : row?.exhibition)
       const doc = ex && getExhibition(ex)
       const image = doc && mediaUrl(doc.heroImage)
-      const video = doc && mediaUrl(doc.heroVideo)
+      const embed = doc && parseEmbed(doc.heroVideo)
+      const video = embed ? embedPageUrl(embed) : null
       if (!image && !video) return null
       return {
         image,

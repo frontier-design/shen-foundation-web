@@ -5,7 +5,9 @@ import { CustomEase } from 'gsap/CustomEase'
 import { GRID, useMediaQuery } from '../../../grid/index.js'
 import { colors, easing, duration } from '../../../theme.js'
 import { navigate } from '../../../router.jsx'
-import { imageProps, imageUrl, SIZES } from '../../../images.js'
+import { imageProps, SIZES } from '../../../images.js'
+import { embedInfo } from '../../../embeds.js'
+import { createBackgroundPlayer } from '../../../backgroundPlayer.js'
 import { isLoadingDone, onLoadingDone } from '../../../loading.js'
 
 gsap.registerPlugin(CustomEase)
@@ -33,8 +35,7 @@ const Layer = styled.div`
   inset: 0;
   will-change: clip-path;
 
-  img,
-  video {
+  img {
     position: absolute;
     inset: 0;
     display: block;
@@ -43,10 +44,6 @@ const Layer = styled.div`
     max-width: 100%;
     object-fit: cover;
     object-position: center;
-  }
-
-  video {
-    visibility: hidden;
   }
 `
 
@@ -77,7 +74,7 @@ function HeroCarousel({ slides = [] }) {
   const currentRef = useRef(0)
   const slidesRef = useRef(slides)
   const reduceMotion = useMediaQuery('(prefers-reduced-motion: reduce)')
-  const signature = slides.map((s) => `${s.image || ''}>${s.video || ''}`).join('|')
+  const signature = slides.map((s) => `${s.image || ''}>${s.video || ''}`).join('>>')
 
   useEffect(() => {
     slidesRef.current = slides
@@ -107,9 +104,10 @@ function HeroCarousel({ slides = [] }) {
     const layerA = layerARef.current
     const layerB = layerBRef.current
     const list = signature
-      ? signature.split('|').map((entry) => {
-          const [image, video] = entry.split('>')
-          return { image: image || null, video: (!reduceMotion && video) || null }
+      ? signature.split('>>').map((entry) => {
+          const [image, link] = entry.split('>')
+          const info = link ? embedInfo(link) : null
+          return { image: image || info?.thumbnail || null, video: reduceMotion ? null : info }
         })
       : []
     const n = list.length
@@ -117,28 +115,31 @@ function HeroCarousel({ slides = [] }) {
     if (!section || !layerA || !layerB || n === 0) return undefined
 
     let inView = true
+    const players = new Map()
     const playing = new Set()
 
-    const videoOf = (layer) => layer.querySelector('video')
-
     const play = (layer) => {
-      const video = videoOf(layer)
-      if (!video.getAttribute('src')) return
+      const video = list[layerIndexRef.current.get(layer)]?.video
+      if (!video) return
       playing.add(layer)
-      if (inView && !document.hidden) video.play().catch(() => {})
+      if (!inView || document.hidden) return
+      const player = players.get(layer)
+      if (player) player.play()
+      else players.set(layer, createBackgroundPlayer(layer, video))
     }
 
     const stop = (layer) => {
       playing.delete(layer)
-      videoOf(layer).pause()
+      players.get(layer)?.pause()
     }
 
     const show = (layer, i) => {
-      const { image, video: videoSrc } = list[i]
+      const { image } = list[i]
       const img = layer.querySelector('img')
-      const video = videoOf(layer)
-      layerIndexRef.current.set(layer, i)
       stop(layer)
+      players.get(layer)?.destroy()
+      players.delete(layer)
+      layerIndexRef.current.set(layer, i)
       if (image) {
         const { srcSet, src } = imageProps(image, SIZES.fullBleed)
         if (srcSet) img.srcset = srcSet
@@ -148,18 +149,12 @@ function HeroCarousel({ slides = [] }) {
         img.removeAttribute('srcset')
         img.removeAttribute('src')
       }
-      if (videoSrc) {
-        video.muted = true
-        if (image) video.poster = imageUrl(image)
-        else video.removeAttribute('poster')
-        if (video.getAttribute('src') !== videoSrc) video.src = videoSrc
-        video.currentTime = 0
-        video.style.visibility = 'visible'
-      } else if (video.getAttribute('src')) {
-        video.removeAttribute('src')
-        video.removeAttribute('poster')
-        video.load()
-        video.style.visibility = ''
+    }
+
+    const resumeAll = () => {
+      for (const layer of playing) {
+        if (inView && !document.hidden) play(layer)
+        else players.get(layer)?.pause()
       }
     }
 
@@ -175,10 +170,7 @@ function HeroCarousel({ slides = [] }) {
 
     const observer = new IntersectionObserver(([entry]) => {
       inView = entry.isIntersecting
-      for (const layer of playing) {
-        if (inView && !document.hidden) videoOf(layer).play().catch(() => {})
-        else videoOf(layer).pause()
-      }
+      resumeAll()
     })
     observer.observe(section)
 
@@ -190,7 +182,7 @@ function HeroCarousel({ slides = [] }) {
       gsap.set(layerB, { clipPath: 'inset(0 0 0 100%)' })
       return () => {
         observer.disconnect()
-        stop(layerA)
+        for (const player of players.values()) player.destroy()
       }
     }
 
@@ -249,10 +241,7 @@ function HeroCarousel({ slides = [] }) {
     const onVisibility = () => {
       if (document.hidden) tl?.pause()
       else tl?.resume()
-      for (const layer of playing) {
-        if (inView && !document.hidden) videoOf(layer).play().catch(() => {})
-        else videoOf(layer).pause()
-      }
+      resumeAll()
     }
 
     document.addEventListener('visibilitychange', onVisibility)
@@ -262,8 +251,7 @@ function HeroCarousel({ slides = [] }) {
       startUnsub()
       observer.disconnect()
       document.removeEventListener('visibilitychange', onVisibility)
-      stop(layerA)
-      stop(layerB)
+      for (const player of players.values()) player.destroy()
       ctx.revert()
     }
   }, [signature, reduceMotion])
@@ -278,12 +266,10 @@ function HeroCarousel({ slides = [] }) {
       onClick={handleClick}
     >
       <Layer ref={layerARef}>
-        <img {...imageProps(slides[0].image, SIZES.fullBleed)} alt="" />
-        <video muted loop playsInline preload="auto" disablePictureInPicture aria-hidden="true" />
+        <img {...imageProps(slides[0].image || embedInfo(slides[0].video)?.thumbnail, SIZES.fullBleed)} alt="" />
       </Layer>
       <Layer ref={layerBRef}>
         <img sizes={SIZES.fullBleed} alt="" />
-        <video muted loop playsInline preload="auto" disablePictureInPicture aria-hidden="true" />
       </Layer>
       <HiddenLink
         ref={linkRef}

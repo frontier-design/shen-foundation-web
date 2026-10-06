@@ -1,71 +1,74 @@
 import { useEffect, useRef } from 'react'
+import styled from 'styled-components'
 import { useMediaQuery } from '../grid'
-import { imageProps, imageUrl, isVideo, videoProps } from '../images.js'
+import { imageProps } from '../images.js'
+import { embedInfo } from '../embeds.js'
+import { createBackgroundPlayer } from '../backgroundPlayer.js'
 
 const REDUCED_MOTION = '(prefers-reduced-motion: reduce)'
 
-function Video({ src, poster, width, height, play, alt, className, style }) {
+const Wrap = styled.div`
+  position: relative;
+  width: 100%;
+  height: 100%;
+
+  > img {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+`
+
+function BackgroundVideo({ link, image, sizes, alt, className, style }) {
   const ref = useRef(null)
+  const info = embedInfo(link)
 
   useEffect(() => {
-    const video = ref.current
-    if (!video) return undefined
-    video.muted = true
-    if (!play) {
-      video.pause()
-      return undefined
+    const container = ref.current
+    const current = embedInfo(link)
+    if (!container || !current) return undefined
+    let player = null
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          if (!player) player = createBackgroundPlayer(container, current)
+          else player.play()
+        } else player?.pause()
+      },
+      { rootMargin: '200px' },
+    )
+    observer.observe(container)
+    return () => {
+      observer.disconnect()
+      player?.destroy()
     }
-    const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) video.play().catch(() => {})
-      else video.pause()
-    })
-    observer.observe(video)
-    return () => observer.disconnect()
-  }, [src, play])
+  }, [link])
 
+  const poster = image || info.thumbnail
   return (
-    <video
-      ref={ref}
-      className={className}
-      style={width && height ? { aspectRatio: `${width} / ${height}`, ...style } : style}
-      src={poster ? src : `${src}#t=0.001`}
-      poster={poster}
-      width={width}
-      height={height}
-      muted
-      loop
-      playsInline
-      preload="metadata"
-      disablePictureInPicture
-      {...(alt ? { role: 'img', 'aria-label': alt } : { 'aria-hidden': true })}
-    />
+    <Wrap ref={ref} className={className} style={style} {...(alt ? { role: 'img', 'aria-label': alt } : {})}>
+      {poster ? <img {...imageProps(poster, sizes)} alt="" /> : null}
+    </Wrap>
   )
 }
 
-// An image, or a muted looping video with that image as its poster. Videos play
-// only while on screen; with reduced motion the image is shown instead.
-function Media({ image, video, sizes, alt = '', posterWidth, className, style, ...rest }) {
+// An image, or a muted looping YouTube/Vimeo video over that image. Videos load
+// when near the screen and pause off screen; with reduced motion only the image
+// (or the video's thumbnail) is shown.
+function Media({ image, video, sizes, alt = '', className, style, ...rest }) {
   const reduceMotion = useMediaQuery(REDUCED_MOTION)
-  const videoSrc = isVideo(video) ? video : null
+  const info = video ? embedInfo(video) : null
 
-  if (videoSrc && !(reduceMotion && image)) {
-    const { width, height } = videoProps(videoSrc)
-    return (
-      <Video
-        src={videoSrc}
-        poster={image ? imageUrl(image, posterWidth) : undefined}
-        width={width}
-        height={height}
-        play={!reduceMotion}
-        alt={alt}
-        className={className}
-        style={style}
-      />
-    )
+  if (info && !reduceMotion) {
+    return <BackgroundVideo link={video} image={image} sizes={sizes} alt={alt} className={className} style={style} />
   }
 
-  if (!image) return null
-  return <img {...imageProps(image, sizes)} alt={alt} className={className} style={style} {...rest} />
+  const poster = image || info?.thumbnail
+  if (!poster) return null
+  return <img {...imageProps(poster, sizes)} alt={alt} className={className} style={style} {...rest} />
 }
 
 export default Media

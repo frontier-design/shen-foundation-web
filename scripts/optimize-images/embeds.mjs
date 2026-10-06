@@ -19,7 +19,7 @@ if (opts.help) {
 Usage: node scripts/optimize-images/embeds.mjs            (fetch missing thumbnails)
        node scripts/optimize-images/embeds.mjs --check    (exit 3 if any link has no entry yet)
 
-Every "url" in content/**/*.json that is a YouTube or Vimeo link gets its thumbnail, title and
+Every "url" or "…Video" field in content/**/*.json holding a YouTube or Vimeo link gets its thumbnail, title and
 aspect ratio from the provider's oEmbed API. Thumbnails are saved to public/media/embeds/ and
 recorded in embeds.json, so visitors' browsers never contact YouTube or Vimeo before they press play.
 Links that fail are recorded with the error and retried on the next run.
@@ -33,7 +33,7 @@ function findUrls(node, out) {
   if (Array.isArray(node)) node.forEach((n) => findUrls(n, out))
   else if (node && typeof node === 'object') {
     for (const [k, v] of Object.entries(node)) {
-      if (k === 'url' && typeof v === 'string') {
+      if ((k === 'url' || k.endsWith('Video')) && typeof v === 'string') {
         const embed = parseEmbed(v)
         if (embed) out.set(embedKey(embed), embed)
       } else findUrls(v, out)

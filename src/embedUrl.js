@@ -4,11 +4,14 @@ const VIMEO_HASH = /^[0-9a-f]{6,}$/i
 
 const youtubeId = (value) => (YOUTUBE_ID.test(value || '') ? value : null)
 
-// Parses a YouTube or Vimeo link into { provider, id, hash? }, or null.
+// Parses a YouTube or Vimeo link (or a pasted embed code containing one) into
+// { provider, id, hash? }, or null.
 export function parseEmbed(value) {
+  const found = String(value || '').match(/https?:\/\/[^\s"'<>]+/)
+  if (!found) return null
   let url
   try {
-    url = new URL(String(value || '').trim())
+    url = new URL(found[0].replace(/&amp;/g, '&'))
   } catch {
     return null
   }
@@ -52,4 +55,15 @@ export function embedPlayerUrl(embed) {
   return embed.provider === 'youtube'
     ? `https://www.youtube-nocookie.com/embed/${embed.id}?autoplay=1&rel=0&playsinline=1`
     : `https://player.vimeo.com/video/${embed.id}?autoplay=1&dnt=1${embed.hash ? `&h=${embed.hash}` : ''}`
+}
+
+// Muted, looping, chrome-less player for background use. Vimeo hides its
+// controls in background mode only on paid plans.
+export function backgroundPlayerUrl(embed, origin) {
+  if (embed.provider === 'youtube') {
+    const params = new URLSearchParams({ autoplay: '1', mute: '1', loop: '1', playlist: embed.id, controls: '0', playsinline: '1', rel: '0', disablekb: '1', iv_load_policy: '3', enablejsapi: '1', ...(origin ? { origin } : {}) })
+    return `https://www.youtube-nocookie.com/embed/${embed.id}?${params}`
+  }
+  const params = new URLSearchParams({ background: '1', autoplay: '1', muted: '1', loop: '1', dnt: '1', api: '1', ...(embed.hash ? { h: embed.hash } : {}) })
+  return `https://player.vimeo.com/video/${embed.id}?${params}`
 }

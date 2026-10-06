@@ -2,7 +2,7 @@
 media:
   input: public/media
   output: /media
-  extensions: [jpg, jpeg, png, webp, avif, gif, mp4, webm]
+  categories: [image]
   rename: safe
 
 content:
@@ -66,12 +66,12 @@ content:
               categories: [image]
               path: public/media
           - name: imageVideo
-            label: Video (optional, portrait)
-            type: file
-            description: "Optional portrait MP4/WebM, under 20 MB. Replaces the image."
-            options:
-              extensions: [mp4, webm]
-              path: public/media
+            label: Video link (optional)
+            type: string
+            description: "YouTube or Vimeo link. Plays silently on a loop."
+            pattern:
+              regex: '^$|(youtube\.com/(watch\?(.*&)?v=|shorts/|embed/|live/)[A-Za-z0-9_-]{11}|youtu\.be/[A-Za-z0-9_-]{11}|youtube-nocookie\.com/embed/[A-Za-z0-9_-]{11}|vimeo\.com/(.*/)?[0-9]+)'
+              message: "Paste a YouTube or Vimeo video link."
       - name: grid
         label: Homepage grid
         type: block
@@ -149,12 +149,12 @@ content:
           categories: [image]
           path: public/media
       - name: heroVideo
-        label: Hero video (optional)
-        type: file
-        description: "Optional MP4/WebM, under 20 MB. Replaces the hero image."
-        options:
-          extensions: [mp4, webm]
-          path: public/media
+        label: Video link (optional)
+        type: string
+        description: "YouTube or Vimeo link. Plays silently on a loop."
+        pattern:
+          regex: '^$|(youtube\.com/(watch\?(.*&)?v=|shorts/|embed/|live/)[A-Za-z0-9_-]{11}|youtu\.be/[A-Za-z0-9_-]{11}|youtube-nocookie\.com/embed/[A-Za-z0-9_-]{11}|vimeo\.com/(.*/)?[0-9]+)'
+          message: "Paste a YouTube or Vimeo video link."
       - name: heroBody
         label: About Us body copy
         type: rich-text
@@ -218,12 +218,12 @@ content:
               categories: [image]
               path: public/media
           - name: photoVideo
-            label: Video (optional)
-            type: file
-            description: "Optional MP4/WebM, under 20 MB. Replaces the photo."
-            options:
-              extensions: [mp4, webm]
-              path: public/media
+            label: Video link (optional)
+            type: string
+            description: "YouTube or Vimeo link. Plays silently on a loop."
+            pattern:
+              regex: '^$|(youtube\.com/(watch\?(.*&)?v=|shorts/|embed/|live/)[A-Za-z0-9_-]{11}|youtu\.be/[A-Za-z0-9_-]{11}|youtube-nocookie\.com/embed/[A-Za-z0-9_-]{11}|vimeo\.com/(.*/)?[0-9]+)'
+              message: "Paste a YouTube or Vimeo video link."
 
   - name: artists
     label: Artists
@@ -263,12 +263,12 @@ content:
           categories: [image]
           path: public/media
       - name: thumbnailVideo
-        label: Video (optional)
-        type: file
-        description: "Optional MP4/WebM, under 20 MB. Replaces the thumbnail."
-        options:
-          extensions: [mp4, webm]
-          path: public/media
+        label: Video link (optional)
+        type: string
+        description: "YouTube or Vimeo link. Plays silently on a loop."
+        pattern:
+          regex: '^$|(youtube\.com/(watch\?(.*&)?v=|shorts/|embed/|live/)[A-Za-z0-9_-]{11}|youtu\.be/[A-Za-z0-9_-]{11}|youtube-nocookie\.com/embed/[A-Za-z0-9_-]{11}|vimeo\.com/(.*/)?[0-9]+)'
+          message: "Paste a YouTube or Vimeo video link."
 
   - name: exhibitions
     label: Exhibitions
@@ -315,12 +315,12 @@ content:
           categories: [image]
           path: public/media
       - name: heroVideo
-        label: Hero video (optional, landscape)
-        type: file
-        description: "Optional landscape MP4/WebM, under 20 MB. Replaces the hero image."
-        options:
-          extensions: [mp4, webm]
-          path: public/media
+        label: Video link (optional)
+        type: string
+        description: "YouTube or Vimeo link; loops silently, also in carousel."
+        pattern:
+          regex: '^$|(youtube\.com/(watch\?(.*&)?v=|shorts/|embed/|live/)[A-Za-z0-9_-]{11}|youtu\.be/[A-Za-z0-9_-]{11}|youtube-nocookie\.com/embed/[A-Za-z0-9_-]{11}|vimeo\.com/(.*/)?[0-9]+)'
+          message: "Paste a YouTube or Vimeo video link."
       - name: startDate
         label: Start date
         type: date
@@ -349,7 +349,7 @@ content:
         label: Gallery
         type: block
         blockKey: type
-        description: "Images and videos, shown in two staggered columns. Drag to reorder."
+        description: "Images and YouTube/Vimeo videos. Drag to reorder."
         list:
           collapsible:
             collapsed: true
@@ -369,42 +369,21 @@ content:
               - name: caption
                 label: Caption
                 type: string
-          - name: video
-            label: Video
-            fields:
-              - name: video
-                label: Video
-                type: file
-                required: true
-                description: "MP4/WebM, under 20 MB. Plays muted on a loop."
-                options:
-                  extensions: [mp4, webm]
-                  path: public/media
-              - name: poster
-                label: Poster image (recommended)
-                type: image
-                description: "A still from the video. Shown while the video loads and for visitors who prefer reduced motion. Without one, the video's first frame is shown."
-                options:
-                  categories: [image]
-                  path: public/media
-              - name: caption
-                label: Caption
-                type: string
           - name: embed
-            label: YouTube or Vimeo video
+            label: Video (YouTube or Vimeo)
             fields:
               - name: url
                 label: Video link
                 type: string
                 required: true
-                description: "The video loads only when a visitor presses play. Its thumbnail is fetched automatically a minute or two after saving."
+                description: "YouTube or Vimeo link. Shows a play button."
                 pattern:
-                  regex: '^https?://(www\.|m\.)?(youtube\.com/(watch\?(.*&)?v=|shorts/|embed/|live/)[A-Za-z0-9_-]{11}|youtu\.be/[A-Za-z0-9_-]{11}|youtube-nocookie\.com/embed/[A-Za-z0-9_-]{11}|(player\.)?vimeo\.com/(.*/)?[0-9]+)([/?#&].*)?$'
-                  message: "Paste a YouTube link (youtube.com/watch?v=…, youtu.be/…, youtube.com/shorts/…) or a Vimeo link (vimeo.com/…, including unlisted links)."
+                  regex: '(youtube\.com/(watch\?(.*&)?v=|shorts/|embed/|live/)[A-Za-z0-9_-]{11}|youtu\.be/[A-Za-z0-9_-]{11}|youtube-nocookie\.com/embed/[A-Za-z0-9_-]{11}|vimeo\.com/(.*/)?[0-9]+)'
+                  message: "Paste a YouTube or Vimeo video link."
               - name: thumbnail
                 label: Thumbnail (optional)
                 type: image
-                description: "Replaces the automatic thumbnail."
+                description: "Optional. Replaces the automatic thumbnail."
                 options:
                   categories: [image]
                   path: public/media
@@ -470,28 +449,28 @@ content:
           categories: [image]
           path: public/media
       - name: imageVideo
-        label: Video (optional, landscape)
-        type: file
-        description: "Optional landscape MP4/WebM, under 20 MB. Replaces the image."
-        options:
-          extensions: [mp4, webm]
-          path: public/media
+        label: Background video link (optional)
+        type: string
+        description: "YouTube or Vimeo link. Plays silently on a loop."
+        pattern:
+          regex: '^$|(youtube\.com/(watch\?(.*&)?v=|shorts/|embed/|live/)[A-Za-z0-9_-]{11}|youtu\.be/[A-Za-z0-9_-]{11}|youtube-nocookie\.com/embed/[A-Za-z0-9_-]{11}|vimeo\.com/(.*/)?[0-9]+)'
+          message: "Paste a YouTube or Vimeo video link."
       - name: embed
-        label: Video (YouTube or Vimeo, optional)
+        label: Video with sound (optional)
         type: object
-        description: "Shown under the date and location on the event page."
+        description: "Shown with a play button under the date and location."
         fields:
           - name: url
             label: Video link
             type: string
-            description: "The video loads only when a visitor presses play. Its thumbnail is fetched automatically a minute or two after saving."
+            description: "YouTube or Vimeo link. Shows a play button."
             pattern:
-              regex: '^$|^https?://(www\.|m\.)?(youtube\.com/(watch\?(.*&)?v=|shorts/|embed/|live/)[A-Za-z0-9_-]{11}|youtu\.be/[A-Za-z0-9_-]{11}|youtube-nocookie\.com/embed/[A-Za-z0-9_-]{11}|(player\.)?vimeo\.com/(.*/)?[0-9]+)([/?#&].*)?$'
-              message: "Paste a YouTube link (youtube.com/watch?v=…, youtu.be/…, youtube.com/shorts/…) or a Vimeo link (vimeo.com/…, including unlisted links)."
+              regex: '^$|(youtube\.com/(watch\?(.*&)?v=|shorts/|embed/|live/)[A-Za-z0-9_-]{11}|youtu\.be/[A-Za-z0-9_-]{11}|youtube-nocookie\.com/embed/[A-Za-z0-9_-]{11}|vimeo\.com/(.*/)?[0-9]+)'
+              message: "Paste a YouTube or Vimeo video link."
           - name: thumbnail
             label: Thumbnail (optional)
             type: image
-            description: "Replaces the automatic thumbnail."
+            description: "Optional. Replaces the automatic thumbnail."
             options:
               categories: [image]
               path: public/media

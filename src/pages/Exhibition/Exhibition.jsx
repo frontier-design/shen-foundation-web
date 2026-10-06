@@ -232,12 +232,10 @@ function Exhibition({ slug }) {
       {gallery.length > 0 ? (
         <Gallery>
           {gallery.map((entry, index) => {
-            const isVideoItem = entry.type === 'video'
             const isEmbed = entry.type === 'embed'
-            if (entry.type && entry.type !== 'image' && !isVideoItem && !isEmbed) return null
-            const src = mediaUrl(isVideoItem ? entry.poster : entry.image)
-            const video = isVideoItem ? mediaUrl(entry.video) : null
-            if (isEmbed ? !entry.url : !src && !video) return null
+            if (entry.type && entry.type !== 'image' && !isEmbed) return null
+            const src = mediaUrl(entry.image)
+            if (isEmbed ? !entry.url : !src) return null
 
             const side = index % 2 === 0 ? 'left' : 'right'
             const placement =
@@ -251,7 +249,7 @@ function Exhibition({ slug }) {
                   {isEmbed ? (
                     <Embed url={entry.url} thumbnail={entry.thumbnail} title={entry.caption} />
                   ) : (
-                    <Media image={src} video={video} sizes={SIZES.card} posterWidth={1280} alt={entry.caption || ''} />
+                    <Media image={src} sizes={SIZES.card} alt={entry.caption || ''} />
                   )}
                   {entry.caption ? (
                     <GalleryCaption>
