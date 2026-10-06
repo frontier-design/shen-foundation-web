@@ -21,7 +21,7 @@ content:
         ref: preview
         confirm:
           title: Add a video
-          message: "Save your changes first. Paste a Google Drive or Dropbox link to one MP4 (H.264) file under 20 MB, shared with 'Anyone with the link'. It takes about a minute; then reload this page and check Video status."
+          message: "Save your changes first. Paste a Google Drive or Dropbox link to one MP4 (H.264) file under 100 MB (under 20 MB loads more smoothly and also plays on cards), shared with 'Anyone with the link'. It takes about a minute; then reload this page and check Video status."
           button: Add video
         fields:
           - name: spot
@@ -92,7 +92,7 @@ content:
             type: string
             description: "Added with \"Add video\" at the top of this page. Clear this field to remove the video."
             pattern:
-              regex: '^$|^https://[a-z0-9]+\.public\.blob\.vercel-storage\.com/videos/[a-z0-9-]+/\d+x\d+\.(mp4|webm)$|(youtube\.com/(watch\?(.*&)?v=|shorts/|embed/|live/)[A-Za-z0-9_-]{11}|youtu\.be/[A-Za-z0-9_-]{11}|youtube-nocookie\.com/embed/[A-Za-z0-9_-]{11}|vimeo\.com/(.*/)?[0-9]+)'
+              regex: '^$|^https://[a-z0-9]+\.public\.blob\.vercel-storage\.com/videos/[a-z0-9-]+/\d+x\d+(-\d+)?\.(mp4|webm)$|(youtube\.com/(watch\?(.*&)?v=|shorts/|embed/|live/)[A-Za-z0-9_-]{11}|youtu\.be/[A-Za-z0-9_-]{11}|youtube-nocookie\.com/embed/[A-Za-z0-9_-]{11}|vimeo\.com/(.*/)?[0-9]+)'
               message: "Use \"Add video\" at the top of this page to add a video."
       - name: videoStatus
         label: Video status
@@ -174,7 +174,7 @@ content:
         ref: preview
         confirm:
           title: Add a video
-          message: "Save your changes first. Paste a Google Drive or Dropbox link to one MP4 (H.264) file under 20 MB, shared with 'Anyone with the link'. It takes about a minute; then reload this page and check Video status."
+          message: "Save your changes first. Paste a Google Drive or Dropbox link to one MP4 (H.264) file under 100 MB (under 20 MB loads more smoothly and also plays on cards), shared with 'Anyone with the link'. It takes about a minute; then reload this page and check Video status."
           button: Add video
         fields:
           - name: spot
@@ -207,7 +207,7 @@ content:
         type: string
         description: "Added with \"Add video\" at the top of this page. Clear this field to remove the video."
         pattern:
-          regex: '^$|^https://[a-z0-9]+\.public\.blob\.vercel-storage\.com/videos/[a-z0-9-]+/\d+x\d+\.(mp4|webm)$|(youtube\.com/(watch\?(.*&)?v=|shorts/|embed/|live/)[A-Za-z0-9_-]{11}|youtu\.be/[A-Za-z0-9_-]{11}|youtube-nocookie\.com/embed/[A-Za-z0-9_-]{11}|vimeo\.com/(.*/)?[0-9]+)'
+          regex: '^$|^https://[a-z0-9]+\.public\.blob\.vercel-storage\.com/videos/[a-z0-9-]+/\d+x\d+(-\d+)?\.(mp4|webm)$|(youtube\.com/(watch\?(.*&)?v=|shorts/|embed/|live/)[A-Za-z0-9_-]{11}|youtu\.be/[A-Za-z0-9_-]{11}|youtube-nocookie\.com/embed/[A-Za-z0-9_-]{11}|vimeo\.com/(.*/)?[0-9]+)'
           message: "Use \"Add video\" at the top of this page to add a video."
       - name: videoStatus
         label: Video status
@@ -281,7 +281,7 @@ content:
             type: string
             description: "Added with \"Add video\" at the top of this page. Clear this field to remove the video."
             pattern:
-              regex: '^$|^https://[a-z0-9]+\.public\.blob\.vercel-storage\.com/videos/[a-z0-9-]+/\d+x\d+\.(mp4|webm)$|(youtube\.com/(watch\?(.*&)?v=|shorts/|embed/|live/)[A-Za-z0-9_-]{11}|youtu\.be/[A-Za-z0-9_-]{11}|youtube-nocookie\.com/embed/[A-Za-z0-9_-]{11}|vimeo\.com/(.*/)?[0-9]+)'
+              regex: '^$|^https://[a-z0-9]+\.public\.blob\.vercel-storage\.com/videos/[a-z0-9-]+/\d+x\d+(-\d+)?\.(mp4|webm)$|(youtube\.com/(watch\?(.*&)?v=|shorts/|embed/|live/)[A-Za-z0-9_-]{11}|youtu\.be/[A-Za-z0-9_-]{11}|youtube-nocookie\.com/embed/[A-Za-z0-9_-]{11}|vimeo\.com/(.*/)?[0-9]+)'
               message: "Use \"Add video\" at the top of this page to add a video."
 
   - name: artists
@@ -308,7 +308,7 @@ content:
         scope: entry
         confirm:
           title: Add a video
-          message: "Save your changes first. Paste a Google Drive or Dropbox link to one MP4 (H.264) file under 20 MB, shared with 'Anyone with the link'. It takes about a minute; then reload this page and check Video status."
+          message: "Save your changes first. Paste a Google Drive or Dropbox link to one MP4 (H.264) file under 100 MB (under 20 MB loads more smoothly and also plays on cards), shared with 'Anyone with the link'. It takes about a minute; then reload this page and check Video status."
           button: Add video
         fields:
           - name: spot
@@ -349,7 +349,7 @@ content:
         type: string
         description: "Added with \"Add video\" at the top of this page. Clear this field to remove the video."
         pattern:
-          regex: '^$|^https://[a-z0-9]+\.public\.blob\.vercel-storage\.com/videos/[a-z0-9-]+/\d+x\d+\.(mp4|webm)$|(youtube\.com/(watch\?(.*&)?v=|shorts/|embed/|live/)[A-Za-z0-9_-]{11}|youtu\.be/[A-Za-z0-9_-]{11}|youtube-nocookie\.com/embed/[A-Za-z0-9_-]{11}|vimeo\.com/(.*/)?[0-9]+)'
+          regex: '^$|^https://[a-z0-9]+\.public\.blob\.vercel-storage\.com/videos/[a-z0-9-]+/\d+x\d+(-\d+)?\.(mp4|webm)$|(youtube\.com/(watch\?(.*&)?v=|shorts/|embed/|live/)[A-Za-z0-9_-]{11}|youtu\.be/[A-Za-z0-9_-]{11}|youtube-nocookie\.com/embed/[A-Za-z0-9_-]{11}|vimeo\.com/(.*/)?[0-9]+)'
           message: "Use \"Add video\" at the top of this page to add a video."
       - name: videoStatus
         label: Video status
@@ -381,7 +381,7 @@ content:
         scope: entry
         confirm:
           title: Add a video
-          message: "Save your changes first. Paste a Google Drive or Dropbox link to one MP4 (H.264) file under 20 MB, shared with 'Anyone with the link'. It takes about a minute; then reload this page and check Video status."
+          message: "Save your changes first. Paste a Google Drive or Dropbox link to one MP4 (H.264) file under 100 MB (under 20 MB loads more smoothly and also plays on cards), shared with 'Anyone with the link'. It takes about a minute; then reload this page and check Video status."
           button: Add video
         fields:
           - name: spot
@@ -434,7 +434,7 @@ content:
         type: string
         description: "Added with \"Add video\" at the top of this page (it also plays in the homepage carousel). Clear this field to remove the video."
         pattern:
-          regex: '^$|^https://[a-z0-9]+\.public\.blob\.vercel-storage\.com/videos/[a-z0-9-]+/\d+x\d+\.(mp4|webm)$|(youtube\.com/(watch\?(.*&)?v=|shorts/|embed/|live/)[A-Za-z0-9_-]{11}|youtu\.be/[A-Za-z0-9_-]{11}|youtube-nocookie\.com/embed/[A-Za-z0-9_-]{11}|vimeo\.com/(.*/)?[0-9]+)'
+          regex: '^$|^https://[a-z0-9]+\.public\.blob\.vercel-storage\.com/videos/[a-z0-9-]+/\d+x\d+(-\d+)?\.(mp4|webm)$|(youtube\.com/(watch\?(.*&)?v=|shorts/|embed/|live/)[A-Za-z0-9_-]{11}|youtu\.be/[A-Za-z0-9_-]{11}|youtube-nocookie\.com/embed/[A-Za-z0-9_-]{11}|vimeo\.com/(.*/)?[0-9]+)'
           message: "Use \"Add video\" at the top of this page to add a video."
       - name: videoStatus
         label: Video status
@@ -519,7 +519,7 @@ content:
                 required: true
                 description: "Added with \"Add video\" at the top of this page."
                 pattern:
-                  regex: '^https://[a-z0-9]+\.public\.blob\.vercel-storage\.com/videos/[a-z0-9-]+/\d+x\d+\.(mp4|webm)$'
+                  regex: '^https://[a-z0-9]+\.public\.blob\.vercel-storage\.com/videos/[a-z0-9-]+/\d+x\d+(-\d+)?\.(mp4|webm)$'
                   message: "Use \"Add video\" at the top of this page to add a video."
               - name: poster
                 label: Poster image (optional)
@@ -556,7 +556,7 @@ content:
         scope: entry
         confirm:
           title: Add a video
-          message: "Save your changes first. Paste a Google Drive or Dropbox link to one MP4 (H.264) file under 20 MB, shared with 'Anyone with the link'. It takes about a minute; then reload this page and check Video status."
+          message: "Save your changes first. Paste a Google Drive or Dropbox link to one MP4 (H.264) file under 100 MB (under 20 MB loads more smoothly and also plays on cards), shared with 'Anyone with the link'. It takes about a minute; then reload this page and check Video status."
           button: Add video
         fields:
           - name: spot
@@ -617,7 +617,7 @@ content:
         type: string
         description: "Added with \"Add video\" at the top of this page. Clear this field to remove the video."
         pattern:
-          regex: '^$|^https://[a-z0-9]+\.public\.blob\.vercel-storage\.com/videos/[a-z0-9-]+/\d+x\d+\.(mp4|webm)$|(youtube\.com/(watch\?(.*&)?v=|shorts/|embed/|live/)[A-Za-z0-9_-]{11}|youtu\.be/[A-Za-z0-9_-]{11}|youtube-nocookie\.com/embed/[A-Za-z0-9_-]{11}|vimeo\.com/(.*/)?[0-9]+)'
+          regex: '^$|^https://[a-z0-9]+\.public\.blob\.vercel-storage\.com/videos/[a-z0-9-]+/\d+x\d+(-\d+)?\.(mp4|webm)$|(youtube\.com/(watch\?(.*&)?v=|shorts/|embed/|live/)[A-Za-z0-9_-]{11}|youtu\.be/[A-Za-z0-9_-]{11}|youtube-nocookie\.com/embed/[A-Za-z0-9_-]{11}|vimeo\.com/(.*/)?[0-9]+)'
           message: "Use \"Add video\" at the top of this page to add a video."
       - name: videoStatus
         label: Video status

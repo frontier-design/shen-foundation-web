@@ -238,7 +238,7 @@ function PersonItem({ item, index }) {
     <Person {...placement}>
       {src || video ? (
         <PersonMedia $side={side}>
-          <Media image={src} video={video} sizes={SIZES.card} alt={item?.name || ''} />
+          <Media image={src} video={video} sizes={SIZES.card} posterWidth={1280} small alt={item?.name || ''} />
         </PersonMedia>
       ) : null}
       {item?.name ? <PersonName>{item.name}</PersonName> : null}

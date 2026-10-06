@@ -123,7 +123,7 @@ function GridItem({ item, index }) {
     <>
       {src || item?.video ? (
         <Media $side={side}>
-          <MediaContent image={src} video={item?.video} sizes={SIZES.card} posterWidth={1280} alt={item?.title || ''} />
+          <MediaContent image={src} video={item?.video} sizes={SIZES.card} posterWidth={1280} small alt={item?.title || ''} />
         </Media>
       ) : null}
       {item?.title ? <Title>{item.title}</Title> : null}

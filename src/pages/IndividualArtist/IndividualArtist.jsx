@@ -174,7 +174,7 @@ function ExhibitionEntry({ item }) {
     <CardLink {...linkProps(`/exhibitions/${exhibitionSlug(item)}`)}>
       {src || video ? (
         <FeedImage>
-          <Media image={src} video={video} sizes={SIZES.card} posterWidth={1280} alt={item.subtitle || ''} />
+          <Media image={src} video={video} sizes={SIZES.card} posterWidth={1280} small alt={item.subtitle || ''} />
         </FeedImage>
       ) : null}
       <Meta>

@@ -99,7 +99,7 @@ function ArtistItem({ item, index }) {
       <CardLink {...linkProps(`/artists/${artistSlug(item)}`)}>
         {src || video ? (
           <Media $side={side}>
-            <MediaContent image={src} video={video} sizes={SIZES.card} posterWidth={1280} alt={item?.title || ''} />
+            <MediaContent image={src} video={video} sizes={SIZES.card} posterWidth={1280} small alt={item?.title || ''} />
           </Media>
         ) : null}
         {item?.title ? <Name>{item.title}</Name> : null}

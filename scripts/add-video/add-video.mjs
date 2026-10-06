@@ -3,7 +3,7 @@ import { appendFileSync } from 'node:fs'
 import { put } from '@vercel/blob/client'
 import { ContentError, applyVideo, describe, resolveFile, resolveSpot, spotName, withStatus } from '../../api/_lib/destinations.js'
 import { BRANCH, readFile, updateFile } from '../../api/_lib/github.js'
-import { videoContentType } from '../../api/_lib/videos.js'
+import { SMALL_SPOT_VIDEO_BYTES, parseVideoPath } from '../../api/_lib/videos.js'
 import { EditorError, megabytes } from './errors.mjs'
 import { download, parseLink } from './links.mjs'
 import { probeVideo } from './probe.mjs'
@@ -13,6 +13,15 @@ const ALPHABET = 'abcdefghijklmnopqrstuvwxyz0123456789'
 
 const when = () =>
   new Date().toLocaleString('en-CA', { timeZone: 'America/Toronto', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit', hour12: false })
+
+// Heavier videos play on heroes, galleries and event pages; small spots show
+// their image instead (see src/videos.js).
+function sizeNote(target, bytes) {
+  if (bytes <= SMALL_SPOT_VIDEO_BYTES) return ''
+  if (target.cards === 'only') return " Because it's over 20 MB it won't play here: small spots like this show the image instead. Add a version under 20 MB to see it move."
+  if (target.cards === 'also') return ' Because it\'s over 20 MB it shows as the image on cards; a version under 20 MB loads more smoothly and also plays there.'
+  return ' A version under 20 MB would load more smoothly.'
+}
 
 const randomId = () => Array.from({ length: 8 }, () => ALPHABET[randomInt(ALPHABET.length)]).join('')
 
@@ -56,12 +65,13 @@ async function main() {
     const video = await probeVideo(buffer)
     console.log(`${video.container}, ${video.codec}, ${video.width}×${video.height}, ${video.duration.toFixed(1)} s, ${megabytes(buffer.length)}`)
 
-    const pathname = `videos/${file.slug.slice(0, 40).replace(/-+$/, '')}-${randomId()}/${video.width}x${video.height}.${video.ext}`
-    if (videoContentType(pathname) !== video.contentType) throw new Error(`Bad video path ${pathname}`)
+    const pathname = `videos/${file.slug.slice(0, 40).replace(/-+$/, '')}-${randomId()}/${video.width}x${video.height}-${buffer.length}.${video.ext}`
+    if (parseVideoPath(pathname)?.contentType !== video.contentType) throw new Error(`Bad video path ${pathname}`)
     const blob = await put(pathname, buffer, {
       access: 'public',
       token: await uploadToken(pathname),
       contentType: video.contentType,
+      multipart: buffer.length > SMALL_SPOT_VIDEO_BYTES,
     })
     console.log(`Uploaded ${blob.url}`)
 
@@ -70,7 +80,7 @@ async function main() {
     await updateFile(
       file.file,
       (data) => {
-        const status = `✓ Video added to ${spotName(target, data, options)} (${megabytes(buffer.length)}). It will appear on the preview site in about a minute. (${when()})`
+        const status = `✓ Video added to ${spotName(target, data, options)} (${megabytes(buffer.length)}). It will appear on the preview site in about a minute.${sizeNote(target, buffer.length)} (${when()})`
         return withStatus(applyVideo(target, data, options), status)
       },
       {

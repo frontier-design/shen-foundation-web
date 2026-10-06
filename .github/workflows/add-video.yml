@@ -3,7 +3,7 @@ run-name: Add video to ${{ fromJSON(inputs.payload).context.path }}
 
 # Started by the "Add video" action in Pages CMS. Downloads the video from the
 # Google Drive or Dropbox link, checks it plays in all browsers (MP4/H.264 or
-# WebM, max 20 MB), uploads it unchanged to Vercel Blob and writes the link and
+# WebM, max 100 MB), uploads it unchanged to Vercel Blob and writes the link and
 # a "Video status" message into the entry on preview.
 
 on:
@@ -24,7 +24,7 @@ concurrency:
 jobs:
   add-video:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
       - name: Check out preview
         uses: actions/checkout@v4

@@ -1,12 +1,12 @@
 import { MAX_VIDEO_BYTES } from '../../api/_lib/videos.js'
 import { EditorError, megabytes } from './errors.mjs'
 
-const EXPORT_ADVICE = 'please export a version under 20 MB and try again.'
+const EXPORT_ADVICE = 'please export a version under 100 MB and try again.'
 const DRIVE_HOSTS = new Set(['drive.google.com', 'docs.google.com', 'drive.usercontent.google.com'])
 const DRIVE_ID = /^[\w-]{10,}$/
 
 const tooBig = (bytes) =>
-  new EditorError(bytes ? `This video is ${megabytes(bytes)}; ${EXPORT_ADVICE}` : `This video is over 20 MB; ${EXPORT_ADVICE}`)
+  new EditorError(bytes ? `This video is ${megabytes(bytes)}; ${EXPORT_ADVICE}` : `This video is over 100 MB; ${EXPORT_ADVICE}`)
 
 // Turns a pasted share link into { provider, id?, url } or throws an EditorError.
 export function parseLink(raw) {

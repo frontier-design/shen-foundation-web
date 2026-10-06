@@ -4,7 +4,7 @@ import { useMediaQuery } from '../grid'
 import { imageProps, imageUrl } from '../images.js'
 import { embedInfo } from '../embeds.js'
 import { createBackgroundPlayer } from '../backgroundPlayer.js'
-import { blobVideo, watchVideo } from '../videos.js'
+import { blobVideo, playsInSmallSpot, watchVideo } from '../videos.js'
 
 const REDUCED_MOTION = '(prefers-reduced-motion: reduce)'
 
@@ -88,18 +88,20 @@ function NativeVideo({ video, poster, play, alt, className, style }) {
 
 // An image, or a muted looping video over that image. Uploaded videos play
 // natively while on screen; YouTube/Vimeo links use the background player.
-// With reduced motion only the image (or the video's first frame) is shown.
-function Media({ image, video, sizes, posterWidth, alt = '', className, style, ...rest }) {
+// With reduced motion, and in small spots (cards) for videos over 20 MB, only
+// the image (or the video's first frame) is shown.
+function Media({ image, video, sizes, posterWidth, small = false, alt = '', className, style, ...rest }) {
   const reduceMotion = useMediaQuery(REDUCED_MOTION)
   const uploaded = blobVideo(video)
   const info = !uploaded && video ? embedInfo(video) : null
+  const play = !reduceMotion && !(small && !playsInSmallSpot(uploaded))
 
-  if (uploaded && !(reduceMotion && image)) {
+  if (uploaded && (play || !image)) {
     return (
       <NativeVideo
         video={uploaded}
         poster={image ? imageUrl(image, posterWidth) : undefined}
-        play={!reduceMotion}
+        play={play}
         alt={alt}
         className={className}
         style={style}

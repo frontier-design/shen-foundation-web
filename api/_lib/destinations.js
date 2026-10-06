@@ -5,15 +5,15 @@ const MAX_CAPTION = 300
 
 const SPOTS = {
   exhibitions: {
-    hero: { path: ['heroVideo'], label: 'hero' },
+    hero: { path: ['heroVideo'], label: 'hero', cards: 'also' },
     gallery: { append: 'gallery', label: 'gallery' },
   },
-  events: { background: { path: ['imageVideo'], label: 'background' } },
-  artists: { thumbnail: { path: ['thumbnailVideo'], label: 'thumbnail' } },
+  events: { background: { path: ['imageVideo'], label: 'background', cards: 'also' } },
+  artists: { thumbnail: { path: ['thumbnailVideo'], label: 'thumbnail', cards: 'also' } },
   home: { callout: { path: ['callout', 'imageVideo'], label: 'homepage callout' } },
   about: {
     hero: { path: ['heroVideo'], label: 'hero' },
-    person: { person: true, label: 'photo' },
+    person: { person: true, label: 'photo', cards: 'only' },
   },
 }
 

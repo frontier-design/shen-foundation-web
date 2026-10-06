@@ -1,13 +1,21 @@
 import { GRID } from './grid/config.js'
 
-const BLOB_VIDEO = /^https:\/\/[a-z0-9]+\.public\.blob\.vercel-storage\.com\/videos\/[a-z0-9-]+\/(\d+)x(\d+)\.(mp4|webm)$/
+const BLOB_VIDEO = /^https:\/\/[a-z0-9]+\.public\.blob\.vercel-storage\.com\/videos\/[a-z0-9-]+\/(\d+)x(\d+)(?:-(\d+))?\.(mp4|webm)$/
 const PHONE_LIMIT = 2
 
-// A video uploaded by "Add video": { src, width, height } from its URL, or null.
+// Cards and other small spots only autoplay videos up to this size.
+export const SMALL_SPOT_VIDEO_BYTES = 20 * 1024 * 1024
+
+// A video uploaded by "Add video": { src, width, height, size } from its URL
+// (<W>x<H>-<bytes>; links from before sizes were recorded were capped at
+// 20 MB, so they count as small), or null.
 export function blobVideo(value) {
   const match = typeof value === 'string' ? value.trim().match(BLOB_VIDEO) : null
-  return match ? { src: match[0], width: Number(match[1]), height: Number(match[2]) } : null
+  if (!match) return null
+  return { src: match[0], width: Number(match[1]), height: Number(match[2]), size: match[3] ? Number(match[3]) : null }
 }
+
+export const playsInSmallSpot = (video) => !video?.size || video.size <= SMALL_SPOT_VIDEO_BYTES
 
 const watched = new Map()
 let observer = null
