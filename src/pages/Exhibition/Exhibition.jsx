@@ -6,6 +6,7 @@ import RichText from '../../components/RichText.jsx'
 import { linkProps } from '../../router.jsx'
 import { SIZES } from '../../images.js'
 import Media from '../../components/Media.jsx'
+import Embed from '../../components/Embed.jsx'
 import { useImageAccent } from '../../hooks/useImageAccent.js'
 
 const Hero = styled.div`
@@ -148,6 +149,10 @@ const GalleryFigure = styled.figure`
     opacity: 1;
   }
 
+  &:has(iframe) figcaption {
+    display: none;
+  }
+
   &:hover figcaption span {
     transform: translateY(0);
   }
@@ -228,10 +233,11 @@ function Exhibition({ slug }) {
         <Gallery>
           {gallery.map((entry, index) => {
             const isVideoItem = entry.type === 'video'
-            if (entry.type && entry.type !== 'image' && !isVideoItem) return null
+            const isEmbed = entry.type === 'embed'
+            if (entry.type && entry.type !== 'image' && !isVideoItem && !isEmbed) return null
             const src = mediaUrl(isVideoItem ? entry.poster : entry.image)
             const video = isVideoItem ? mediaUrl(entry.video) : null
-            if (!src && !video) return null
+            if (isEmbed ? !entry.url : !src && !video) return null
 
             const side = index % 2 === 0 ? 'left' : 'right'
             const placement =
@@ -242,7 +248,11 @@ function Exhibition({ slug }) {
             return (
               <GridCell key={index} {...placement}>
                 <GalleryFigure $side={side}>
-                  <Media image={src} video={video} sizes={SIZES.card} posterWidth={1280} alt={entry.caption || ''} />
+                  {isEmbed ? (
+                    <Embed url={entry.url} thumbnail={entry.thumbnail} title={entry.caption} />
+                  ) : (
+                    <Media image={src} video={video} sizes={SIZES.card} posterWidth={1280} alt={entry.caption || ''} />
+                  )}
                   {entry.caption ? (
                     <GalleryCaption>
                       <span>{entry.caption}</span>

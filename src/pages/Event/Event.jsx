@@ -7,6 +7,7 @@ import RichText from '../../components/RichText.jsx'
 import { goBack } from '../../router.jsx'
 import { SIZES } from '../../images.js'
 import Media from '../../components/Media.jsx'
+import Embed from '../../components/Embed.jsx'
 import { useWheelForward } from '../../hooks/useWheelForward.js'
 
 const Section = styled.main`
@@ -143,6 +144,16 @@ const MetaLine = styled.p`
   margin: 0;
 `
 
+const EventVideo = styled.figure`
+  margin: clamp(24px, 3vw, 40px) 0 0;
+`
+
+const EventVideoCaption = styled.figcaption`
+  ${type.caption}
+  color: ${colors.gray};
+  margin-top: 8px;
+`
+
 const Sections = styled.div`
   margin-top: auto;
 
@@ -258,6 +269,13 @@ function Event({ slug }) {
             {item.captionDate ? <MetaLine>{item.captionDate}</MetaLine> : null}
             {item.captionLocation ? <MetaLine>{item.captionLocation}</MetaLine> : null}
           </Meta>
+
+          {item.embed?.url ? (
+            <EventVideo>
+              <Embed url={item.embed.url} thumbnail={item.embed.thumbnail} title={item.embed.caption || item.title} />
+              {item.embed.caption ? <EventVideoCaption>{item.embed.caption}</EventVideoCaption> : null}
+            </EventVideo>
+          ) : null}
 
           {sections.length > 0 ? (
             <Sections>

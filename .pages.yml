@@ -390,6 +390,27 @@ content:
               - name: caption
                 label: Caption
                 type: string
+          - name: embed
+            label: YouTube or Vimeo video
+            fields:
+              - name: url
+                label: Video link
+                type: string
+                required: true
+                description: "The video loads only when a visitor presses play. Its thumbnail is fetched automatically a minute or two after saving."
+                pattern:
+                  regex: '^https?://(www\.|m\.)?(youtube\.com/(watch\?(.*&)?v=|shorts/|embed/|live/)[A-Za-z0-9_-]{11}|youtu\.be/[A-Za-z0-9_-]{11}|youtube-nocookie\.com/embed/[A-Za-z0-9_-]{11}|(player\.)?vimeo\.com/(.*/)?[0-9]+)([/?#&].*)?$'
+                  message: "Paste a YouTube link (youtube.com/watch?v=…, youtu.be/…, youtube.com/shorts/…) or a Vimeo link (vimeo.com/…, including unlisted links)."
+              - name: thumbnail
+                label: Thumbnail (optional)
+                type: image
+                description: "Replaces the automatic thumbnail."
+                options:
+                  categories: [image]
+                  path: public/media
+              - name: caption
+                label: Caption
+                type: string
 
   - name: events
     label: Events
@@ -455,6 +476,28 @@ content:
         options:
           extensions: [mp4, webm]
           path: public/media
+      - name: embed
+        label: Video (YouTube or Vimeo, optional)
+        type: object
+        description: "Shown under the date and location on the event page."
+        fields:
+          - name: url
+            label: Video link
+            type: string
+            description: "The video loads only when a visitor presses play. Its thumbnail is fetched automatically a minute or two after saving."
+            pattern:
+              regex: '^$|^https?://(www\.|m\.)?(youtube\.com/(watch\?(.*&)?v=|shorts/|embed/|live/)[A-Za-z0-9_-]{11}|youtu\.be/[A-Za-z0-9_-]{11}|youtube-nocookie\.com/embed/[A-Za-z0-9_-]{11}|(player\.)?vimeo\.com/(.*/)?[0-9]+)([/?#&].*)?$'
+              message: "Paste a YouTube link (youtube.com/watch?v=…, youtu.be/…, youtube.com/shorts/…) or a Vimeo link (vimeo.com/…, including unlisted links)."
+          - name: thumbnail
+            label: Thumbnail (optional)
+            type: image
+            description: "Replaces the automatic thumbnail."
+            options:
+              categories: [image]
+              path: public/media
+          - name: caption
+            label: Caption
+            type: string
       - name: sections
         label: Sections
         type: object
