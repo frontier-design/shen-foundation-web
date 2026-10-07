@@ -634,5 +634,5 @@ actions:
     ref: current
     confirm:
       title: Publish to live site?
-      message: "Check the preview site first: https://shen-foundation-web-git-preview-frontier-design.vercel.app/ This makes everything currently on the preview site live. The live site updates about a minute later."
+      message: "This makes everything saved in the CMS live, including changes saved by other editors, so make sure it's all ready. The live site updates about a minute later."
       button: Publish
