@@ -1,6 +1,9 @@
 import { GRID } from './grid/config.js'
 
-const BLOB_VIDEO = /^https:\/\/faq0catz0eljtbgc\.public\.blob\.vercel-storage\.com\/videos\/[a-z0-9-]+\/(\d+)x(\d+)(?:-(\d+))?\.(mp4|webm)$/
+const BLOB_HOST = import.meta.env.VITE_BLOB_HOST || 'faq0catz0eljtbgc.public.blob.vercel-storage.com'
+const BLOB_VIDEO = new RegExp(
+  `^https://${BLOB_HOST.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}/videos/[a-z0-9-]+/(\\d+)x(\\d+)(?:-(\\d+))?\\.(mp4|webm)$`,
+)
 const PHONE_LIMIT = 2
 
 // Cards and other small spots only autoplay videos up to this size.

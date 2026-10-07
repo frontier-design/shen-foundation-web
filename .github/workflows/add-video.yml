@@ -50,5 +50,5 @@ jobs:
           PAYLOAD: ${{ inputs.payload }}
           GITHUB_CONTENT_TOKEN: ${{ github.token }}
           VIDEO_JOB_SECRET: ${{ secrets.VIDEO_JOB_SECRET }}
-          VIDEO_TOKEN_URL: https://shen-foundation-web.vercel.app/api/video/token
+          VIDEO_TOKEN_URL: ${{ vars.VIDEO_TOKEN_URL || 'https://shen-foundation-web.vercel.app/api/video/token' }}
         run: node scripts/add-video/add-video.mjs

@@ -1,4 +1,16 @@
-const REPO = 'frontier-design/shen-foundation-web'
+const PRODUCTION_REPO = 'frontier-design/shen-foundation-web'
+
+// SITE_REPO if set, else the repo this code runs from (GitHub Actions or a
+// Vercel deployment), else production. Keeps a copy of the site (the sandbox)
+// from reading or changing production content.
+function siteRepo(env) {
+  if (env.SITE_REPO) return env.SITE_REPO
+  if (env.GITHUB_REPOSITORY) return env.GITHUB_REPOSITORY
+  if (env.VERCEL_GIT_REPO_OWNER && env.VERCEL_GIT_REPO_SLUG) return `${env.VERCEL_GIT_REPO_OWNER}/${env.VERCEL_GIT_REPO_SLUG}`
+  return PRODUCTION_REPO
+}
+
+const REPO = siteRepo(process.env)
 export const BRANCH = 'preview'
 const CONTENT_FILE = /^content\/(exhibitions|events|artists|pages)\/[a-z0-9-]+\.json$/
 const ATTEMPTS = 4
