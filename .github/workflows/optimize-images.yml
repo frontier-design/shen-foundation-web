@@ -6,12 +6,9 @@ on:
       - preview
     paths:
       - public/media/**
+  # Manual runs from the Actions tab only. No inputs, so Pages CMS (which
+  # always sends a "payload" input) can't start it.
   workflow_dispatch:
-    inputs:
-      payload:
-        description: Pages CMS payload as JSON (unused)
-        required: false
-        type: string
 
 permissions:
   contents: write
