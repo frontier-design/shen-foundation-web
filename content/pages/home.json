@@ -6,7 +6,7 @@
       "exhibition": "content/exhibitions/danh-vo-guldenhof.json"
     },
     "image": "/media/danh-vo-guldenhof-landing.jpeg",
-    "imageVideo": "https://faq0catz0eljtbgc.public.blob.vercel-storage.com/videos/home-ahou2gx7/1920x1200-52004091.mp4"
+    "imageVideo": ""
   },
   "grid": [
     {
@@ -31,5 +31,5 @@
     "content/exhibitions/dynamic-spaces.json",
     "content/exhibitions/soft-machines.json"
   ],
-  "videoStatus": "✓ Video added to the homepage callout (52 MB). It will appear on the preview site in about a minute. A version under 20 MB would load more smoothly. (Oct 6, 17:09)"
+  "videoStatus": ""
 }
