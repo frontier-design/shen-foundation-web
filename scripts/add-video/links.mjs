@@ -4,6 +4,27 @@ import { EditorError, megabytes } from './errors.mjs'
 const EXPORT_ADVICE = 'please export a version under 100 MB and try again.'
 const DRIVE_HOSTS = new Set(['drive.google.com', 'docs.google.com', 'drive.usercontent.google.com'])
 const DRIVE_ID = /^[\w-]{10,}$/
+const DOWNLOAD_DOMAINS = ['google.com', 'googleusercontent.com', 'dropbox.com', 'dropboxusercontent.com']
+const MAX_REDIRECTS = 10
+
+const isDownloadHost = (url) => {
+  const { protocol, hostname } = new URL(url)
+  return protocol === 'https:' && DOWNLOAD_DOMAINS.some((domain) => hostname === domain || hostname.endsWith(`.${domain}`))
+}
+
+// fetch() that follows redirects itself, so every request (including the
+// Drive confirmation form and CDN redirects) only goes to Google or Dropbox.
+async function fetchDownload(url) {
+  for (let hop = 0; hop <= MAX_REDIRECTS; hop++) {
+    if (!isDownloadHost(url)) throw new Error(`Refusing to download from ${new URL(url).host}`)
+    const response = await fetch(url, { redirect: 'manual' })
+    const location = response.status >= 300 && response.status < 400 ? response.headers.get('location') : null
+    if (!location) return response
+    await response.body?.cancel()
+    url = new URL(location, url).href
+  }
+  throw new Error(`More than ${MAX_REDIRECTS} redirects`)
+}
 
 const tooBig = (bytes) =>
   new EditorError(bytes ? `This video is ${megabytes(bytes)}; ${EXPORT_ADVICE}` : `This video is over 100 MB; ${EXPORT_ADVICE}`)
@@ -86,7 +107,7 @@ const notShared = () =>
   new EditorError("This Google Drive link isn't shared publicly. In Google Drive, click Share, set General access to \"Anyone with the link\", and try again.")
 
 async function downloadDrive(id) {
-  let response = await fetch(`https://drive.usercontent.google.com/download?id=${id}&export=download&confirm=t`)
+  let response = await fetchDownload(`https://drive.usercontent.google.com/download?id=${id}&export=download&confirm=t`)
   if (response.status === 404) {
     throw new EditorError("This Google Drive file can't be found. It may have been deleted, or it isn't shared publicly (Share → \"Anyone with the link\").")
   }
@@ -101,14 +122,14 @@ async function downloadDrive(id) {
     if (size && Number(size[1]) * UNITS[size[2]] > MAX_VIDEO_BYTES) throw tooBig(Number(size[1]) * UNITS[size[2]])
     const next = driveForm(html)
     if (!next) throw notShared()
-    response = await fetch(next)
+    response = await fetchDownload(next)
     if (!response.ok || isHtml(response)) throw notShared()
   }
   return readCapped(response)
 }
 
 async function downloadDropbox(url) {
-  const response = await fetch(url)
+  const response = await fetchDownload(url)
   if (response.status === 404 || response.status === 410) {
     throw new EditorError("This Dropbox link doesn't work any more. It may have been deleted or switched off. Copy a fresh link from Dropbox and try again.")
   }
