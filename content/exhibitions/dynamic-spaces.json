@@ -1,33 +1,29 @@
 {
   "title": "Haegue Yang",
   "slug": "dynamic-spaces",
-  "subtitle": "Dynamic Spaces",
+  "subtitle": "Haegue Yang: Through",
   "heroImage": "/media/carousel-image-3.webp",
   "status": "ongoing",
-  "startDate": "2026-08-10",
-  "endDate": "2026-10-04",
-  "captionLocation": "Art Gallery of Ontario, Toronto",
-  "body": "<p>Haegue Yang’s Dynamic Spaces gathers a decade of sculptural and installation work that reimagines the relationship between the body, movement, and the built environment. Working across venetian blinds, light, scent, and industrial materials, Yang constructs sensory environments that shift as visitors move through them, asking how space is produced, inhabited, and remembered.</p>",
+  "startDate": "2026-10-10",
+  "endDate": "2028-06-12",
+  "captionLocation": "Dia Beacon",
+  "body": "<p>Haegue Yang’s largest commission in the United States, <em>Through</em> marks the first time an artist has conceived of works that entangle multiple galleries across Dia Beacon’s two levels. Responding to the site’s inherent dualities—light and dark, suspended and subterranean—and drawing on the ancient&nbsp;East Asian theory of the Five Phases (五行思想), Yang engages the building’s cardinal axes and maps their chromatic associations in traditional East Asian cultures. This bilateral presentation involves several discrete yet integrated works: An installation of dark, draped venetian blinds on the first floor is counterpointed by vertical metal louvers that are scaled and aligned to the lower-level columns, alongside a range of other dynamic elements. Throughout the exhibition, Yang variably transfigures <em>Images</em> (1968), a&nbsp;quartet by avant-garde composer Isang Yun, echoing his approach to embodying ancient entities through contemporary media. Yang’s commission complements and challenges both Minimalism’s unit-based geometries as well as Postminimalism’s fluid forms. It unfolds as an enduring inquiry into the porosity of opposing forces and the plurality of doubles, rendering movement, migration, and oscillation across cultures, histories, and states of being.</p>",
   "gallery": [
     {
       "type": "image",
-      "image": "/media/carousel-image-3.webp",
-      "caption": ""
+      "image": "/media/carousel-image-3.webp"
     },
     {
       "type": "image",
-      "image": "/media/hero-carousel/carousel-image-4.jpg",
-      "caption": ""
+      "image": "/media/hero-carousel/carousel-image-4.jpg"
     },
     {
       "type": "image",
-      "image": "/media/hero-carousel/carousel-image-2.png",
-      "caption": ""
+      "image": "/media/hero-carousel/carousel-image-2.png"
     },
     {
       "type": "image",
-      "image": "/media/carousel-image-1.webp",
-      "caption": ""
+      "image": "/media/carousel-image-1.webp"
     }
   ]
 }
