@@ -2,7 +2,6 @@
   "title": "Anicka Yi",
   "slug": "life-is-cheap",
   "subtitle": "Life is Cheap",
-  "heroImage": "/media/anicka-yi-life-is-cheap.jpeg",
   "status": "ongoing",
   "startDate": "2026-12-03",
   "endDate": "2027-02-12",
@@ -35,5 +34,6 @@
       "type": "image",
       "image": "/media/hero-carousel/carousel-image-4.jpg"
     }
-  ]
+  ],
+  "heroVideo": "https://faq0catz0eljtbgc.public.blob.vercel-storage.com/videos/life-is-cheap-1nkskx1t/1224x720-4426386.mp4"
 }
