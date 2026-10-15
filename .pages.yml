@@ -32,6 +32,7 @@ content:
               search: title,subtitle
               value: "{name}"
               label: "{title} — {subtitle}"
+              thumbnail: heroImage
       - name: callout
         label: Homepage callout
         type: object
@@ -55,6 +56,7 @@ content:
                       collection: exhibitions
                       search: title,subtitle
                       label: "{title} — {subtitle}"
+                      thumbnail: heroImage
               - name: event
                 label: Event
                 fields:
@@ -66,6 +68,7 @@ content:
                       collection: events
                       search: title
                       label: "{title}"
+                      thumbnail: image
           - name: image
             label: Image (portrait)
             type: image
@@ -100,6 +103,7 @@ content:
                   search: title,subtitle
                   value: "{name}"
                   label: "{title} — {subtitle}"
+                  thumbnail: heroImage
           - name: event
             label: Event
             fields:
@@ -112,6 +116,7 @@ content:
                   search: title
                   value: "{name}"
                   label: "{title}"
+                  thumbnail: image
 
   - name: artistsPage
     label: Artists page
@@ -138,6 +143,7 @@ content:
               search: title
               value: "{title}"
               label: "{title}"
+              thumbnail: thumbnail
 
   - name: aboutPage
     label: About page
