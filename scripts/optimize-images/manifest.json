@@ -160,6 +160,14 @@
       "width": 2000,
       "height": 1245
     },
+    "/media/screenshot-2026-09-21-at-103244-pm.png": {
+      "sha256": "910baddf1331487153a2000c4c6316473876afbd4b6aff58852467d2b528f8a1",
+      "action": "lossless",
+      "bytesBefore": 209957,
+      "bytesAfter": 78883,
+      "width": 2940,
+      "height": 1666
+    },
     "/media/sung-tieu-portrait.jpeg": {
       "sha256": "232990db0294be49dd9d36acd75e812c5e759cf45fe4656bc028a9558bec6ef4",
       "action": "metadata",
