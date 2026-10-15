@@ -4,7 +4,7 @@ import { fail, hasBearer, json } from '../_lib/http.js'
 
 // Logs what would be deleted without deleting anything. Switch to false once a
 // dry run's log looks right.
-const DRY_RUN = true
+const DRY_RUN = false
 
 const megabytes = (bytes) => `${(bytes / 1_000_000).toFixed(1)} MB`
 
