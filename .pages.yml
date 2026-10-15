@@ -332,6 +332,16 @@ content:
         required: true
         options:
           maxlength: 120
+      - name: artist
+        label: Artist page (optional)
+        type: reference
+        description: "Pick the artist's page to show “Learn more about the artist →” here and list this exhibition on that artist's page. Leave empty for no link; you can still add links in the text."
+        options:
+          collection: artists
+          search: title
+          value: "{name}"
+          label: "{title}"
+          thumbnail: thumbnail
       - name: status
         label: Status
         type: select

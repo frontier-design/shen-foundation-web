@@ -249,17 +249,20 @@ export function orderedArtists(order = []) {
   return result
 }
 
+// The artist page an exhibition links to: its optional `artist` reference.
 export function exhibitionArtist(item) {
-  const name = slugify(item?.title)
-  if (!name) return null
-  return artists.find((a) => artistSlug(a) === name) || null
+  const ref = refSlug(item?.artist)
+  return ref ? getArtist(slugify(ref)) : null
 }
 
 export function artistExhibitions(artist) {
-  const name = slugify(artist?.title)
-  if (!name) return []
+  const slug = artistSlug(artist)
+  if (!slug) return []
   return exhibitions
-    .filter((ex) => slugify(ex.title) === name)
+    .filter((ex) => {
+      const linked = exhibitionArtist(ex)
+      return linked && artistSlug(linked) === slug
+    })
     .sort((a, b) => exhibitionEndDate(a) - exhibitionEndDate(b))
 }
 
