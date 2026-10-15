@@ -265,6 +265,14 @@ function refType(row) {
   return null
 }
 
+// The callout's own image or video; with neither, the featured item's.
+function calloutMedia(callout, image, video) {
+  if (callout.image || callout.imageVideo) {
+    return { image: callout.image || null, video: mediaUrl(callout.imageVideo) }
+  }
+  return { image: image || null, video: mediaUrl(video) }
+}
+
 export function homeCallout(callout) {
   if (!callout?.enabled) return null
   const feature = callout.feature || callout
@@ -274,8 +282,7 @@ export function homeCallout(callout) {
     if (!doc) return null
     return {
       ...eventToCard(doc),
-      image: callout.image || doc.image,
-      video: mediaUrl(callout.imageVideo),
+      ...calloutMedia(callout, doc.image, doc.imageVideo),
       link: `/events/${eventSlug(doc)}`,
     }
   }
@@ -284,8 +291,7 @@ export function homeCallout(callout) {
   if (!doc) return null
   return {
     ...exhibitionToCard(doc),
-    image: callout.image || doc.heroImage,
-    video: mediaUrl(callout.imageVideo),
+    ...calloutMedia(callout, doc.heroImage, doc.heroVideo),
     link: `/exhibitions/${exhibitionSlug(doc)}`,
   }
 }

@@ -73,8 +73,10 @@ const PLAYER_STYLE = {
 }
 
 // A muted looping video added to `container` over its image. It stays invisible
-// (and is skipped by the nav colour sampling) until it is actually playing.
-export function createVideoPlayer(container, src) {
+// (and is skipped by the nav colour sampling) until it is actually playing, or,
+// with no image under it, until its first frame is ready. `still` shows only the
+// first frame (reduced motion).
+export function createVideoPlayer(container, src, { still = false, noImage = false } = {}) {
   const video = document.createElement('video')
   Object.assign(video, { muted: true, loop: true, playsInline: true, preload: 'auto', crossOrigin: 'anonymous' })
   video.setAttribute('muted', '')
@@ -82,16 +84,16 @@ export function createVideoPlayer(container, src) {
   video.setAttribute('aria-hidden', 'true')
   video.disablePictureInPicture = true
   Object.assign(video.style, PLAYER_STYLE)
-  video.addEventListener('playing', () => {
+  video.addEventListener(still || noImage ? 'loadeddata' : 'playing', () => {
     video.style.opacity = '1'
     video.style.pointerEvents = 'auto'
   })
-  video.src = src
+  video.src = still ? `${src}#t=0.001` : src
   container.appendChild(video)
-  video.play().catch(() => {})
+  if (!still) video.play().catch(() => {})
   return {
     play() {
-      video.play().catch(() => {})
+      if (!still) video.play().catch(() => {})
     },
     pause() {
       video.pause()

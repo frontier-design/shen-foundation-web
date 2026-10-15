@@ -14,28 +14,6 @@ content:
     operations:
       delete: false
       rename: false
-    actions:
-      - name: add-video
-        label: Add video
-        workflow: add-video.yml
-        ref: preview
-        confirm:
-          title: Add a video
-          message: "Save your changes first. Paste a Google Drive or Dropbox link to one MP4 (H.264) file under 100 MB (under 20 MB loads more smoothly and also plays on cards), shared with 'Anyone with the link'. It takes about a minute; then reload this page and check Video status."
-          button: Add video
-        fields:
-          - name: spot
-            label: Which spot?
-            type: select
-            required: true
-            default: callout
-            options:
-              - label: "Homepage callout"
-                value: callout
-          - name: link
-            label: Video link (Google Drive or Dropbox)
-            type: text
-            required: true
     fields:
       - name: heroSlides
         label: Hero carousel
@@ -82,20 +60,16 @@ content:
           - name: image
             label: Image (portrait)
             type: image
-            required: true
-            description: "Portrait only. Landscape images are not accepted here."
+            description: "Portrait only. Landscape images are not accepted here. Or use a video below instead."
             options:
               categories: [image]
               path: public/media
           - name: imageVideo
-            label: Video (optional)
+            label: Video (instead of the image)
             type: video
-            description: "Plays muted on a loop instead of the image. Under 20 MB loads more smoothly."
-      - name: videoStatus
-        label: Video status
-        type: text
-        readonly: true
-        description: "The result of the last \"Add video\". Filled in automatically: reload this page when it has finished."
+            description: "Use either the image above or a video, not both. Plays muted on a loop; under 20 MB loads more smoothly."
+            options:
+              image: image
       - name: grid
         label: Homepage grid
         type: block
@@ -164,33 +138,6 @@ content:
     operations:
       delete: false
       rename: false
-    actions:
-      - name: add-video
-        label: Add video
-        workflow: add-video.yml
-        ref: preview
-        confirm:
-          title: Add a video
-          message: "Save your changes first. Paste a Google Drive or Dropbox link to one MP4 (H.264) file under 100 MB (under 20 MB loads more smoothly and also plays on cards), shared with 'Anyone with the link'. It takes about a minute; then reload this page and check Video status."
-          button: Add video
-        fields:
-          - name: spot
-            label: Which spot?
-            type: select
-            required: true
-            default: hero
-            options:
-              - label: "Hero"
-                value: hero
-              - label: "A person's photo"
-                value: person
-          - name: link
-            label: Video link (Google Drive or Dropbox)
-            type: text
-            required: true
-          - name: person
-            label: "Person's name (only for a person's photo)"
-            type: text
     fields:
       - name: heroImage
         label: Hero image (full bleed)
@@ -200,14 +147,11 @@ content:
           categories: [image]
           path: public/media
       - name: heroVideo
-        label: Video (optional)
+        label: Video (instead of the image)
         type: video
-        description: "Plays muted on a loop over the hero image. Under 20 MB loads more smoothly."
-      - name: videoStatus
-        label: Video status
-        type: text
-        readonly: true
-        description: "The result of the last \"Add video\". Filled in automatically: reload this page when it has finished."
+        description: "Use either the hero image above or a video, not both. Plays muted on a loop; under 20 MB loads more smoothly."
+        options:
+          image: heroImage
       - name: heroBody
         label: About Us body copy
         type: rich-text
@@ -270,11 +214,12 @@ content:
               categories: [image]
               path: public/media
           - name: photoVideo
-            label: Video (optional)
+            label: Video (instead of the photo)
             type: video
-            description: "Plays instead of the photo. Only videos under 20 MB play here."
+            description: "Use either the photo above or a video, not both. Only videos under 20 MB play here."
             options:
               cards: only
+              image: photo
 
   - name: artists
     label: Artists
@@ -292,29 +237,6 @@ content:
       default:
         sort: title
         order: asc
-    actions:
-      - name: add-video
-        label: Add video
-        workflow: add-video.yml
-        ref: preview
-        scope: entry
-        confirm:
-          title: Add a video
-          message: "Save your changes first. Paste a Google Drive or Dropbox link to one MP4 (H.264) file under 100 MB (under 20 MB loads more smoothly and also plays on cards), shared with 'Anyone with the link'. It takes about a minute; then reload this page and check Video status."
-          button: Add video
-        fields:
-          - name: spot
-            label: Which spot?
-            type: select
-            required: true
-            default: thumbnail
-            options:
-              - label: "Thumbnail"
-                value: thumbnail
-          - name: link
-            label: Video link (Google Drive or Dropbox)
-            type: text
-            required: true
     fields:
       - name: title
         label: Artist
@@ -337,16 +259,12 @@ content:
           categories: [image]
           path: public/media
       - name: thumbnailVideo
-        label: Video (optional)
+        label: Video (instead of the thumbnail)
         type: video
-        description: "Plays instead of the image, also on cards (cards only play videos under 20 MB)."
+        description: "Use either the thumbnail above or a video, not both. Also plays on cards (cards only play videos under 20 MB)."
         options:
           cards: also
-      - name: videoStatus
-        label: Video status
-        type: text
-        readonly: true
-        description: "The result of the last \"Add video\". Filled in automatically: reload this page when it has finished."
+          image: thumbnail
 
   - name: exhibitions
     label: Exhibitions
@@ -364,34 +282,6 @@ content:
       default:
         sort: title
         order: asc
-    actions:
-      - name: add-video
-        label: Add video
-        workflow: add-video.yml
-        ref: preview
-        scope: entry
-        confirm:
-          title: Add a video
-          message: "Save your changes first. Paste a Google Drive or Dropbox link to one MP4 (H.264) file under 100 MB (under 20 MB loads more smoothly and also plays on cards), shared with 'Anyone with the link'. It takes about a minute; then reload this page and check Video status."
-          button: Add video
-        fields:
-          - name: spot
-            label: Which spot?
-            type: select
-            required: true
-            default: hero
-            options:
-              - label: "Hero (also plays in the homepage carousel)"
-                value: hero
-              - label: "Add to gallery (at the end; drag it into place in Gallery)"
-                value: gallery
-          - name: link
-            label: Video link (Google Drive or Dropbox)
-            type: text
-            required: true
-          - name: caption
-            label: Gallery caption (optional)
-            type: text
     fields:
       - name: title
         label: Title
@@ -421,16 +311,12 @@ content:
           categories: [image]
           path: public/media
       - name: heroVideo
-        label: Video (optional)
+        label: Video (instead of the hero image)
         type: video
-        description: "Plays instead of the hero image, also in the homepage carousel and on cards (cards only play videos under 20 MB)."
+        description: "Use either the hero image above or a video, not both. Also plays in the homepage carousel and on cards (cards only play videos under 20 MB)."
         options:
           cards: also
-      - name: videoStatus
-        label: Video status
-        type: text
-        readonly: true
-        description: "The result of the last \"Add video\". Filled in automatically: reload this page when it has finished."
+          image: heroImage
       - name: startDate
         label: Start date
         type: date
@@ -486,13 +372,6 @@ content:
                 type: video
                 required: true
                 description: "Plays muted on a loop. Under 20 MB loads more smoothly."
-              - name: poster
-                label: Poster image (optional)
-                type: image
-                description: "Shown before the video starts and for visitors who turn off motion."
-                options:
-                  categories: [image]
-                  path: public/media
               - name: caption
                 label: Caption
                 type: string
@@ -513,29 +392,6 @@ content:
       default:
         sort: title
         order: asc
-    actions:
-      - name: add-video
-        label: Add video
-        workflow: add-video.yml
-        ref: preview
-        scope: entry
-        confirm:
-          title: Add a video
-          message: "Save your changes first. Paste a Google Drive or Dropbox link to one MP4 (H.264) file under 100 MB (under 20 MB loads more smoothly and also plays on cards), shared with 'Anyone with the link'. It takes about a minute; then reload this page and check Video status."
-          button: Add video
-        fields:
-          - name: spot
-            label: Which spot?
-            type: select
-            required: true
-            default: background
-            options:
-              - label: "Background video"
-                value: background
-          - name: link
-            label: Video link (Google Drive or Dropbox)
-            type: text
-            required: true
     fields:
       - name: title
         label: Title
@@ -578,16 +434,12 @@ content:
           categories: [image]
           path: public/media
       - name: imageVideo
-        label: Background video (optional)
+        label: Background video (instead of the image)
         type: video
-        description: "Plays instead of the background image, also on cards (cards only play videos under 20 MB)."
+        description: "Use either the image above or a video, not both. Also plays on cards (cards only play videos under 20 MB)."
         options:
           cards: also
-      - name: videoStatus
-        label: Video status
-        type: text
-        readonly: true
-        description: "The result of the last \"Add video\". Filled in automatically: reload this page when it has finished."
+          image: image
       - name: sections
         label: Sections
         type: object

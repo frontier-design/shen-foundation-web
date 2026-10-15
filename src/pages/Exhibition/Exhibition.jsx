@@ -11,6 +11,7 @@ import { useImageAccent } from '../../hooks/useImageAccent.js'
 
 const Hero = styled.div`
   width: 100%;
+  background-color: ${colors.gray};
   height: 100vh;
   height: 100dvh;
 
@@ -230,7 +231,7 @@ function Exhibition({ slug }) {
           {gallery.map((entry, index) => {
             const isVideo = entry.type === 'video'
             if (entry.type && entry.type !== 'image' && !isVideo) return null
-            const src = mediaUrl(isVideo ? entry.poster : entry.image)
+            const src = isVideo ? null : mediaUrl(entry.image)
             const video = isVideo ? blobVideo(entry.video)?.src : null
             if (isVideo ? !video : !src) return null
 

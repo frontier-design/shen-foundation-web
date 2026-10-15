@@ -51,6 +51,7 @@ const CardLink = styled.a`
 const Media = styled.div`
   aspect-ratio: 4 / 3;
   overflow: hidden;
+  background-color: ${colors.gray};
 
   ${(props) => bleed(props.$side, GRID.PADDING)}
 

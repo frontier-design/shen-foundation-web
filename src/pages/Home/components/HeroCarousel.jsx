@@ -103,7 +103,7 @@ function HeroCarousel({ slides = [] }) {
     const layerA = layerARef.current
     const layerB = layerBRef.current
     const list = JSON.parse(signature).map(([image, link]) => {
-      return { image: image || null, video: reduceMotion ? null : blobVideo(link) }
+      return { image: image || null, video: reduceMotion && image ? null : blobVideo(link) }
     })
     const n = list.length
 
@@ -114,13 +114,14 @@ function HeroCarousel({ slides = [] }) {
     const playing = new Set()
 
     const play = (layer) => {
-      const video = list[layerIndexRef.current.get(layer)]?.video
+      const slide = list[layerIndexRef.current.get(layer)]
+      const video = slide?.video
       if (!video) return
       playing.add(layer)
       if (!inView || document.hidden) return
       const player = players.get(layer)
       if (player) player.play()
-      else players.set(layer, createVideoPlayer(layer, video.src))
+      else players.set(layer, createVideoPlayer(layer, video.src, { still: reduceMotion, noImage: !slide.image }))
     }
 
     const stop = (layer) => {
