@@ -144,6 +144,14 @@
       "width": 374,
       "height": 534
     },
+    "/media/persepolis-screening-poster.jpg": {
+      "sha256": "236a1f2e0cbc8e346e26c3e8acfdf86137edad1b666fef66da40c72e4cb325ad",
+      "action": "recompressed",
+      "bytesBefore": 610987,
+      "bytesAfter": 517303,
+      "width": 2340,
+      "height": 1722
+    },
     "/media/presentation-examples/suki.webp": {
       "sha256": "3d6bef2bdee7ebc20f6bc98554d5d2c7ba17f6400aca6a9afed8188b2e20bd68",
       "action": "unchanged",
