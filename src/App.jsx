@@ -20,7 +20,6 @@ import IndividualArtist from './pages/IndividualArtist'
 import Event from './pages/Event'
 import EventsIndex from './pages/Events'
 import About from './pages/About'
-import Test from './pages/Test'
 import { usePathname, historyKey, lastNavigationType } from './router.jsx'
 import { markLoadingDone } from './loading.js'
 
@@ -91,7 +90,6 @@ function RouteView({ pathname }) {
   const event = pathname.match(/^\/events\/([a-z0-9-]+)\/?$/)
   const eventsIndex = pathname === '/events' || pathname === '/events/'
   const aboutIndex = pathname === '/about' || pathname === '/about/'
-  const testIndex = pathname === '/test' || pathname === '/test/'
 
   return (
     <>
@@ -109,8 +107,6 @@ function RouteView({ pathname }) {
         <EventsIndex />
       ) : aboutIndex ? (
         <About />
-      ) : testIndex ? (
-        <Test />
       ) : (
         <Home />
       )}
