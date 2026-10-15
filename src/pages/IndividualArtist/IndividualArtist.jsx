@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react'
 import styled, { css } from 'styled-components'
 import { Grid, GridCell, GRID, useMediaQuery } from '../../grid'
 import { colors, type, easing, duration, aspect } from '../../theme.js'
-import { getArtist, mediaUrl, accentImage, artistExhibitions, exhibitionSlug, toPlainText } from '../../content.js'
+import { getArtist, mediaUrl, accentSource, artistExhibitions, exhibitionSlug, toPlainText } from '../../content.js'
 import RichText from '../../components/RichText.jsx'
 import { useImageAccent } from '../../hooks/useImageAccent.js'
 import { useScrollColumn } from '../../hooks/useScrollColumn.js'
@@ -242,7 +242,7 @@ const CardLink = styled.a`
 function ExhibitionEntry({ item }) {
   const src = mediaUrl(item.heroImage)
   const video = blobVideo(item.heroVideo)?.src
-  const accent = useImageAccent(accentImage(item), colors.gray)
+  const accent = useImageAccent(accentSource(item), colors.gray)
 
   return (
     <CardLink {...linkProps(`/exhibitions/${exhibitionSlug(item)}`)}>

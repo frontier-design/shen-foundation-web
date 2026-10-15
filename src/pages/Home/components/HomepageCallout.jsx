@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { Grid, GridCell, GRID } from '../../../grid/index.js'
 import { colors, type, easing, duration } from '../../../theme.js'
-import { mediaUrl, accentImage } from '../../../content.js'
+import { mediaUrl, accentSource } from '../../../content.js'
 import { linkProps } from '../../../router.jsx'
 import { SIZES } from '../../../images.js'
 import Media from '../../../components/Media.jsx'
@@ -133,7 +133,7 @@ function HomepageCallout({ callout }) {
   const src = mediaUrl(callout?.image)
   const video = mediaUrl(callout?.video)
   const link = callout?.link || undefined
-  const accent = useImageAccent(accentImage(callout) || src, colors.gray)
+  const accent = useImageAccent(accentSource(callout) || src, colors.gray)
 
   return (
     <Section data-nav-tone-left="light" data-nav-tone-right="dark">

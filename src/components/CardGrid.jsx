@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components'
 import { Grid, GridCell, GRID } from '../grid'
 import { colors, type, easing, duration, aspect } from '../theme.js'
-import { mediaUrl, accentImage, isExhibition, exhibitionSlug, eventSlug } from '../content.js'
+import { mediaUrl, accentSource, isExhibition, exhibitionSlug, eventSlug } from '../content.js'
 import { useImageAccent } from '../hooks/useImageAccent.js'
 import { linkProps } from '../router.jsx'
 import { SIZES } from '../images.js'
@@ -110,7 +110,7 @@ const CaptionLine = styled.p`
 function GridItem({ item, index }) {
   const side = index % 2 === 0 ? 'left' : 'right'
   const src = mediaUrl(item?.image)
-  const accent = useImageAccent(accentImage(item), colors.gray)
+  const accent = useImageAccent(accentSource(item), colors.gray)
   const exhibition = isExhibition(item)
   const href = exhibition ? `/exhibitions/${exhibitionSlug(item)}` : `/events/${eventSlug(item)}`
 

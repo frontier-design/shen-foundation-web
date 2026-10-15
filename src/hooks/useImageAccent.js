@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { imageUrl, IMAGE_WIDTHS } from "../images.js";
+import { blobVideo } from "../videos.js";
 
 const CONTRAST_TARGET = 2.6;
 const SAMPLE = 64;
@@ -119,8 +120,76 @@ function ensureContrast([r, g, b]) {
 
 const accentCache = new Map();
 
+const VIDEO_FRAME_TIME = 1;
+const VIDEO_TIMEOUT = 15000;
+
+function accentFromSource(source, width, height) {
+  const scale = Math.min(1, SAMPLE / Math.max(width, height));
+  const w = Math.max(1, Math.round(width * scale));
+  const h = Math.max(1, Math.round(height * scale));
+  const canvas = document.createElement("canvas");
+  canvas.width = w;
+  canvas.height = h;
+  const ctx = canvas.getContext("2d", { willReadFrequently: true });
+  if (!ctx) return null;
+  ctx.drawImage(source, 0, 0, w, h);
+
+  let data;
+  try {
+    data = ctx.getImageData(0, 0, w, h).data;
+  } catch {
+    return null;
+  }
+
+  const vibrant = extractVibrant(data);
+  return vibrant ? ensureContrast(vibrant) : null;
+}
+
+// A frame about a second in (videos often open on black), read from an
+// off-screen muted video; Blob videos allow cross-origin reads.
+function loadVideoAccent(src) {
+  return new Promise((resolve) => {
+    const video = document.createElement("video");
+    let settled = false;
+    const finish = (value) => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timer);
+      video.pause();
+      video.removeAttribute("src");
+      video.load();
+      resolve(value);
+    };
+    const draw = () => {
+      if (!video.videoWidth || video.readyState < 2) return;
+      finish(accentFromSource(video, video.videoWidth, video.videoHeight));
+    };
+    const timer = setTimeout(() => finish(null), VIDEO_TIMEOUT);
+
+    Object.assign(video, { crossOrigin: "anonymous", muted: true, playsInline: true, preload: "auto" });
+    video.addEventListener("error", () => finish(null));
+    video.addEventListener("loadedmetadata", () => {
+      const time = Math.min(VIDEO_FRAME_TIME, (video.duration || 0) / 2);
+      if (time > 0) video.currentTime = time;
+      else video.addEventListener("loadeddata", draw, { once: true });
+    });
+    video.addEventListener("seeked", draw);
+    video.src = src;
+    // Browsers that don't preload (iOS Safari) start loading on play().
+    setTimeout(() => {
+      if (!settled && video.readyState < 1) video.play().then(() => video.pause()).catch(() => {});
+    }, 3000);
+  });
+}
+
 function loadAccent(src) {
   if (accentCache.has(src)) return accentCache.get(src);
+
+  if (blobVideo(src)) {
+    const promise = loadVideoAccent(src);
+    accentCache.set(src, promise);
+    return promise;
+  }
 
   const promise = new Promise((resolve) => {
     const img = new Image();
@@ -128,30 +197,7 @@ function loadAccent(src) {
     img.decoding = "async";
 
     img.onerror = () => resolve(null);
-    img.onload = () => {
-      const scale = Math.min(
-        1,
-        SAMPLE / Math.max(img.naturalWidth, img.naturalHeight),
-      );
-      const w = Math.max(1, Math.round(img.naturalWidth * scale));
-      const h = Math.max(1, Math.round(img.naturalHeight * scale));
-      const canvas = document.createElement("canvas");
-      canvas.width = w;
-      canvas.height = h;
-      const ctx = canvas.getContext("2d", { willReadFrequently: true });
-      if (!ctx) return resolve(null);
-      ctx.drawImage(img, 0, 0, w, h);
-
-      let data;
-      try {
-        data = ctx.getImageData(0, 0, w, h).data;
-      } catch {
-        return resolve(null);
-      }
-
-      const vibrant = extractVibrant(data);
-      resolve(vibrant ? ensureContrast(vibrant) : null);
-    };
+    img.onload = () => resolve(accentFromSource(img, img.naturalWidth, img.naturalHeight));
 
     img.src = imageUrl(src, IMAGE_WIDTHS[0]);
   });

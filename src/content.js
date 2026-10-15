@@ -141,8 +141,13 @@ export function isExhibition(item) {
   return Boolean(item?.subtitle)
 }
 
-export function accentImage(item) {
-  return mediaUrl(item?.accentImage || item?.heroImage || item?.image)
+// What the accent colour is taken from: the image, or with no image the video.
+export function accentSource(item) {
+  return (
+    mediaUrl(item?.accentImage || item?.heroImage || item?.image) ||
+    blobVideo(item?.heroVideo || item?.imageVideo || item?.video)?.src ||
+    null
+  )
 }
 
 export function exhibitionSlug(item) {

@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components'
 import { Grid, GridCell, GRID } from '../../grid'
 import { colors, type, easing, duration } from '../../theme.js'
-import { getExhibition, mediaUrl, accentImage, exhibitionArtist, artistSlug, toPlainText } from '../../content.js'
+import { getExhibition, mediaUrl, accentSource, exhibitionArtist, artistSlug, toPlainText } from '../../content.js'
 import RichText from '../../components/RichText.jsx'
 import { linkProps } from '../../router.jsx'
 import { SIZES } from '../../images.js'
@@ -184,7 +184,7 @@ function Exhibition({ slug }) {
   const item = getExhibition(slug)
   const heroSrc = mediaUrl(item?.heroImage)
   const heroVideo = mediaUrl(item?.heroVideo)
-  const accent = useImageAccent(accentImage(item), colors.gray)
+  const accent = useImageAccent(accentSource(item), colors.gray)
 
   if (!item) return null
 
