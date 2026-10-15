@@ -9,19 +9,19 @@
   "grid": [
     {
       "type": "exhibition",
-      "exhibition": "Life is Cheap"
+      "exhibition": "life-is-cheap.json"
     },
     {
       "type": "event",
-      "event": "Jeremie Gindre and Mirjana Farkas"
+      "event": "jeremie-gindre-and-mirjana-farkas.json"
     },
     {
       "type": "event",
-      "event": "Florian Luthi Artist Talk"
+      "event": "florian-luthi-artist-talk.json"
     },
     {
       "type": "exhibition",
-      "exhibition": "Dynamic Spaces"
+      "exhibition": "dynamic-spaces.json"
     }
   ],
   "heroSlides": [
