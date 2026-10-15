@@ -5,6 +5,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { Grid, GridCell, GRID, useMediaQuery } from '../grid'
 import { colors, type, easing, duration } from '../theme.js'
 import { linkProps, usePathname } from '../router.jsx'
+import { siteContacts } from '../content.js'
 import { isLoadingDone, onLoadingDone } from '../loading.js'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -379,8 +380,17 @@ function Navigation() {
   const isMobile = useMediaQuery(GRID.MEDIA_MOBILE)
   const prevPathRef = useRef(pathname)
 
+  const { email, instagram, menuDescription } = siteContacts()
+
   const navTo = (to) => (event) => {
-    linkProps(to).onClick(event)
+    if (to === pathname && !event.defaultPrevented && event.button === 0 && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey) {
+      event.preventDefault()
+      // Behind the open menu the jump is hidden, and the logo can grow straight
+      // to its top-of-page size as the menu closes.
+      window.scrollTo({ top: 0, behavior: open ? 'instant' : 'smooth' })
+    } else {
+      linkProps(to).onClick(event)
+    }
     setOpen(false)
   }
 
@@ -562,17 +572,21 @@ function Navigation() {
                   Events
                 </MenuLink>
               </MenuGroup>
-              <MenuGroup>
-                <MenuSubLink href="#">Instagram</MenuSubLink>
-                <MenuSubLink href="mailto:info@shenfoundation.com" $underline>
-                  info@shenfoundation.com
-                </MenuSubLink>
-              </MenuGroup>
-              <MenuDescription>
-                The Shen Foundation is devoted to exhibiting contemporary art and
-                to deepening our understanding of the artistic practices that
-                define our time
-              </MenuDescription>
+              {(instagram || email) && (
+                <MenuGroup>
+                  {instagram && (
+                    <MenuSubLink href={instagram} target="_blank" rel="noopener noreferrer">
+                      Instagram
+                    </MenuSubLink>
+                  )}
+                  {email && (
+                    <MenuSubLink href={`mailto:${email}`} $underline>
+                      {email}
+                    </MenuSubLink>
+                  )}
+                </MenuGroup>
+              )}
+              {menuDescription && <MenuDescription>{menuDescription}</MenuDescription>}
             </MenuInner>
           </GridCell>
         </MenuGrid>
@@ -581,7 +595,7 @@ function Navigation() {
         <Grid>
           <GridCell $start={1} $end={-1}>
             <Bar>
-              <LogoLink ref={logoRef} {...linkProps('/')} aria-label="Shen Foundation home">
+              <LogoLink ref={logoRef} href="/" onClick={navTo('/')} aria-label="Shen Foundation home">
                 <ShenMark color={iconColor(tones.logo)} />
               </LogoLink>
               <Plus

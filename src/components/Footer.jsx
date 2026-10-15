@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import { Grid, GridCell, GRID } from '../grid'
 import { colors, type } from '../theme.js'
 import { linkProps } from '../router.jsx'
+import { siteContacts } from '../content.js'
 import wordmark from '../assets/images/logos/shen-wordmark-oneline.svg'
 
 const FooterEl = styled(Grid).attrs({ as: 'footer' })`
@@ -46,6 +47,7 @@ const Wordmark = styled.div`
 `
 
 function Footer() {
+  const { email, instagram } = siteContacts()
   return (
     <FooterEl data-nav-tone-left="light" data-nav-tone-right="light">
       <LinksCell $start={7} $end={-1} $startTablet={5} $endTablet={-1}>
@@ -55,12 +57,20 @@ function Footer() {
           <FooterLink {...linkProps('/exhibitions')}>Exhibitions</FooterLink>
           <FooterLink {...linkProps('/events')}>Events</FooterLink>
         </Group>
-        <Group>
-          <FooterLink href="#">Instagram</FooterLink>
-          <FooterLink href="mailto:info@shenfoundation.com" $underline>
-            info@shenfoundation.com
-          </FooterLink>
-        </Group>
+        {(instagram || email) && (
+          <Group>
+            {instagram && (
+              <FooterLink href={instagram} target="_blank" rel="noopener noreferrer">
+                Instagram
+              </FooterLink>
+            )}
+            {email && (
+              <FooterLink href={`mailto:${email}`} $underline>
+                {email}
+              </FooterLink>
+            )}
+          </Group>
+        )}
       </LinksCell>
       <GridCell $start={1} $end={-1}>
         <Wordmark role="img" aria-label="Shen Foundation" />

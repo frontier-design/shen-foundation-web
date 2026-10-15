@@ -68,6 +68,17 @@ export function getPage(slug) {
   return pages.find((page) => page.__slug === slug)
 }
 
+export function siteContacts() {
+  const site = getPage('site') || {}
+  const email = (site.email || '').trim()
+  const instagram = (site.instagram || '').trim()
+  return {
+    email: email || null,
+    instagram: /^https:\/\//.test(instagram) ? instagram : null,
+    menuDescription: (site.menuDescription || '').trim(),
+  }
+}
+
 export function mediaUrl(value) {
   if (!value) return null
   if (typeof value === 'string') {

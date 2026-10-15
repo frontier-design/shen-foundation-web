@@ -118,6 +118,34 @@ content:
                   label: "{title}"
                   thumbnail: image
 
+  - name: siteSettings
+    label: Site settings
+    type: file
+    path: content/pages/site.json
+    format: json
+    operations:
+      delete: false
+      rename: false
+    fields:
+      - name: instagram
+        label: Instagram link
+        type: string
+        description: "The full address of the Instagram profile, e.g. https://www.instagram.com/… Shown in the menu and footer; leave empty to hide the Instagram link."
+        pattern:
+          regex: '^$|^https://(www\.)?instagram\.com/[A-Za-z0-9._-]+/?$'
+          message: "Use the full profile address, starting with https://www.instagram.com/"
+      - name: email
+        label: Contact email
+        type: string
+        description: "Shown in the menu and footer. Leave empty to hide it."
+        pattern:
+          regex: '^$|^[^\s@]+@[^\s@]+\.[^\s@]+$'
+          message: "Enter an email address, e.g. info@example.org"
+      - name: menuDescription
+        label: Menu text
+        type: text
+        description: "The short paragraph at the bottom of the menu."
+
   - name: artistsPage
     label: Artists page
     type: file
