@@ -1,4 +1,5 @@
 import { blobVideo } from './videos.js'
+import { slugify } from './slug.js'
 
 const pageModules = import.meta.glob('../content/pages/*.json', {
   eager: true,
@@ -64,6 +65,13 @@ export const events = withSlug(eventModules).map(withDisplayDate)
 
 export const artists = withSlug(artistModules)
 
+export const metaData = {
+  pages: Object.fromEntries(pages.map((page) => [page.__slug, page])),
+  exhibitions,
+  events,
+  artists,
+}
+
 export function getPage(slug) {
   return pages.find((page) => page.__slug === slug)
 }
@@ -127,15 +135,7 @@ export function toPlainText(value) {
   return (doc.body.textContent || '').replace(/\s+/g, ' ').trim()
 }
 
-export function slugify(value) {
-  return String(value || '')
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '')
-}
+export { slugify }
 
 export function isExhibition(item) {
   return Boolean(item?.subtitle)

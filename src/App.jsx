@@ -12,6 +12,8 @@ import GridOverlay from './components/GridOverlay.jsx'
 import Navigation from './components/Navigation.jsx'
 import Footer from './components/Footer.jsx'
 import PreviewBanner from './components/PreviewBanner.jsx'
+import { routeMeta, SITE_NAME } from './meta.js'
+import { metaData } from './content.js'
 import Home from './pages/Home'
 import Exhibition from './pages/Exhibition'
 import ExhibitionsIndex from './pages/Exhibitions'
@@ -23,7 +25,6 @@ import About from './pages/About'
 import { usePathname, historyKey, lastNavigationType } from './router.jsx'
 import { markLoadingDone } from './loading.js'
 
-const SITE_TITLE = 'Shen Foundation'
 
 let scrollLocks = 0
 
@@ -148,8 +149,8 @@ function App() {
   }
 
   useEffect(() => {
-    document.title = SITE_TITLE
-  }, [])
+    document.title = routeMeta(pathname, metaData)?.title || SITE_NAME
+  }, [pathname])
 
   useLayoutEffect(() => {
     if (!loaderRef.current) {

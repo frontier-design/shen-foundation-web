@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url'
 import process from 'node:process'
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import pageMeta from './scripts/page-meta/plugin.js'
 
 const isPreview =
   process.env.VERCEL_GIT_COMMIT_REF === 'preview' || process.env.VERCEL_ENV === 'preview'
@@ -64,7 +65,7 @@ const apiDev = () => ({
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react(), noindex(), apiDev()],
+  plugins: [react(), noindex(), apiDev(), pageMeta({ isPreview })],
   define: {
     'import.meta.env.VITE_PREVIEW': JSON.stringify(isPreview),
     'import.meta.env.VITE_IMAGE_CDN': JSON.stringify(process.env.VERCEL === '1'),
