@@ -5,8 +5,7 @@
       "type": "exhibition",
       "exhibition": "content/exhibitions/danh-vo-guldenhof.json"
     },
-    "image": "/media/danh-vo-guldenhof-landing.jpeg",
-    "imageVideo": ""
+    "imageVideo": "https://faq0catz0eljtbgc.public.blob.vercel-storage.com/videos/home-9oz0nsug/1224x720-4426386.mp4"
   },
   "grid": [
     {
