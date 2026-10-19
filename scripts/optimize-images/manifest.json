@@ -136,6 +136,14 @@
       "width": 2400,
       "height": 3200
     },
+    "/media/dv38912.jpg": {
+      "sha256": "8e108e3dde34ffdfa8f581f5617d6cd92ffe83f42890a5e681f5abe516c93161",
+      "action": "resized",
+      "bytesBefore": 63498068,
+      "bytesAfter": 1916055,
+      "width": 2400,
+      "height": 3200
+    },
     "/media/eleanor-shen.webp": {
       "sha256": "f0ffc4d72590a4fb3fbfeca68bc9204f8656a0fbbb89967eadb0c2fa277353dd",
       "action": "metadata",
