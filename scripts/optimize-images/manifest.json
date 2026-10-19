@@ -232,6 +232,14 @@
       "width": 2000,
       "height": 1245
     },
+    "/media/scmay24201.jpg": {
+      "sha256": "a232efc812cd6f555ab087039aca2e38321bbcb3179f42ee7620af61666542ed",
+      "action": "resized",
+      "bytesBefore": 8475629,
+      "bytesAfter": 863155,
+      "width": 2286,
+      "height": 3200
+    },
     "/media/screenshot-2026-09-21-at-103244-pm.png": {
       "sha256": "910baddf1331487153a2000c4c6316473876afbd4b6aff58852467d2b528f8a1",
       "action": "lossless",
