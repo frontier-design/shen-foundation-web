@@ -224,6 +224,14 @@
       "width": 374,
       "height": 534
     },
+    "/media/nz88032.jpg": {
+      "sha256": "f5a151df83d02e2e2f90e2801428230011854a424c5b6a587515d5adc8c5c0ed",
+      "action": "resized",
+      "bytesBefore": 3021563,
+      "bytesAfter": 1065379,
+      "width": 3200,
+      "height": 2133
+    },
     "/media/persepolis-screening-poster.jpg": {
       "sha256": "236a1f2e0cbc8e346e26c3e8acfdf86137edad1b666fef66da40c72e4cb325ad",
       "action": "recompressed",
