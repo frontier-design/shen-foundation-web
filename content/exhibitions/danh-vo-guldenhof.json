@@ -10,7 +10,8 @@
   "gallery": [
     {
       "type": "image",
-      "image": "/media/dv38901.jpg"
+      "image": "/media/dv38901.jpg",
+      "caption": "flower"
     },
     {
       "type": "image",
