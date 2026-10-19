@@ -9,18 +9,6 @@
   "grid": [
     {
       "type": "exhibition",
-      "exhibition": "life-is-cheap.json"
-    },
-    {
-      "type": "event",
-      "event": "jeremie-gindre-and-mirjana-farkas.json"
-    },
-    {
-      "type": "event",
-      "event": "florian-luthi-artist-talk.json"
-    },
-    {
-      "type": "exhibition",
       "exhibition": "dynamic-spaces.json"
     },
     {
