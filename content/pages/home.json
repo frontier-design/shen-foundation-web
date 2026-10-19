@@ -31,6 +31,10 @@
     {
       "type": "event",
       "event": "danh-vo-in-conversation-with-tom-mcdonough.json"
+    },
+    {
+      "type": "exhibition",
+      "exhibition": "danh-vo-guldenhof.json"
     }
   ],
   "heroSlides": [
