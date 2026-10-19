@@ -112,6 +112,14 @@
       "width": 2400,
       "height": 3200
     },
+    "/media/dv38810.jpg": {
+      "sha256": "1ec0ea0a901dd3de30b3c705c8a7a0499bda2958f4f9adb0bda18b97310eed03",
+      "action": "resized",
+      "bytesBefore": 51826935,
+      "bytesAfter": 632574,
+      "width": 2400,
+      "height": 3200
+    },
     "/media/dv38901.jpg": {
       "sha256": "32a3902425274511585625b6ac65efd90cbdd582abefa7c7e4e0e116cb4609ea",
       "action": "resized",
