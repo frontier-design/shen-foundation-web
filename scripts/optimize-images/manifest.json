@@ -24,6 +24,14 @@
       "width": 1200,
       "height": 800
     },
+    "/media/august202619555bw-3.jpg": {
+      "sha256": "bdcac1da882191e060c1cc27b558682523bf91f564f37f4f0891a041ccbeebfa",
+      "action": "resized",
+      "bytesBefore": 89079333,
+      "bytesAfter": 1075072,
+      "width": 2400,
+      "height": 3200
+    },
     "/media/august202619648bw-1.jpg": {
       "sha256": "24e0ab26d602aca82131033234dd4e54c2950d50c6436f0971c8898e6428eaf5",
       "action": "resized",
