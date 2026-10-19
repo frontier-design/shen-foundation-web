@@ -1,11 +1,10 @@
 {
   "callout": {
-    "enabled": true,
+    "enabled": false,
     "feature": {
       "type": "exhibition",
       "exhibition": "content/exhibitions/danh-vo-guldenhof.json"
-    },
-    "image": "/media/dv38794.jpg"
+    }
   },
   "grid": [
     {
@@ -41,7 +40,9 @@
     {
       "exhibition": "dynamic-spaces.json"
     },
-    {},
+    {
+      "exhibition": "danh-vo-guldenhof.json"
+    },
     {}
   ]
 }
