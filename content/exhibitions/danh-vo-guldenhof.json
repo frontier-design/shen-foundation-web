@@ -20,7 +20,8 @@
     },
     {
       "type": "image",
-      "image": "/media/danh-vo-guldenhof-landing.jpeg"
+      "image": "/media/danh-vo-guldenhof-landing.jpeg",
+      "caption": "forest"
     },
     {
       "type": "image",
