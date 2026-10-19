@@ -4,7 +4,8 @@
     "feature": {
       "type": "exhibition",
       "exhibition": "content/exhibitions/danh-vo-guldenhof.json"
-    }
+    },
+    "image": "/media/dv38892.jpg"
   },
   "grid": [
     {
@@ -26,13 +27,8 @@
   ],
   "heroSlides": [
     {
-      "exhibition": "in-aliens-we-trust.json"
-    },
-    {
       "exhibition": "dynamic-spaces.json"
     },
-    {
-      "exhibition": "soft-machines.json"
-    }
+    {}
   ]
 }
