@@ -1,5 +1,13 @@
 {
   "files": {
+    "/media/01-1.jpg": {
+      "sha256": "1907ce92b8421fd3e0c700dc3749d670fd87a5a8a3aa2790d5fb18d135f84f60",
+      "action": "resized",
+      "bytesBefore": 28697404,
+      "bytesAfter": 438513,
+      "width": 3200,
+      "height": 2133
+    },
     "/media/01.jpg": {
       "sha256": "1907ce92b8421fd3e0c700dc3749d670fd87a5a8a3aa2790d5fb18d135f84f60",
       "action": "resized",
