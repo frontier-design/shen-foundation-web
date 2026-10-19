@@ -192,6 +192,14 @@
       "width": 2940,
       "height": 1666
     },
+    "/media/shot22.jpg": {
+      "sha256": "fa7501b62c29ae151aed69817d7fdc54b1f65a195d88dada8cb8083f78e6c9a9",
+      "action": "resized",
+      "bytesBefore": 60943070,
+      "bytesAfter": 1370415,
+      "width": 3200,
+      "height": 2476
+    },
     "/media/sung-tieu-portrait.jpeg": {
       "sha256": "232990db0294be49dd9d36acd75e812c5e759cf45fe4656bc028a9558bec6ef4",
       "action": "metadata",
