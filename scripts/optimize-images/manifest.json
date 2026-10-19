@@ -144,6 +144,14 @@
       "width": 2400,
       "height": 3200
     },
+    "/media/dvportraitguel.jpg": {
+      "sha256": "bc11a3150359e3e554a445ab63f6a5e23dc03d401b21acd0c77881a991bf3e70",
+      "action": "recompressed",
+      "bytesBefore": 471509,
+      "bytesAfter": 296847,
+      "width": 1131,
+      "height": 1509
+    },
     "/media/eleanor-shen.webp": {
       "sha256": "f0ffc4d72590a4fb3fbfeca68bc9204f8656a0fbbb89967eadb0c2fa277353dd",
       "action": "metadata",
