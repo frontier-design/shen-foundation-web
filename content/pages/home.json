@@ -4,7 +4,8 @@
     "feature": {
       "type": "exhibition",
       "exhibition": "content/exhibitions/danh-vo-guldenhof.json"
-    }
+    },
+    "image": "/media/dv38794.jpg"
   },
   "grid": [
     {
@@ -22,12 +23,21 @@
     {
       "type": "exhibition",
       "exhibition": "dynamic-spaces.json"
+    },
+    {
+      "type": "event",
+      "event": "fogo-island-arts-residency.json"
+    },
+    {
+      "type": "event",
+      "event": "danh-vo-in-conversation-with-tom-mcdonough.json"
     }
   ],
   "heroSlides": [
     {
       "exhibition": "dynamic-spaces.json"
     },
+    {},
     {}
   ]
 }
