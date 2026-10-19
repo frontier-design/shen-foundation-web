@@ -192,6 +192,14 @@
       "width": 2940,
       "height": 1666
     },
+    "/media/shot01.jpg": {
+      "sha256": "b5cc1fd13aca18c202bbb12574d0fc6e72fe7eb75aff4790b408286fae5645cb",
+      "action": "resized",
+      "bytesBefore": 35238063,
+      "bytesAfter": 892646,
+      "width": 3200,
+      "height": 1411
+    },
     "/media/shot01crop.jpg": {
       "sha256": "2ceb87b35ade0956c4d024bd7ecd2a366928b9035ef33615ea4357f33f3b2c83",
       "action": "resized",
@@ -270,6 +278,10 @@
       "note": "Input Buffer is empty"
     },
     "/media/august202619555bw.jpg": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "note": "Input Buffer is empty"
+    },
+    "/media/shot04.jpg": {
       "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "note": "Input Buffer is empty"
     }
