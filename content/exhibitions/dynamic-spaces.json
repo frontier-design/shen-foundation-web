@@ -12,19 +12,19 @@
   "gallery": [
     {
       "type": "image",
-      "image": "/media/carousel-image-3.webp"
+      "image": "/media/shot01crop.jpg"
     },
     {
       "type": "image",
-      "image": "/media/hero-carousel/carousel-image-4.jpg"
+      "image": "/media/shot08crop.jpg"
     },
     {
       "type": "image",
-      "image": "/media/hero-carousel/carousel-image-2.png"
+      "image": "/media/shot04.jpg"
     },
     {
       "type": "image",
-      "image": "/media/carousel-image-1.webp"
+      "image": "/media/shot22.jpg"
     }
   ]
 }
