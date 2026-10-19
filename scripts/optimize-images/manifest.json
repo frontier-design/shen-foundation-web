@@ -192,6 +192,14 @@
       "width": 2940,
       "height": 1666
     },
+    "/media/shot01crop.jpg": {
+      "sha256": "2ceb87b35ade0956c4d024bd7ecd2a366928b9035ef33615ea4357f33f3b2c83",
+      "action": "resized",
+      "bytesBefore": 8394841,
+      "bytesAfter": 1496566,
+      "width": 3200,
+      "height": 2253
+    },
     "/media/shot22.jpg": {
       "sha256": "fa7501b62c29ae151aed69817d7fdc54b1f65a195d88dada8cb8083f78e6c9a9",
       "action": "resized",
