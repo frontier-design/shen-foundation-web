@@ -104,6 +104,14 @@
       "width": 916,
       "height": 1280
     },
+    "/media/dsf0097bw.jpg": {
+      "sha256": "ad345a43f6d64b894094feee0fa9c8d4c0faa7991b6e58636deb365837e47726",
+      "action": "resized",
+      "bytesBefore": 85454010,
+      "bytesAfter": 745744,
+      "width": 2400,
+      "height": 3200
+    },
     "/media/dv38794.jpg": {
       "sha256": "d4f7339f487cc699a20dcd1ebdfa7d004271d0a4b4eb9de665534e38ca5eccc6",
       "action": "resized",
