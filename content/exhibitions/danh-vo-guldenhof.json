@@ -15,7 +15,8 @@
     },
     {
       "type": "image",
-      "image": "/media/dv38912.jpg"
+      "image": "/media/dv38912.jpg",
+      "caption": "mushroom"
     },
     {
       "type": "image",
