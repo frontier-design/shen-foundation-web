@@ -1,5 +1,13 @@
 {
   "files": {
+    "/media/01.jpg": {
+      "sha256": "1907ce92b8421fd3e0c700dc3749d670fd87a5a8a3aa2790d5fb18d135f84f60",
+      "action": "resized",
+      "bytesBefore": 28697404,
+      "bytesAfter": 438513,
+      "width": 3200,
+      "height": 2133
+    },
     "/media/abbas-akshavan-1.jpg": {
       "sha256": "6726539538879b243cdb16248d8853b3c0734f8f6d282cc146e2a91d44c3aa26",
       "action": "recompressed",
