@@ -6,5 +6,6 @@
   "startDate": "2026-09-25",
   "endDate": "2027-02-28",
   "captionLocation": "Castello di Rivoli, Turin, Italy",
-  "heroImage": "/media/yourdignity.jpeg"
+  "heroImage": "/media/yourdignity.jpeg",
+  "artist": "sung-tieu.json"
 }
