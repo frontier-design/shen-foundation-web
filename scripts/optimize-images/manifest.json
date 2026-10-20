@@ -56,22 +56,6 @@
       "width": 2000,
       "height": 1333
     },
-    "/media/carousel-image-3-1.webp": {
-      "sha256": "6a5a927738d080440a724c9469e6cb3fb25f9bd0b4c7ef25dffbf296fdb8fa68",
-      "action": "unchanged",
-      "bytesBefore": 233816,
-      "bytesAfter": 233816,
-      "width": 1200,
-      "height": 900
-    },
-    "/media/carousel-image-3.webp": {
-      "sha256": "6a5a927738d080440a724c9469e6cb3fb25f9bd0b4c7ef25dffbf296fdb8fa68",
-      "action": "unchanged",
-      "bytesBefore": 233816,
-      "bytesAfter": 233816,
-      "width": 1200,
-      "height": 900
-    },
     "/media/covey-gong-portrait.jpeg": {
       "sha256": "833c0c28df87ba6f3101bdc540fa46ad3c26b2e1b951f134f98cf560a06fe96b",
       "action": "metadata",
