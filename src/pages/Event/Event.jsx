@@ -195,11 +195,6 @@ const SectionToggle = styled.span`
 
 const SectionLink = styled(SectionButton).attrs({ as: 'a' })`
   text-decoration: none;
-
-  &:hover > span,
-  &:focus-visible > span {
-    transform: translate(3px, -3px);
-  }
 `
 
 const SectionArrow = styled.span`
@@ -207,7 +202,6 @@ const SectionArrow = styled.span`
   font-family: ${fonts.display};
   font-size: clamp(17px, 1.8vw, 22px);
   line-height: 1;
-  transition: transform ${duration.fast}s ${easing.reveal};
 `
 
 const sectionHref = (value) => {
