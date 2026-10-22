@@ -11,7 +11,6 @@ if (!CustomEase.get('reveal')) CustomEase.create('reveal', easing.gsapReveal)
 import GridOverlay from './components/GridOverlay.jsx'
 import Navigation from './components/Navigation.jsx'
 import Footer from './components/Footer.jsx'
-import PreviewBanner from './components/PreviewBanner.jsx'
 import { routeMeta, SITE_NAME } from './meta.js'
 import { metaData } from './content.js'
 import Home from './pages/Home'
@@ -231,7 +230,6 @@ function App() {
       <GlobalStyle />
       {import.meta.env.DEV && <GridOverlay />}
       <Navigation />
-      {import.meta.env.VITE_PREVIEW && <PreviewBanner />}
       <PageLayer key={base.id}>
         <RouteView pathname={base.path} />
       </PageLayer>
