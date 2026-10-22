@@ -198,14 +198,14 @@ const SectionLink = styled(SectionButton).attrs({ as: 'a' })`
 
   &:hover > span,
   &:focus-visible > span {
-    transform: translateX(4px);
+    transform: translate(3px, -3px);
   }
 `
 
 const SectionArrow = styled.span`
   flex: none;
   font-family: ${fonts.display};
-  font-size: clamp(20.8px, 2.24vw, 27.2px);
+  font-size: clamp(17px, 1.8vw, 22px);
   line-height: 1;
   transition: transform ${duration.fast}s ${easing.reveal};
 `
@@ -279,7 +279,7 @@ function Event({ slug }) {
                           : linkProps(href))}
                       >
                         {section.title}
-                        <SectionArrow aria-hidden="true">&rarr;</SectionArrow>
+                        <SectionArrow aria-hidden="true">&#8599;</SectionArrow>
                       </SectionLink>
                     </SectionRow>
                   )
