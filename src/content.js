@@ -282,6 +282,28 @@ export function artistExhibitions(artist) {
     .sort((a, b) => exhibitionEndDate(a) - exhibitionEndDate(b))
 }
 
+// The artist pages an event is linked to (its optional `artists` references).
+export function eventArtists(item) {
+  const refs = Array.isArray(item?.artists) ? item.artists : item?.artists ? [item.artists] : []
+  return refs.map((ref) => refSlug(ref)).filter(Boolean).map((ref) => getArtist(slugify(ref))).filter(Boolean)
+}
+
+export function artistEvents(artist) {
+  const slug = artistSlug(artist)
+  if (!slug) return []
+  return events.filter((ev) => eventArtists(ev).some((linked) => artistSlug(linked) === slug))
+}
+
+// Everything linked to an artist (exhibitions and events) as cards, by date.
+export function artistRelatedCards(artist) {
+  return [
+    ...artistExhibitions(artist).map((doc) => ({ doc, card: exhibitionToCard(doc) })),
+    ...artistEvents(artist).map((doc) => ({ doc, card: eventToCard(doc) })),
+  ]
+    .sort((a, b) => exhibitionEndDate(a.doc) - exhibitionEndDate(b.doc))
+    .map(({ card }) => card)
+}
+
 function refSlug(v) {
   if (!v) return null
   const s = typeof v === 'string' ? v : v.path || v.value || ''

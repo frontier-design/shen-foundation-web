@@ -499,6 +499,17 @@ content:
         required: true
         options:
           maxlength: 80
+      - name: artists
+        label: Artist pages (optional)
+        type: reference
+        description: "Pick the artists this event is with or about. It's then listed on their artist pages."
+        options:
+          collection: artists
+          search: title
+          multiple: true
+          value: "{name}"
+          label: "{title}"
+          thumbnail: thumbnail
       - name: status
         label: Status
         type: select

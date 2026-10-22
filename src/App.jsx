@@ -111,7 +111,7 @@ function RouteView({ pathname }) {
       ) : (
         <Home />
       )}
-      {event || artist ? (
+      {event ? (
         <MobileOnlyFooter>
           <Footer />
         </MobileOnlyFooter>
