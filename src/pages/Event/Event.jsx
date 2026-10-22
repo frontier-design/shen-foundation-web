@@ -8,6 +8,7 @@ import BackButton from '../../components/BackButton.jsx'
 import { SIZES } from '../../images.js'
 import Media from '../../components/Media.jsx'
 import { useWheelForward } from '../../hooks/useWheelForward.js'
+import { linkProps } from '../../router.jsx'
 
 const Section = styled.main`
   width: 100%;
@@ -192,6 +193,28 @@ const SectionToggle = styled.span`
   }
 `
 
+const SectionLink = styled(SectionButton).attrs({ as: 'a' })`
+  text-decoration: none;
+
+  &:hover > span,
+  &:focus-visible > span {
+    transform: translateX(4px);
+  }
+`
+
+const SectionArrow = styled.span`
+  flex: none;
+  font-family: ${fonts.display};
+  font-size: clamp(20.8px, 2.24vw, 27.2px);
+  line-height: 1;
+  transition: transform ${duration.fast}s ${easing.reveal};
+`
+
+const sectionHref = (value) => {
+  const link = typeof value === 'string' ? value.trim() : ''
+  return /^(\/[^\s]*|https?:\/\/[^\s]+|mailto:[^\s]+)$/.test(link) ? link : null
+}
+
 const SectionCollapse = styled.div`
   display: grid;
   grid-template-rows: ${(props) => (props.$open ? '1fr' : '0fr')};
@@ -245,6 +268,22 @@ function Event({ slug }) {
           {sections.length > 0 ? (
             <Sections>
               {sections.map((section, index) => {
+                const href = sectionHref(section.link)
+                if (href) {
+                  const external = !href.startsWith('/')
+                  return (
+                    <SectionRow key={index}>
+                      <SectionLink
+                        {...(external
+                          ? { href, ...(href.startsWith('mailto:') ? {} : { target: '_blank', rel: 'noopener noreferrer' }) }
+                          : linkProps(href))}
+                      >
+                        {section.title}
+                        <SectionArrow aria-hidden="true">&rarr;</SectionArrow>
+                      </SectionLink>
+                    </SectionRow>
+                  )
+                }
                 const open = openIndex === index
                 return (
                   <SectionRow key={index}>

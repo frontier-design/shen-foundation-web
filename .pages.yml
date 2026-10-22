@@ -570,6 +570,13 @@ content:
             type: string
             options:
               maxlength: 80
+          - name: link
+            label: Link (optional)
+            type: string
+            description: "Fill this in to make the row a link with an arrow instead of a dropdown: a page on this site (e.g. /exhibitions/…) or a full web address (https://…, opens in a new tab). Leave empty for a dropdown with the content below."
+            pattern:
+              regex: '^$|^/[^\s]*$|^https?://[^\s]+$|^mailto:[^\s]+$'
+              message: "Use a page on this site starting with /, a full address starting with https://, or mailto:"
           - name: content
             label: Content
             type: rich-text
