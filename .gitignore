@@ -28,7 +28,7 @@ dist-ssr
 
 CLAUDE.md
 
-# Generated image quality comparison pages (scripts/quality-compare)
+# Generated image quality comparison pages
 .quality-compare/
 
 .env
