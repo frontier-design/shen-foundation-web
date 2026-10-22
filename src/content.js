@@ -155,7 +155,11 @@ export function exhibitionSlug(item) {
 }
 
 export function getExhibition(slug) {
-  return exhibitions.find((item) => exhibitionSlug(item) === slug) || null
+  return (
+    exhibitions.find((item) => exhibitionSlug(item) === slug) ||
+    exhibitions.find((item) => slugify(item.subtitle) === slug) ||
+    null
+  )
 }
 
 export function exhibitionEndDate(item) {
@@ -181,7 +185,7 @@ function exhibitionToCard(item) {
     video: blobVideo(item.heroVideo)?.src,
     title: item.title,
     subtitle: item.subtitle,
-    slug: item.slug,
+    slug: exhibitionSlug(item),
     status: item.status || 'ongoing',
     captionLabel: 'Exhibition',
     captionDate: item.captionDate,
@@ -213,7 +217,7 @@ function eventToCard(item) {
     accentImage: item.image,
     video: blobVideo(item.imageVideo)?.src,
     title: item.title,
-    slug: item.slug,
+    slug: eventSlug(item),
     status: item.status || 'ongoing',
     captionLabel: item.captionLabel,
     captionDate: item.captionDate,
