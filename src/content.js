@@ -87,6 +87,11 @@ export function siteContacts() {
   }
 }
 
+// A focus point from the CMS ("40% 20%") as a CSS object-position, or undefined.
+export function focusPosition(value) {
+  return typeof value === 'string' && /^(100|[1-9]?\d)% (100|[1-9]?\d)%$/.test(value) ? value : undefined
+}
+
 export function mediaUrl(value) {
   if (!value) return null
   if (typeof value === 'string') {
@@ -181,6 +186,7 @@ export function exhibitionEndDate(item) {
 function exhibitionToCard(item) {
   return {
     image: item.heroImage,
+    imageFocus: focusPosition(item.heroImageFocus),
     accentImage: item.heroImage,
     video: blobVideo(item.heroVideo)?.src,
     title: item.title,
@@ -214,6 +220,7 @@ export function getEvent(slug) {
 function eventToCard(item) {
   return {
     image: item.image,
+    imageFocus: focusPosition(item.imageFocus),
     accentImage: item.image,
     video: blobVideo(item.imageVideo)?.src,
     title: item.title,
@@ -289,11 +296,11 @@ function refType(row) {
 }
 
 // The callout's own image or video; with neither, the featured item's.
-function calloutMedia(callout, image, video) {
+function calloutMedia(callout, image, video, focus) {
   if (callout.image || callout.imageVideo) {
-    return { image: callout.image || null, video: mediaUrl(callout.imageVideo) }
+    return { image: callout.image || null, imageFocus: focusPosition(callout.imageFocus), video: mediaUrl(callout.imageVideo) }
   }
-  return { image: image || null, video: mediaUrl(video) }
+  return { image: image || null, imageFocus: focusPosition(focus), video: mediaUrl(video) }
 }
 
 export function homeCallout(callout) {
@@ -305,7 +312,7 @@ export function homeCallout(callout) {
     if (!doc) return null
     return {
       ...eventToCard(doc),
-      ...calloutMedia(callout, doc.image, doc.imageVideo),
+      ...calloutMedia(callout, doc.image, doc.imageVideo, doc.imageFocus),
       link: `/events/${eventSlug(doc)}`,
     }
   }
@@ -314,7 +321,7 @@ export function homeCallout(callout) {
   if (!doc) return null
   return {
     ...exhibitionToCard(doc),
-    ...calloutMedia(callout, doc.heroImage, doc.heroVideo),
+    ...calloutMedia(callout, doc.heroImage, doc.heroVideo, doc.heroImageFocus),
     link: `/exhibitions/${exhibitionSlug(doc)}`,
   }
 }
@@ -335,17 +342,27 @@ export function homeGridCards(grid = []) {
     .filter(Boolean)
 }
 
+// Carousel rows: exhibitions or events (old rows are plain exhibition refs).
 export function homeHeroSlides(slides = []) {
   return slides
     .map((row) => {
+      if (row && typeof row === 'object' && refType(row) === 'event') {
+        const ev = refSlug(row.event)
+        const doc = ev && getEvent(slugify(ev))
+        const image = doc && mediaUrl(doc.image)
+        const video = doc && blobVideo(doc.imageVideo)?.src
+        if (!image && !video) return null
+        return { image, video, focus: focusPosition(doc.imageFocus), link: `/events/${eventSlug(doc)}`, title: doc.title || '' }
+      }
       const ex = refSlug(typeof row === 'string' ? row : row?.exhibition)
-      const doc = ex && getExhibition(ex)
+      const doc = ex && getExhibition(slugify(ex))
       const image = doc && mediaUrl(doc.heroImage)
       const video = doc && blobVideo(doc.heroVideo)?.src
       if (!image && !video) return null
       return {
         image,
         video,
+        focus: focusPosition(doc.heroImageFocus),
         link: `/exhibitions/${exhibitionSlug(doc)}`,
         title: doc.subtitle || doc.title || '',
       }

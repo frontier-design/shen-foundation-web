@@ -58,6 +58,14 @@ const proxyFor = (img, nw, nh) => {
   return proxy
 }
 
+// Where object-position puts the image inside its box (free = box size minus
+// the scaled image size, negative when the image overflows).
+const positionOffset = (value, free) => {
+  if (value.endsWith('%')) return free * (parseFloat(value) / 100)
+  if (value.endsWith('px')) return parseFloat(value)
+  return free / 2
+}
+
 // Average luminance of `source` (an image or video frame of nw×nh pixels) around
 // viewport point (x, y), as laid out in `el`'s box with its object-fit.
 const sourceLuminance = (el, source, nw, nh, x, y) => {
@@ -75,8 +83,9 @@ const sourceLuminance = (el, source, nw, nh, x, y) => {
       fit === 'cover'
         ? Math.max(rect.width / nw, rect.height / nh)
         : Math.min(rect.width / nw, rect.height / nh)
-    sx = (boxX - (rect.width - nw * scale) / 2) / scale
-    sy = (boxY - (rect.height - nh * scale) / 2) / scale
+    const [posX = '50%', posY = '50%'] = (getComputedStyle(el).objectPosition || '').split(/\s+/)
+    sx = (boxX - positionOffset(posX, rect.width - nw * scale)) / scale
+    sy = (boxY - positionOffset(posY, rect.height - nh * scale)) / scale
   } else {
     sx = (boxX / rect.width) * nw
     sy = (boxY / rect.height) * nh

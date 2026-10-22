@@ -26,15 +26,19 @@
   ],
   "heroSlides": [
     {
+      "type": "exhibition",
       "exhibition": "dynamic-spaces.json"
     },
     {
+      "type": "exhibition",
       "exhibition": "danh-vo-guldenhof.json"
     },
     {
+      "type": "exhibition",
       "exhibition": "61st-international-art-exhibition-la-biennale-di-venezia-venice-2026.json"
     },
     {
+      "type": "exhibition",
       "exhibition": "not-sure.json"
     }
   ]

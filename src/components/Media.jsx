@@ -38,7 +38,7 @@ function NativeVideo({ video, poster, play, alt, className, style }) {
 // An image, or a muted looping video over that image that plays while on
 // screen. With reduced motion, and in small spots (cards) for videos over
 // 20 MB, only the image (or the video's first frame) is shown.
-function Media({ image, video, sizes, posterWidth, small = false, alt = '', className, style, ...rest }) {
+function Media({ image, video, sizes, posterWidth, small = false, alt = '', focus, className, style, ...rest }) {
   const reduceMotion = useMediaQuery(REDUCED_MOTION)
   const uploaded = blobVideo(video)
   const play = !reduceMotion && !(small && !playsInSmallSpot(uploaded))
@@ -57,7 +57,8 @@ function Media({ image, video, sizes, posterWidth, small = false, alt = '', clas
   }
 
   if (!image) return null
-  return <img {...imageProps(image, sizes)} alt={alt} className={className} style={style} {...rest} />
+  const imageStyle = focus ? { ...style, objectPosition: focus } : style
+  return <img {...imageProps(image, sizes)} alt={alt} className={className} style={imageStyle} {...rest} />
 }
 
 export default Media

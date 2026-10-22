@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components'
 import { Grid, GridCell, GRID } from '../../grid'
 import { colors, type } from '../../theme.js'
-import { getPage, mediaUrl, toPlainText } from '../../content.js'
+import { getPage, mediaUrl, toPlainText, focusPosition } from '../../content.js'
 import RichText from '../../components/RichText.jsx'
 import { SIZES } from '../../images.js'
 import Media from '../../components/Media.jsx'
@@ -238,7 +238,7 @@ function PersonItem({ item, index }) {
     <Person {...placement}>
       {src || video ? (
         <PersonMedia $side={side}>
-          <Media image={src} video={video} sizes={SIZES.card} posterWidth={1280} small alt={item?.name || ''} />
+          <Media image={src} video={video} focus={focusPosition(item?.photoFocus)} sizes={SIZES.card} posterWidth={1280} small alt={item?.name || ''} />
         </PersonMedia>
       ) : null}
       {item?.name ? <PersonName>{item.name}</PersonName> : null}
@@ -263,7 +263,7 @@ function About() {
       <Hero data-nav-tone-left="dark" data-nav-tone-right="dark">
         {heroSrc || heroVideo ? (
           <HeroMedia $start={1} $end={-1} $rowStart={1} $rowEnd={3}>
-            <Media image={heroSrc} video={heroVideo} sizes={SIZES.fullBleed} alt="" />
+            <Media image={heroSrc} video={heroVideo} focus={focusPosition(page.heroImageFocus)} sizes={SIZES.fullBleed} alt="" />
           </HeroMedia>
         ) : null}
 

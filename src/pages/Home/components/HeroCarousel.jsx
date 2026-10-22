@@ -73,7 +73,7 @@ function HeroCarousel({ slides = [] }) {
   const currentRef = useRef(0)
   const slidesRef = useRef(slides)
   const reduceMotion = useMediaQuery('(prefers-reduced-motion: reduce)')
-  const signature = JSON.stringify(slides.map((s) => [s.image || '', s.video || '']))
+  const signature = JSON.stringify(slides.map((s) => [s.image || '', s.video || '', s.focus || '']))
 
   useEffect(() => {
     slidesRef.current = slides
@@ -102,8 +102,8 @@ function HeroCarousel({ slides = [] }) {
     const section = sectionRef.current
     const layerA = layerARef.current
     const layerB = layerBRef.current
-    const list = JSON.parse(signature).map(([image, link]) => {
-      return { image: image || null, video: reduceMotion && image ? null : blobVideo(link) }
+    const list = JSON.parse(signature).map(([image, link, focus]) => {
+      return { image: image || null, video: reduceMotion && image ? null : blobVideo(link), focus }
     })
     const n = list.length
 
@@ -130,8 +130,9 @@ function HeroCarousel({ slides = [] }) {
     }
 
     const show = (layer, i) => {
-      const { image } = list[i]
+      const { image, focus } = list[i]
       const img = layer.querySelector('img')
+      img.style.objectPosition = focus || ''
       stop(layer)
       players.get(layer)?.destroy()
       players.delete(layer)
@@ -160,7 +161,7 @@ function HeroCarousel({ slides = [] }) {
       const slide = slidesRef.current[i]
       if (link && slide) {
         link.href = slide.link
-        link.setAttribute('aria-label', slide.title ? `View ${slide.title}` : 'View exhibition')
+        link.setAttribute('aria-label', slide.title ? `View ${slide.title}` : 'View')
       }
     }
 
@@ -258,11 +259,11 @@ function HeroCarousel({ slides = [] }) {
     <HeroSection
       ref={sectionRef}
       aria-roledescription="carousel"
-      aria-label="Featured exhibitions"
+      aria-label="Featured exhibitions and events"
       onClick={handleClick}
     >
       <Layer ref={layerARef}>
-        <img {...imageProps(slides[0].image, SIZES.fullBleed)} alt="" />
+        <img {...imageProps(slides[0].image, SIZES.fullBleed)} alt="" style={{ objectPosition: slides[0].focus }} />
       </Layer>
       <Layer ref={layerBRef}>
         <img sizes={SIZES.fullBleed} alt="" />
@@ -271,7 +272,7 @@ function HeroCarousel({ slides = [] }) {
         ref={linkRef}
         href={slides[0]?.link}
         onClick={handleLinkClick}
-        aria-label={slides[0]?.title ? `View ${slides[0].title}` : 'View exhibition'}
+        aria-label={slides[0]?.title ? `View ${slides[0].title}` : 'View'}
       />
     </HeroSection>
   )

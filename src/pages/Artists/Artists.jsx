@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components'
 import { Grid, GridCell, GRID } from '../../grid'
 import { colors, type } from '../../theme.js'
-import { getPage, orderedArtists, mediaUrl, artistSlug } from '../../content.js'
+import { getPage, orderedArtists, mediaUrl, artistSlug, focusPosition } from '../../content.js'
 import { linkProps } from '../../router.jsx'
 import { SIZES } from '../../images.js'
 import { blobVideo } from '../../videos.js'
@@ -100,7 +100,7 @@ function ArtistItem({ item, index }) {
       <CardLink {...linkProps(`/artists/${artistSlug(item)}`)}>
         {src || video ? (
           <Media $side={side}>
-            <MediaContent image={src} video={video} sizes={SIZES.card} posterWidth={1280} small alt={item?.title || ''} />
+            <MediaContent image={src} video={video} focus={focusPosition(item?.thumbnailFocus)} sizes={SIZES.card} posterWidth={1280} small alt={item?.title || ''} />
           </Media>
         ) : null}
         {item?.title ? <Name>{item.title}</Name> : null}

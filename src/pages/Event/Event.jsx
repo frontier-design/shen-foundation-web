@@ -2,7 +2,7 @@ import { useRef, useState } from 'react'
 import styled from 'styled-components'
 import { Grid, GridCell, GRID } from '../../grid'
 import { colors, fonts, type, easing, duration } from '../../theme.js'
-import { getEvent, mediaUrl, toPlainText } from '../../content.js'
+import { getEvent, mediaUrl, toPlainText, focusPosition } from '../../content.js'
 import RichText from '../../components/RichText.jsx'
 import BackButton from '../../components/BackButton.jsx'
 import { SIZES } from '../../images.js'
@@ -229,7 +229,7 @@ function Event({ slug }) {
       <Layout>
         <ImageCell $start={1} $span={6} $startTablet={1} $spanTablet={8}>
           <ImageViewport>
-            <Media image={src} video={video} sizes={SIZES.halfTall} alt={item.title || ''} />
+            <Media image={src} video={video} focus={focusPosition(item.imageFocus)} sizes={SIZES.halfTall} alt={item.title || ''} />
           </ImageViewport>
         </ImageCell>
 

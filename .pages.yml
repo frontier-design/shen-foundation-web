@@ -17,22 +17,39 @@ content:
     fields:
       - name: heroSlides
         label: Hero carousel
-        type: object
+        type: block
+        blockKey: type
         list:
           collapsible:
             collapsed: true
-            summary: "{exhibition}"
-        fields:
+            summary: "{exhibition}{event}"
+        blocks:
           - name: exhibition
             label: Exhibition
-            type: reference
-            required: true
-            options:
-              collection: exhibitions
-              search: title,subtitle
-              value: "{name}"
-              label: "{title} — {subtitle}"
-              thumbnail: heroImage
+            fields:
+              - name: exhibition
+                label: Exhibition
+                type: reference
+                required: true
+                options:
+                  collection: exhibitions
+                  search: title,subtitle
+                  value: "{name}"
+                  label: "{title} — {subtitle}"
+                  thumbnail: heroImage
+          - name: event
+            label: Event
+            fields:
+              - name: event
+                label: Event
+                type: reference
+                required: true
+                options:
+                  collection: events
+                  search: title
+                  value: "{name}"
+                  label: "{title}"
+                  thumbnail: image
       - name: callout
         label: Homepage callout
         type: object
@@ -76,6 +93,12 @@ content:
             options:
               categories: [image]
               path: public/media
+          - name: imageFocus
+            label: Focus point
+            type: focus
+            description: "Click the part of the image that must always stay in view when the site crops it (a face, the centre of the work). Leave as is to keep it centred."
+            options:
+              image: image
           - name: imageVideo
             label: Video (instead of the image)
             type: video
@@ -189,6 +212,12 @@ content:
         options:
           categories: [image]
           path: public/media
+      - name: heroImageFocus
+        label: Focus point
+        type: focus
+        description: "Click the part of the image that must always stay in view when the site crops it (a face, the centre of the work). Leave as is to keep it centred."
+        options:
+          image: heroImage
       - name: heroVideo
         label: Video (instead of the image)
         type: video
@@ -256,6 +285,12 @@ content:
             options:
               categories: [image]
               path: public/media
+          - name: photoFocus
+            label: Focus point
+            type: focus
+            description: "Click the part of the image that must always stay in view when the site crops it (a face, the centre of the work). Leave as is to keep it centred."
+            options:
+              image: photo
           - name: photoVideo
             label: Video (instead of the photo)
             type: video
@@ -301,6 +336,12 @@ content:
         options:
           categories: [image]
           path: public/media
+      - name: thumbnailFocus
+        label: Focus point
+        type: focus
+        description: "Click the part of the image that must always stay in view when the site crops it (a face, the centre of the work). Leave as is to keep it centred."
+        options:
+          image: thumbnail
       - name: thumbnailVideo
         label: Video (instead of the thumbnail)
         type: video
@@ -327,7 +368,7 @@ content:
         order: asc
     fields:
       - name: title
-        label: Title
+        label: Artist's name
         type: string
         required: true
         options:
@@ -350,10 +391,10 @@ content:
         options:
           values: [ongoing, archive]
       - name: subtitle
-        label: Artwork
+        label: Exhibition title
         type: string
         required: true
-        description: "The project/exhibition name. Also used to generate the page URL."
+        description: "The exhibition's title. The page address is made from it when the exhibition is first saved and stays the same if you change the title later."
         options:
           maxlength: 80
       - name: heroImage
@@ -363,6 +404,12 @@ content:
         options:
           categories: [image]
           path: public/media
+      - name: heroImageFocus
+        label: Focus point
+        type: focus
+        description: "Click the part of the image that must always stay in view when the site crops it (a face, the centre of the work). Leave as is to keep it centred."
+        options:
+          image: heroImage
       - name: heroVideo
         label: Video (instead of the hero image)
         type: video
@@ -486,6 +533,12 @@ content:
         options:
           categories: [image]
           path: public/media
+      - name: imageFocus
+        label: Focus point
+        type: focus
+        description: "Click the part of the image that must always stay in view when the site crops it (a face, the centre of the work). Leave as is to keep it centred."
+        options:
+          image: image
       - name: imageVideo
         label: Background video (instead of the image)
         type: video

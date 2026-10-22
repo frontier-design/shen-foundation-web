@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components'
 import { Grid, GridCell, GRID } from '../../grid'
 import { colors, type, easing, duration } from '../../theme.js'
-import { getExhibition, mediaUrl, accentSource, exhibitionArtist, artistSlug, toPlainText } from '../../content.js'
+import { getExhibition, mediaUrl, accentSource, exhibitionArtist, artistSlug, toPlainText, focusPosition } from '../../content.js'
 import RichText from '../../components/RichText.jsx'
 import { linkProps } from '../../router.jsx'
 import { SIZES } from '../../images.js'
@@ -195,7 +195,7 @@ function Exhibition({ slug }) {
     <main>
       {heroSrc || heroVideo ? (
         <Hero data-nav-tone-left="dark" data-nav-tone-right="dark">
-          <Media image={heroSrc} video={heroVideo} sizes={SIZES.fullBleed} alt={item.title || ''} />
+          <Media image={heroSrc} video={heroVideo} focus={focusPosition(item.heroImageFocus)} sizes={SIZES.fullBleed} alt={item.title || ''} />
         </Hero>
       ) : null}
 

@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react'
 import styled, { css } from 'styled-components'
 import { Grid, GridCell, GRID, useMediaQuery } from '../../grid'
 import { colors, type, easing, duration, aspect } from '../../theme.js'
-import { getArtist, mediaUrl, accentSource, artistExhibitions, exhibitionSlug, toPlainText } from '../../content.js'
+import { getArtist, mediaUrl, accentSource, artistExhibitions, exhibitionSlug, toPlainText, focusPosition } from '../../content.js'
 import RichText from '../../components/RichText.jsx'
 import { useImageAccent } from '../../hooks/useImageAccent.js'
 import { useScrollColumn } from '../../hooks/useScrollColumn.js'
@@ -248,7 +248,7 @@ function ExhibitionEntry({ item }) {
     <CardLink {...linkProps(`/exhibitions/${exhibitionSlug(item)}`)}>
       {src || video ? (
         <FeedImage>
-          <Media image={src} video={video} sizes={SIZES.card} posterWidth={1280} small alt={item.subtitle || ''} />
+          <Media image={src} video={video} focus={focusPosition(item.heroImageFocus)} sizes={SIZES.card} posterWidth={1280} small alt={item.subtitle || ''} />
         </FeedImage>
       ) : null}
       <Meta>
@@ -334,7 +334,7 @@ function IndividualArtist({ slug }) {
             {thumbnail || thumbnailVideo ? (
               <Portrait>
                 <FeedImage $fill>
-                  <Media image={thumbnail} video={thumbnailVideo} sizes={SIZES.halfTall} alt="" />
+                  <Media image={thumbnail} video={thumbnailVideo} focus={focusPosition(item.thumbnailFocus)} sizes={SIZES.halfTall} alt="" />
                 </FeedImage>
               </Portrait>
             ) : null}

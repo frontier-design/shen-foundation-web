@@ -166,7 +166,7 @@ function HomepageCallout({ callout }) {
 
         <ImageCell $start={7} $end={-1} $startMobile={1} $endMobile={-1}>
           <ImageViewport>
-            <Image image={src} video={video} sizes={SIZES.halfTall} alt={callout?.title || ''} />
+            <Image image={src} video={video} focus={callout?.imageFocus} sizes={SIZES.halfTall} alt={callout?.title || ''} />
           </ImageViewport>
         </ImageCell>
       </Layout>
