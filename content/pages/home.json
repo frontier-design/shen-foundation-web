@@ -26,16 +26,16 @@
   ],
   "heroSlides": [
     {
+      "type": "event",
+      "event": "fogo-island-arts-residency.json"
+    },
+    {
       "type": "exhibition",
       "exhibition": "dynamic-spaces.json"
     },
     {
       "type": "exhibition",
       "exhibition": "danh-vo-guldenhof.json"
-    },
-    {
-      "type": "exhibition",
-      "exhibition": "not-sure.json"
     },
     {
       "type": "exhibition",
