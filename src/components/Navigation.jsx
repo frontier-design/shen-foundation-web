@@ -307,6 +307,14 @@ const Menu = styled.div`
   }
 `
 
+// While the menu is open, a click or tap anywhere outside it only closes it
+// (the page underneath doesn't receive it).
+const MenuBackdrop = styled.div`
+  position: fixed;
+  inset: 0;
+  z-index: 89;
+`
+
 const MenuGrid = styled(Grid)`
   height: 100%;
   grid-auto-rows: 1fr;
@@ -565,6 +573,7 @@ function Navigation() {
 
   return (
     <>
+      {open ? <MenuBackdrop aria-hidden="true" onClick={() => setOpen(false)} /> : null}
       <Menu $open={open} aria-hidden={!open} data-nav-tone-left="dark" data-nav-tone-right="dark">
         <MenuGrid>
           <GridCell $start={7} $startTablet={5} $end={-1}>
