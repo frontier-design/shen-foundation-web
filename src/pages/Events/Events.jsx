@@ -59,17 +59,20 @@ function Events() {
     ),
   ]
 
+  const inTab = (key) => (card) => {
+    if (key === 'all') return card.status !== 'archive'
+    if (key === 'archive') return card.status === 'archive'
+    return card.status !== 'archive' && card.captionLabel === key
+  }
+
   const tabs = [
     { key: 'all', label: 'All' },
     ...labels.map((label) => ({ key: label, label: pluralize(label) })),
     { key: 'archive', label: 'Archive' },
-  ]
+  ].filter((tab) => cards.some(inTab(tab.key)))
+  const current = tabs.some((tab) => tab.key === active) ? active : tabs[0]?.key
 
-  const visible = cards.filter((card) => {
-    if (active === 'all') return card.status !== 'archive'
-    if (active === 'archive') return card.status === 'archive'
-    return card.status !== 'archive' && card.captionLabel === active
-  })
+  const visible = current ? cards.filter(inTab(current)) : []
 
   return (
     <main>
@@ -77,15 +80,17 @@ function Events() {
         <GridCell $start={1} $end={-1}>
           <Title>Events</Title>
         </GridCell>
-        <GridCell $start={1} $end={-1}>
-          <Tabs>
-            {tabs.map((tab) => (
-              <Tab key={tab.key} $active={active === tab.key} onClick={() => setActive(tab.key)}>
-                {tab.label}
-              </Tab>
-            ))}
-          </Tabs>
-        </GridCell>
+        {tabs.length > 0 ? (
+          <GridCell $start={1} $end={-1}>
+            <Tabs>
+              {tabs.map((tab) => (
+                <Tab key={tab.key} $active={current === tab.key} onClick={() => setActive(tab.key)}>
+                  {tab.label}
+                </Tab>
+              ))}
+            </Tabs>
+          </GridCell>
+        ) : null}
       </Header>
       <CardGrid items={visible} />
     </main>

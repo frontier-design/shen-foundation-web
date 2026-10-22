@@ -40,7 +40,13 @@ const Tab = styled.button`
 
 function Exhibitions() {
   const [active, setActive] = useState('ongoing')
-  const visible = exhibitionCards().filter((card) => card.status === active)
+  const cards = exhibitionCards()
+  const tabs = [
+    { key: 'ongoing', label: 'Ongoing' },
+    { key: 'archive', label: 'Archive' },
+  ].filter((tab) => cards.some((card) => card.status === tab.key))
+  const current = tabs.some((tab) => tab.key === active) ? active : tabs[0]?.key
+  const visible = cards.filter((card) => card.status === current)
 
   return (
     <main>
@@ -52,16 +58,17 @@ function Exhibitions() {
             &amp; Projects
           </Title>
         </GridCell>
-        <GridCell $start={1} $end={-1}>
-          <Tabs>
-            <Tab $active={active === 'ongoing'} onClick={() => setActive('ongoing')}>
-              Ongoing
-            </Tab>
-            <Tab $active={active === 'archive'} onClick={() => setActive('archive')}>
-              Archive
-            </Tab>
-          </Tabs>
-        </GridCell>
+        {tabs.length > 0 ? (
+          <GridCell $start={1} $end={-1}>
+            <Tabs>
+              {tabs.map((tab) => (
+                <Tab key={tab.key} $active={current === tab.key} onClick={() => setActive(tab.key)}>
+                  {tab.label}
+                </Tab>
+              ))}
+            </Tabs>
+          </GridCell>
+        ) : null}
       </Header>
       <CardGrid items={visible} />
     </main>
