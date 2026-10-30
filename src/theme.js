@@ -80,7 +80,7 @@ export const type = {
   `,
   gridTitle: css`
     font-family: ${fonts.display};
-    font-size: clamp(26px, 3.3vw, 44px);
+    font-size: clamp(30px, 3.8vw, 50px);
     line-height: 0.95;
     letter-spacing: -0.05em;
     text-transform: uppercase;
@@ -88,7 +88,7 @@ export const type = {
     text-wrap: pretty;
 
     @media (min-width: 1500px) {
-      font-size: clamp(44px, 2.93vw, 70px);
+      font-size: clamp(50px, 3.33vw, 80px);
     }
   `,
   gridSubtitle: css`
