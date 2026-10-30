@@ -77,9 +77,18 @@ const Title = styled.h3`
   color: ${colors.black};
   margin-top: 24px;
   text-wrap: pretty;
+  ${(props) =>
+    props.$side === 'left' &&
+    css`
+      max-width: calc(
+        (min(${GRID.MAX_WIDTH}px, 100vw) - ${2 * GRID.PADDING + 11 * GRID.GAP}px) / 12 * 5 +
+          ${4 * GRID.GAP}px
+      );
+    `}
 
   @media ${GRID.MEDIA_MOBILE} {
     ${type.displayLarge}
+    max-width: none;
   }
 `
 
@@ -129,7 +138,7 @@ function GridItem({ item, index, ratio }) {
           <MediaContent image={src} video={item?.video} focus={item?.imageFocus} sizes={SIZES.card} posterWidth={1280} small alt={item?.title || ''} />
         </Media>
       ) : null}
-      {item?.title ? <Title>{item.title}</Title> : null}
+      {item?.title ? <Title $side={side}>{item.title}</Title> : null}
       {item?.subtitle ? <Subtitle $color={accent}>{item.subtitle}</Subtitle> : null}
       <Caption>
         {item?.captionLabel ? <CaptionLabel>{item.captionLabel}</CaptionLabel> : null}
