@@ -462,7 +462,7 @@ content:
                   categories: [image]
                   path: public/media
               - name: caption
-                label: Captions & credits
+                label: Captions & Credits
                 type: string
           - name: video
             label: Video
@@ -473,7 +473,7 @@ content:
                 required: true
                 description: "Plays muted on a loop. Under 20 MB loads more smoothly."
               - name: caption
-                label: Captions & credits
+                label: Captions & Credits
                 type: string
 
   - name: events
