@@ -264,6 +264,7 @@ const IMAGE_EXT = /\.(jpe?g|png|webp|gif|avif|heic|heif|tiff?|bmp|svg)$/i
 const READABLE = /^[a-z0-9]+(-[a-z0-9]+)*$/
 
 const manifest = readJson(MANIFEST, { files: {} })
+const failedBefore = manifest.failed || {}
 manifest.failed = {}
 manifest.settings = { ...SETTINGS, keepTags: KEEP_TAGS, oxipng: OXIPNG.version }
 const excludeConfig = readJson(EXCLUDE, { exclude: [] })
@@ -307,7 +308,7 @@ for (const file of files) {
       report.push({ path: p, action: 'video', before: size, after: size, width: v.width, height: v.height, note: [`${v.width}×${v.height}${v.duration ? `, ${v.duration}s` : ''}`, warning?.text].filter(Boolean).join('; ') })
     } catch (e) {
       manifest.failed[p] = { sha256: sha, note: e.message }
-      report.push({ path: p, action: 'error', note: e.message })
+      report.push({ path: p, action: 'error', note: e.message, repeat: failedBefore[p]?.sha256 === sha })
     }
     continue
   }
@@ -327,7 +328,7 @@ for (const file of files) {
     report.push({ path: p, ...r })
   } catch (e) {
     manifest.failed[p] = { sha256: sha, note: e.message }
-    report.push({ path: p, action: 'error', note: e.message })
+    report.push({ path: p, action: 'error', note: e.message, repeat: failedBefore[p]?.sha256 === sha })
   }
 }
 const present = new Set(files.map(rel))
@@ -358,4 +359,6 @@ if (process.env.GITHUB_STEP_SUMMARY) {
   fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, md + '\n')
 }
 if (opts.json) fs.writeFileSync(path.resolve(opts.json), JSON.stringify({ report, nameWarnings, videoWarnings }, null, 2))
-process.exitCode = report.some((r) => r.action === 'error') ? 1 : 0
+// Fail (and notify) only for new problems; a file that already failed in an
+// earlier run stays listed in the manifest and the summary.
+process.exitCode = report.some((r) => r.action === 'error' && !r.repeat) ? 1 : 0
