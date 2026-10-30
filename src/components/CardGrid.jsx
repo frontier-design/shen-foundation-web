@@ -72,6 +72,16 @@ const Media = styled.div`
     `}
 `
 
+// Right cards: the text sits a little in from the gutter, so it never touches
+// a taller image on the left.
+const Text = styled.div`
+  ${(props) => props.$side === 'right' && 'padding-left: clamp(12px, 1.2vw, 24px);'}
+
+  @media ${GRID.MEDIA_MOBILE} {
+    padding-left: 0;
+  }
+`
+
 const Title = styled.h3`
   ${type.gridTitle}
   color: ${colors.black};
@@ -138,13 +148,15 @@ function GridItem({ item, index, ratio }) {
           <MediaContent image={src} video={item?.video} focus={item?.imageFocus} sizes={SIZES.card} posterWidth={1280} small alt={item?.title || ''} />
         </Media>
       ) : null}
-      {item?.title ? <Title $side={side}>{item.title}</Title> : null}
-      {item?.subtitle ? <Subtitle $color={accent}>{item.subtitle}</Subtitle> : null}
-      <Caption>
-        {item?.captionLabel ? <CaptionLabel>{item.captionLabel}</CaptionLabel> : null}
-        {item?.captionDate ? <CaptionLine>{item.captionDate}</CaptionLine> : null}
-        {item?.captionLocation ? <CaptionLine>{item.captionLocation}</CaptionLine> : null}
-      </Caption>
+      <Text $side={side}>
+        {item?.title ? <Title $side={side}>{item.title}</Title> : null}
+        {item?.subtitle ? <Subtitle $color={accent}>{item.subtitle}</Subtitle> : null}
+        <Caption>
+          {item?.captionLabel ? <CaptionLabel>{item.captionLabel}</CaptionLabel> : null}
+          {item?.captionDate ? <CaptionLine>{item.captionDate}</CaptionLine> : null}
+          {item?.captionLocation ? <CaptionLine>{item.captionLocation}</CaptionLine> : null}
+        </Caption>
+      </Text>
     </>
   )
 
