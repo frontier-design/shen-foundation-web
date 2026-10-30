@@ -12,9 +12,9 @@ import { isLoadingDone, onLoadingDone } from '../../../loading.js'
 gsap.registerPlugin(CustomEase)
 
 CustomEase.create('reveal', easing.gsapReveal)
-// One continuous wipe that slows right down around the middle without
-// stopping, then picks up again and eases into the end.
-CustomEase.create('heroWipe', 'M0,0 C0.1,0.35 0.3,0.48 0.5,0.5 C0.7,0.52 0.82,1 1,1')
+// One continuous wipe: a quick sweep to the middle, an almost-stop (very slow
+// creep through the middle half), then fast to the end.
+CustomEase.create('heroWipe', 'M0,0 C0.06,0.32 0.15,0.458 0.25,0.47 C0.42,0.49 0.58,0.51 0.75,0.53 C0.85,0.542 0.9,1 1,1')
 
 const HeroSection = styled.section`
   position: relative;
@@ -63,7 +63,7 @@ const HiddenLink = styled.a`
 `
 
 const HOLD_BEFORE = 4.5
-const WIPE = 3.2
+const WIPE = 4.5
 const HOLD_FULL = 4.5
 
 function HeroCarousel({ slides = [] }) {
