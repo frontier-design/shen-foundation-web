@@ -31,8 +31,12 @@ const GlobalStyle = createGlobalStyle`
     overflow-x: clip;
   }
 
-  html {
-    scrollbar-gutter: stable;
+  * {
+    scrollbar-width: none;
+  }
+
+  *::-webkit-scrollbar {
+    display: none;
   }
 
   body {
