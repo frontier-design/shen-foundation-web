@@ -26,7 +26,7 @@ const Section = styled(Grid).attrs({ as: 'section' })`
   position: relative;
   z-index: 1;
   background-color: ${colors.white};
-  ${(props) => props.$natural && 'align-items: start;'}
+  align-items: start;
 
   @media ${GRID.MEDIA_MOBILE} {
     row-gap: clamp(72px, 18vw, 120px);
@@ -167,8 +167,7 @@ function GridItem({ item, index, ratio }) {
   )
 }
 
-// Natural layout (homepage, Exhibitions and Events pages): each image keeps its
-// own shape, but
+// Each image keeps its own shape, but
 // - never taller than TALLEST (cropped to it, keeping the focus point);
 // - two cards side by side never end at (nearly) the same height: if their
 //   heights are within MIN_DIFFERENCE, one of them (alternating sides row by
@@ -199,13 +198,12 @@ function naturalRatios(items) {
   return ratios.map((ratio) => Number(ratio.toFixed(4)))
 }
 
-// natural: the layout above, instead of the 4:3 crop used on artist pages.
-function CardGrid({ items, natural = false }) {
+function CardGrid({ items }) {
   if (!items || items.length === 0) return null
-  const ratios = natural ? naturalRatios(items) : []
+  const ratios = naturalRatios(items)
 
   return (
-    <Section data-nav-tone-left="dark" data-nav-tone-right="dark" $natural={natural}>
+    <Section data-nav-tone-left="dark" data-nav-tone-right="dark">
       {items.map((item, index) => (
         <GridItem key={index} item={item} index={index} ratio={ratios[index]} />
       ))}
