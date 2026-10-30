@@ -70,7 +70,7 @@ function Exhibitions() {
           </GridCell>
         ) : null}
       </Header>
-      <CardGrid items={visible} />
+      <CardGrid items={visible} natural />
     </main>
   )
 }
