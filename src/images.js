@@ -26,7 +26,7 @@ export function imageSrcSet(src) {
   return IMAGE_WIDTHS.map((w) => `${imageUrl(src, w)} ${w}w`).join(', ')
 }
 
-function dimensions(src) {
+export function dimensions(src) {
   const entry = typeof src === 'string' ? optimized.files[src] : null
   return entry?.width && entry?.height ? { width: entry.width, height: entry.height } : {}
 }
