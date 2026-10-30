@@ -75,7 +75,7 @@ const Media = styled.div`
 // Right cards: the text sits a little in from the gutter, so it never touches
 // a taller image on the left.
 const Text = styled.div`
-  ${(props) => props.$side === 'right' && 'padding-left: clamp(12px, 1.2vw, 24px);'}
+  ${(props) => props.$side === 'right' && 'padding-left: clamp(8px, 0.7vw, 16px);'}
 
   @media ${GRID.MEDIA_MOBILE} {
     padding-left: 0;
