@@ -25,6 +25,7 @@ const Section = styled(Grid).attrs({ as: 'section' })`
   position: relative;
   z-index: 1;
   background-color: ${colors.white};
+  ${(props) => props.$natural && 'align-items: start;'}
 
   @media ${GRID.MEDIA_MOBILE} {
     row-gap: clamp(72px, 18vw, 120px);
@@ -62,6 +63,17 @@ const Media = styled.div`
     height: 100%;
     object-fit: cover;
   }
+
+  ${(props) =>
+    props.$natural &&
+    css`
+      aspect-ratio: auto;
+
+      img,
+      video {
+        height: auto;
+      }
+    `}
 `
 
 const Title = styled.h3`
@@ -107,7 +119,7 @@ const CaptionLine = styled.p`
   color: ${colors.black};
 `
 
-function GridItem({ item, index }) {
+function GridItem({ item, index, natural }) {
   const side = index % 2 === 0 ? 'left' : 'right'
   const src = mediaUrl(item?.image)
   const accent = useImageAccent(accentSource(item), colors.gray)
@@ -122,7 +134,7 @@ function GridItem({ item, index }) {
   const content = (
     <>
       {src || item?.video ? (
-        <Media $side={side}>
+        <Media $side={side} $natural={natural}>
           <MediaContent image={src} video={item?.video} focus={item?.imageFocus} sizes={SIZES.card} posterWidth={1280} small alt={item?.title || ''} />
         </Media>
       ) : null}
@@ -143,13 +155,15 @@ function GridItem({ item, index }) {
   )
 }
 
-function CardGrid({ items }) {
+// natural: images and videos keep their own shape (homepage) instead of the
+// 4:3 crop used on the index and artist pages.
+function CardGrid({ items, natural = false }) {
   if (!items || items.length === 0) return null
 
   return (
-    <Section data-nav-tone-left="dark" data-nav-tone-right="dark">
+    <Section data-nav-tone-left="dark" data-nav-tone-right="dark" $natural={natural}>
       {items.map((item, index) => (
-        <GridItem key={index} item={item} index={index} />
+        <GridItem key={index} item={item} index={index} natural={natural} />
       ))}
     </Section>
   )
