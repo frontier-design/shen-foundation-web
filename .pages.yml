@@ -87,9 +87,9 @@ content:
                       label: "{title}"
                       thumbnail: image
           - name: image
-            label: Image (portrait)
+            label: Image
             type: image
-            description: "Portrait only. Landscape images are not accepted here. Or use a video below instead."
+            description: "Or use a video below instead."
             options:
               categories: [image]
               path: public/media
@@ -374,7 +374,7 @@ content:
         options:
           maxlength: 120
       - name: artist
-        label: Artist page (optional)
+        label: Artist page
         type: reference
         description: "Pick the artist's page to show “Learn more about the artist →” here and list this exhibition on that artist's page. Leave empty for no link; you can still add links in the text."
         options:
@@ -398,9 +398,9 @@ content:
         options:
           maxlength: 80
       - name: heroImage
-        label: Hero image (landscape)
+        label: Hero image
         type: image
-        description: "Landscape only. Also used as the project thumbnail in grids. Portrait images are not accepted."
+        description: "Also used as the project thumbnail in grids."
         options:
           categories: [image]
           path: public/media
@@ -424,7 +424,7 @@ content:
         options:
           format: yyyy-MM-dd
       - name: endDate
-        label: End date (optional)
+        label: End date
         type: date
         default: ""
         description: "Leave empty for a single-day date."
@@ -462,7 +462,7 @@ content:
                   categories: [image]
                   path: public/media
               - name: caption
-                label: Caption
+                label: Captions & credits
                 type: string
           - name: video
             label: Video
@@ -473,7 +473,7 @@ content:
                 required: true
                 description: "Plays muted on a loop. Under 20 MB loads more smoothly."
               - name: caption
-                label: Caption
+                label: Captions & credits
                 type: string
 
   - name: events
@@ -500,7 +500,7 @@ content:
         options:
           maxlength: 80
       - name: artists
-        label: Artist pages (optional)
+        label: Artist pages
         type: reference
         description: "Pick the artists this event is with or about. It's then listed on their artist pages."
         options:
@@ -528,7 +528,7 @@ content:
         options:
           format: yyyy-MM-dd
       - name: endDate
-        label: End date (optional)
+        label: End date
         type: date
         default: ""
         description: "Leave empty for a single-day date."
@@ -538,9 +538,8 @@ content:
         label: Location
         type: string
       - name: image
-        label: Thumbnail image (landscape)
+        label: Thumbnail image
         type: image
-        description: "Landscape only. Portrait images are not accepted."
         options:
           categories: [image]
           path: public/media
@@ -571,7 +570,7 @@ content:
             options:
               maxlength: 80
           - name: link
-            label: Link (optional)
+            label: Link
             type: string
             description: "Fill this in to make the row a link with an arrow instead of a dropdown: a page on this site (e.g. /exhibitions/…) or a full web address (https://…, opens in a new tab). Leave empty for a dropdown with the content below."
             pattern:
