@@ -167,7 +167,8 @@ function GridItem({ item, index, ratio }) {
   )
 }
 
-// Natural layout (homepage, Exhibitions page): each image keeps its own shape, but
+// Natural layout (homepage, Exhibitions and Events pages): each image keeps its
+// own shape, but
 // - never taller than TALLEST (cropped to it, keeping the focus point);
 // - two cards side by side never end at (nearly) the same height: if their
 //   heights are within MIN_DIFFERENCE, one of them (alternating sides row by
@@ -198,8 +199,7 @@ function naturalRatios(items) {
   return ratios.map((ratio) => Number(ratio.toFixed(4)))
 }
 
-// natural: the layout above, instead of the 4:3 crop used on the Events
-// index and artist pages.
+// natural: the layout above, instead of the 4:3 crop used on artist pages.
 function CardGrid({ items, natural = false }) {
   if (!items || items.length === 0) return null
   const ratios = natural ? naturalRatios(items) : []

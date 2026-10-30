@@ -92,7 +92,7 @@ function Events() {
           </GridCell>
         ) : null}
       </Header>
-      <CardGrid items={visible} />
+      <CardGrid items={visible} natural />
     </main>
   )
 }
