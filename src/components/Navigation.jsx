@@ -1,16 +1,22 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { Grid, GridCell, GRID, useMediaQuery } from '../grid'
 import { colors, type, easing, duration } from '../theme.js'
 import { linkProps, usePathname } from '../router.jsx'
 import { siteContacts } from '../content.js'
 import { isLoadingDone, onLoadingDone } from '../loading.js'
 
-gsap.registerPlugin(ScrollTrigger)
-
 const LUMA_THRESHOLD = 140
+const SHRINK_DISTANCE = 0.7
+
+// Scroll position of the home page: the incoming page layer while a page
+// transition runs (it scrolls on its own, e.g. to the position restored on
+// Back), otherwise the window.
+const homeScrollY = () => {
+  const layer = document.querySelector('[data-page-layer="incoming"]')
+  return layer ? layer.scrollTop : window.scrollY
+}
 const SAMPLE = 8
 
 const iconColor = (tone) => (tone === 'dark' ? colors.white : colors.black)
@@ -387,7 +393,7 @@ function ShenMark({ color, innerRef }) {
 function Navigation() {
   const logoRef = useRef(null)
   const plusRef = useRef(null)
-  const scaleAnimRef = useRef(null)
+  const homeScaleRef = useRef(null)
   const menuOpenedRef = useRef(false)
   const heldLargeRef = useRef(false)
   const [tones, setTones] = useState({ logo: 'dark', plus: 'dark' })
@@ -448,48 +454,51 @@ function Navigation() {
       return undefined
     }
 
+    // Home: the logo shrinks from `large` to its natural size over the first
+    // SHRINK_DISTANCE of a screen of scrolling. It follows the scroll only while
+    // `state.follow` (paused during the intro and while the menu is open).
     heldLargeRef.current = false
     gsap.set(logo, { transformOrigin: 'top left' })
-    const anim = gsap.fromTo(
-      logo,
-      { scale: large },
-      {
-        scale: 1,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: document.body,
-          start: 'top top',
-          end: () => `+=${window.innerHeight * 0.7}`,
-          scrub: true,
-          invalidateOnRefresh: true,
-        },
-      },
-    )
-    scaleAnimRef.current = anim
+    const scaleAt = () => {
+      const progress = Math.min(Math.max(homeScrollY() / (window.innerHeight * SHRINK_DISTANCE), 0), 1)
+      return large() + (1 - large()) * progress
+    }
+    const state = { follow: false }
+    const update = () => {
+      if (state.follow) gsap.set(logo, { scale: scaleAt() })
+    }
+    document.addEventListener('scroll', update, { capture: true, passive: true })
+    window.addEventListener('resize', update)
 
-    // Arriving on home from another page: scale the logo up from its natural
-    // size to the enlarged (top-of-page) size, then hand control to the scrub.
+    // Arriving from another page: grow the logo from its natural size to the
+    // size the home page's scroll position calls for (the top of the page, or
+    // the position restored on Back), re-read every frame so scrolling during
+    // the intro never ends in a jump.
     let intro
     if (cameFromOtherPage) {
-      const st = anim.scrollTrigger
-      st.disable(false)
-      intro = gsap.fromTo(
-        logo,
-        { scale: 1 },
-        {
-          scale: large(),
-          duration: duration.base,
-          ease: 'reveal',
-          onComplete: () => st.enable(),
+      const progress = { value: 0 }
+      gsap.set(logo, { scale: 1 })
+      intro = gsap.to(progress, {
+        value: 1,
+        duration: duration.base,
+        ease: 'reveal',
+        onUpdate: () => gsap.set(logo, { scale: 1 + (scaleAt() - 1) * progress.value }),
+        onComplete: () => {
+          state.follow = true
+          update()
         },
-      )
+      })
+    } else {
+      state.follow = true
+      update()
     }
+    homeScaleRef.current = { state, scaleAt, update, stopIntro: () => intro?.kill() }
 
     return () => {
       intro?.kill()
-      anim.scrollTrigger?.kill()
-      anim.kill()
-      scaleAnimRef.current = null
+      document.removeEventListener('scroll', update, { capture: true })
+      window.removeEventListener('resize', update)
+      homeScaleRef.current = null
     }
   }, [pathname, isMobile, loading])
 
@@ -497,14 +506,14 @@ function Navigation() {
   // (pausing the scroll-driven scale), then restore it when the menu closes.
   useLayoutEffect(() => {
     const logo = logoRef.current
-    const anim = scaleAnimRef.current
-    const st = anim?.scrollTrigger
-    if (!logo || !st) return undefined
+    const home = homeScaleRef.current
+    if (!logo || !home) return undefined
 
     if (open) {
       menuOpenedRef.current = true
-      st.disable(false)
-      const tween = gsap.to(logo, { scale: 1, duration: duration.base, ease: 'reveal' })
+      home.state.follow = false
+      home.stopIntro()
+      const tween = gsap.to(logo, { scale: 1, duration: duration.base, ease: 'reveal', overwrite: true })
       return () => tween.kill()
     }
 
@@ -512,16 +521,16 @@ function Navigation() {
     menuOpenedRef.current = false
 
     // Animate back to the scale the current scroll position calls for, then
-    // hand control back to the scrub (avoids a snap on menu close).
-    const end = window.innerHeight * 0.7
-    const large = columnsSpanWidth(3) / logoNaturalWidth()
-    const progress = Math.min(Math.max(window.scrollY / end, 0), 1)
-    const target = large + (1 - large) * progress
+    // follow the scroll again (avoids a snap on menu close).
     const tween = gsap.to(logo, {
-      scale: target,
+      scale: home.scaleAt(),
       duration: duration.base,
       ease: 'reveal',
-      onComplete: () => st.enable(),
+      overwrite: true,
+      onComplete: () => {
+        home.state.follow = true
+        home.update()
+      },
     })
     return () => tween.kill()
   }, [open])

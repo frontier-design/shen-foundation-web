@@ -234,7 +234,7 @@ function App() {
         <RouteView pathname={base.path} />
       </PageLayer>
       {incoming !== null ? (
-        <PageLayer key={incoming.id} ref={overlayRef} $overlay onAnimationEnd={finishTransition}>
+        <PageLayer key={incoming.id} ref={overlayRef} $overlay data-page-layer="incoming" onAnimationEnd={finishTransition}>
           <RouteView pathname={incoming.path} />
         </PageLayer>
       ) : null}
