@@ -8,6 +8,14 @@
       "width": 3200,
       "height": 2133
     },
+    "/media/451ed370549af251e21dc36e7befd1b6-jpg.jpg": {
+      "sha256": "53d62afeab8d11688e25f0abb931a19e5f7be1a0d180c564d39c3277c219ea8e",
+      "action": "metadata",
+      "bytesBefore": 80378,
+      "bytesAfter": 80378,
+      "width": 554,
+      "height": 680
+    },
     "/media/abbas-akshavan-1.jpg": {
       "sha256": "6726539538879b243cdb16248d8853b3c0734f8f6d282cc146e2a91d44c3aa26",
       "action": "recompressed",
