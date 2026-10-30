@@ -70,22 +70,6 @@ const Media = styled.div`
     css`
       aspect-ratio: ${props.$ratio};
     `}
-
-  ${(props) =>
-    props.$scale < 1 &&
-    css`
-      width: calc((100% + ${GRID.PADDING}px) * ${props.$scale});
-      ${props.$side === 'right' ? 'margin-left: auto;' : ''}
-
-      @media ${GRID.MEDIA_TABLET} {
-        width: calc((100% + ${GRID.PADDING_TABLET}px) * ${props.$scale});
-      }
-
-      @media ${GRID.MEDIA_MOBILE} {
-        width: calc(100% + ${GRID.PADDING_MOBILE * 2}px);
-        margin-left: -${GRID.PADDING_MOBILE}px;
-      }
-    `}
 `
 
 const Title = styled.h3`
@@ -135,7 +119,7 @@ const CaptionLine = styled.p`
   color: ${colors.black};
 `
 
-function GridItem({ item, index, ratio, scale = 1 }) {
+function GridItem({ item, index, ratio }) {
   const side = index % 2 === 0 ? 'left' : 'right'
   const src = mediaUrl(item?.image)
   const accent = useImageAccent(accentSource(item), colors.gray)
@@ -150,7 +134,7 @@ function GridItem({ item, index, ratio, scale = 1 }) {
   const content = (
     <>
       {src || item?.video ? (
-        <Media $side={side} $ratio={ratio} $scale={scale}>
+        <Media $side={side} $ratio={ratio}>
           <MediaContent image={src} video={item?.video} focus={item?.imageFocus} sizes={SIZES.card} posterWidth={1280} small alt={item?.title || ''} />
         </Media>
       ) : null}
@@ -171,57 +155,25 @@ function GridItem({ item, index, ratio, scale = 1 }) {
   )
 }
 
-// Natural layout (homepage): every image keeps its exact shape (no cropping);
-// only the width it's shown at changes, against the outer page edge.
-// - An image is never taller than MAX_HEIGHT column widths: taller ones are
-//   shown narrower.
-// - Two cards side by side never end at (nearly) the same height: if their
-//   heights are within MIN_DIFFERENCE, one of them (alternating sides row by
-//   row) is shown narrower, so it ends higher. Never narrower than MIN_SCALE.
-// Phones show every image at full width.
-const MAX_HEIGHT = 1
-const MIN_DIFFERENCE = 0.15
-const STAGGER = 1 + MIN_DIFFERENCE + 0.1
-const MIN_SCALE = 0.55
+// Natural layout (homepage): every image fills its column's width and keeps
+// its original width-to-height ratio (no cropping, no narrowing).
 const FALLBACK = 4 / 3
 
 const ratioOf = (item) => {
   const size = blobVideo(item?.video) || dimensions(mediaUrl(item?.image))
-  return size?.width && size?.height ? size.width / size.height : FALLBACK
-}
-
-function naturalLayout(items) {
-  const cards = items.map((item) => {
-    const ratio = ratioOf(item)
-    return { ratio, scale: Math.min(1, MAX_HEIGHT * ratio) }
-  })
-  const height = (card) => card.scale / card.ratio
-  for (let left = 0, row = 0; left + 1 < cards.length; left += 2, row += 1) {
-    const pair = [cards[left], cards[left + 1]]
-    const [a, b] = pair.map(height)
-    if (Math.abs(a - b) / Math.max(a, b) >= MIN_DIFFERENCE) continue
-    const order = row % 2 === 0 ? [1, 0] : [0, 1]
-    for (const [shrink, keep] of [order, [order[1], order[0]]]) {
-      const scale = (height(pair[keep]) / STAGGER) * pair[shrink].ratio
-      if (scale >= MIN_SCALE) {
-        pair[shrink].scale = scale
-        break
-      }
-    }
-  }
-  return cards.map((card) => ({ ratio: Number(card.ratio.toFixed(4)), scale: Number(card.scale.toFixed(4)) }))
+  return size?.width && size?.height ? Number((size.width / size.height).toFixed(4)) : FALLBACK
 }
 
 // natural: the homepage layout above, instead of the 4:3 crop used on the
 // index and artist pages.
 function CardGrid({ items, natural = false }) {
   if (!items || items.length === 0) return null
-  const layout = natural ? naturalLayout(items) : []
+  const ratios = natural ? items.map(ratioOf) : []
 
   return (
     <Section data-nav-tone-left="dark" data-nav-tone-right="dark" $natural={natural}>
       {items.map((item, index) => (
-        <GridItem key={index} item={item} index={index} ratio={layout[index]?.ratio} scale={layout[index]?.scale} />
+        <GridItem key={index} item={item} index={index} ratio={ratios[index]} />
       ))}
     </Section>
   )
