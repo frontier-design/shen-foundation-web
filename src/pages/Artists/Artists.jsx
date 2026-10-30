@@ -5,6 +5,7 @@ import { getPage, orderedArtists, mediaUrl, artistSlug, focusPosition } from '..
 import { linkProps } from '../../router.jsx'
 import { SIZES } from '../../images.js'
 import { blobVideo } from '../../videos.js'
+import { naturalRatios } from '../../cardLayout.js'
 import MediaContent from '../../components/Media.jsx'
 
 const ScreenReaderTitle = styled.h1`
@@ -34,6 +35,7 @@ const Section = styled(Grid).attrs({ as: 'section' })`
   row-gap: clamp(96px, 12vw, 200px);
   padding-top: 0;
   padding-bottom: clamp(64px, 10vh, 160px);
+  align-items: start;
 
   @media ${GRID.MEDIA_MOBILE} {
     row-gap: clamp(72px, 18vw, 120px);
@@ -72,6 +74,12 @@ const Media = styled.div`
     height: 100%;
     object-fit: cover;
   }
+
+  ${(props) =>
+    props.$ratio &&
+    css`
+      aspect-ratio: ${props.$ratio};
+    `}
 `
 
 const Name = styled.h2`
@@ -79,13 +87,15 @@ const Name = styled.h2`
   color: ${colors.black};
   margin-top: 24px;
   text-wrap: balance;
+  ${(props) => props.$side === 'right' && 'padding-left: clamp(8px, 0.7vw, 16px);'}
 
   @media ${GRID.MEDIA_MOBILE} {
     ${type.displayLarge}
+    padding-left: 0;
   }
 `
 
-function ArtistItem({ item, index }) {
+function ArtistItem({ item, index, ratio }) {
   const side = index % 2 === 0 ? 'left' : 'right'
   const src = mediaUrl(item?.thumbnail)
   const video = blobVideo(item?.thumbnailVideo)?.src
@@ -99,11 +109,11 @@ function ArtistItem({ item, index }) {
     <Item {...placement}>
       <CardLink {...linkProps(`/artists/${artistSlug(item)}`)}>
         {src || video ? (
-          <Media $side={side}>
+          <Media $side={side} $ratio={ratio}>
             <MediaContent image={src} video={video} focus={focusPosition(item?.thumbnailFocus)} sizes={SIZES.card} posterWidth={1280} small alt={item?.title || ''} />
           </Media>
         ) : null}
-        {item?.title ? <Name>{item.title}</Name> : null}
+        {item?.title ? <Name $side={side}>{item.title}</Name> : null}
       </CardLink>
     </Item>
   )
@@ -112,6 +122,7 @@ function ArtistItem({ item, index }) {
 function Artists() {
   const page = getPage('artists')
   const artists = orderedArtists(page?.artistOrder)
+  const ratios = naturalRatios(artists.map((item) => ({ image: item.thumbnail, video: item.thumbnailVideo })))
 
   return (
     <main>
@@ -119,7 +130,7 @@ function Artists() {
       {artists.length > 0 ? (
         <Section data-nav-tone-left="dark" data-nav-tone-right="dark">
           {artists.map((item, index) => (
-            <ArtistItem key={artistSlug(item)} item={item} index={index} />
+            <ArtistItem key={artistSlug(item)} item={item} index={index} ratio={ratios[index]} />
           ))}
         </Section>
       ) : null}
