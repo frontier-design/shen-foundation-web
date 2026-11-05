@@ -192,6 +192,14 @@
       "width": 2400,
       "height": 3200
     },
+    "/media/dv38914.jpg": {
+      "sha256": "edb4693d88fed537cc47a9c1cd9c85b686560e9e09535f238e7c9c04ac5ec541",
+      "action": "resized",
+      "bytesBefore": 66628972,
+      "bytesAfter": 1688380,
+      "width": 2400,
+      "height": 3200
+    },
     "/media/dvportraitguel.jpg": {
       "sha256": "bc11a3150359e3e554a445ab63f6a5e23dc03d401b21acd0c77881a991bf3e70",
       "action": "recompressed",
