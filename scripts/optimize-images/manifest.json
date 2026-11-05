@@ -312,6 +312,14 @@
       "width": 3200,
       "height": 2134
     },
+    "/media/sungrivoli16.jpg": {
+      "sha256": "8c13bc155aa6c6c89a049ea86e96766ecdc3a441164d55557671e528cad3f729",
+      "action": "resized",
+      "bytesBefore": 8733446,
+      "bytesAfter": 1221010,
+      "width": 3200,
+      "height": 2134
+    },
     "/media/test.jpg": {
       "sha256": "2e8cb5970477e8dc1958c837900e0d60733f29fae9c6adfe7919f55fcd1d205a",
       "action": "recompressed",
