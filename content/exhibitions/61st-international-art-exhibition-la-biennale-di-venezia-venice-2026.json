@@ -7,5 +7,15 @@
   "endDate": "2027-02-28",
   "captionLocation": "Castello di Rivoli, Turin, Italy",
   "heroImage": "/media/sungrivoli02.jpg",
-  "artist": "sung-tieu.json"
+  "artist": "sung-tieu.json",
+  "gallery": [
+    {
+      "type": "image",
+      "image": "/media/sungrivoli16.jpg"
+    },
+    {
+      "type": "image",
+      "image": "/media/sungrivoli22.jpg"
+    }
+  ]
 }
