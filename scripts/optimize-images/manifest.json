@@ -128,6 +128,14 @@
       "width": 2400,
       "height": 3200
     },
+    "/media/dv38884.jpg": {
+      "sha256": "0aa95129fb4ee1a853f659cee001dd1aba70da9ee1b35d31c7b46ee2235e2034",
+      "action": "resized",
+      "bytesBefore": 48104448,
+      "bytesAfter": 637008,
+      "width": 3200,
+      "height": 2400
+    },
     "/media/dv38892.jpg": {
       "sha256": "cdeceb6739ad29f833e2d75fc037952f7aa7e9f910dd441acc6da75516539add",
       "action": "resized",
