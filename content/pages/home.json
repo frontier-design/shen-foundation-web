@@ -26,8 +26,8 @@
   ],
   "heroSlides": [
     {
-      "type": "event",
-      "event": "fogo-island-arts-residency.json"
+      "type": "exhibition",
+      "exhibition": "danh-vo-guldenhof.json"
     },
     {
       "type": "exhibition",
@@ -35,11 +35,11 @@
     },
     {
       "type": "exhibition",
-      "exhibition": "danh-vo-guldenhof.json"
+      "exhibition": "61st-international-art-exhibition-la-biennale-di-venezia-venice-2026.json"
     },
     {
-      "type": "exhibition",
-      "exhibition": "61st-international-art-exhibition-la-biennale-di-venezia-venice-2026.json"
+      "type": "event",
+      "event": "fogo-island-arts-residency.json"
     }
   ]
 }
