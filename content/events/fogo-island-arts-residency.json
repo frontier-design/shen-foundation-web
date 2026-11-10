@@ -8,5 +8,11 @@
   "image": "/media/01-1.jpg",
   "artists": [
     "covey-gong.json"
+  ],
+  "sections": [
+    {
+      "link": "https://www.fogoislandarts.ca/artist/coveygong/",
+      "content": "<p></p>"
+    }
   ]
 }
