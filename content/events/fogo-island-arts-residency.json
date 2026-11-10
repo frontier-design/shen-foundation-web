@@ -5,7 +5,7 @@
   "startDate": "2026-06-01",
   "endDate": "2026-07-31",
   "captionLocation": "Fogo Island Arts",
-  "image": "/media/fogo-island-arts-residency.jpeg",
+  "image": "/media/01-1.jpg",
   "artists": [
     "covey-gong.json"
   ],
@@ -18,5 +18,5 @@
       "content": "<p></p>"
     }
   ],
-  "imageFocus": "47% 20%"
+  "imageFocus": "48% 19%"
 }
