@@ -13,10 +13,6 @@
     },
     {
       "type": "event",
-      "event": "fogo-island-arts-residency.json"
-    },
-    {
-      "type": "event",
       "event": "danh-vo-in-conversation-with-tom-mcdonough.json"
     },
     {
@@ -26,6 +22,10 @@
     {
       "type": "exhibition",
       "exhibition": "61st-international-art-exhibition-la-biennale-di-venezia-venice-2026.json"
+    },
+    {
+      "type": "event",
+      "event": "fogo-island-arts-residency.json"
     }
   ],
   "heroSlides": [
