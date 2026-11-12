@@ -20,7 +20,7 @@ const Layout = styled(Grid)`
   row-gap: 0;
 
   @media ${GRID.MEDIA_MOBILE} {
-    grid-auto-rows: 1fr;
+    grid-template-rows: auto minmax(0, 1fr);
   }
 `
 
@@ -34,7 +34,7 @@ const TextCell = styled(GridCell)`
     justify-content: center;
     align-items: flex-start;
     text-align: left;
-    padding: clamp(48px, 9vh, 88px) 0 ${GRID.PADDING_MOBILE}px;
+    padding: clamp(104px, 15vh, 128px) ${GRID.PADDING_MOBILE}px 32px 0;
     gap: 1.5rem;
   }
 `
@@ -46,6 +46,11 @@ const Title = styled.h2`
 
   span {
     display: block;
+  }
+
+  @media ${GRID.MEDIA_MOBILE} {
+    font-size: 36px;
+    min-height: 0;
   }
 `
 
