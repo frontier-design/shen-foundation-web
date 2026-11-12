@@ -49,7 +49,7 @@ const Title = styled.h2`
   }
 
   @media ${GRID.MEDIA_MOBILE} {
-    font-size: 36px;
+    font-size: 30px;
     min-height: 0;
   }
 `
@@ -59,6 +59,10 @@ const Subtitle = styled.p`
   color: ${(props) => props.$color || colors.accent};
   margin-top: 0.5rem;
   transition: color ${duration.base}s ${easing.reveal};
+
+  @media ${GRID.MEDIA_MOBILE} {
+    font-size: 30px;
+  }
 `
 
 const Caption = styled.div`
