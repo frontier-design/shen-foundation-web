@@ -200,6 +200,14 @@
       "width": 2400,
       "height": 3200
     },
+    "/media/dv43192small.jpg": {
+      "sha256": "b6589b47e715902c0d667e1f9a268fc97898e1269d0c0935c415b9de4179e134",
+      "action": "recompressed",
+      "bytesBefore": 2425036,
+      "bytesAfter": 2096089,
+      "width": 2098,
+      "height": 2797
+    },
     "/media/dv43246small.jpg": {
       "sha256": "1784a8463579a9cc258f73a338a0b16a490fe3d94f7fc91309b3637c60b141e5",
       "action": "recompressed",
