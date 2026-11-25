@@ -7,14 +7,14 @@ import { colors, type, easing, duration } from '../theme.js'
 // positioned.
 const Overlay = styled.figcaption`
   ${type.caption}
-  font-size: 15px;
+  font-size: 14px;
 
   @media ${GRID.MEDIA_MOBILE} {
-    font-size: 14px;
+    font-size: 13px;
   }
 
   @media (min-width: 1500px) {
-    font-size: clamp(15px, 1vw, 19px);
+    font-size: clamp(14px, 0.93vw, 17px);
   }
 
   position: absolute;
