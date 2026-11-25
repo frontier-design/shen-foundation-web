@@ -26,7 +26,7 @@ const Overlay = styled.figcaption`
 
   span {
     display: block;
-    max-width: 70%;
+    max-width: 80%;
     transform: translateY(1em);
     transition: transform ${duration.base}s ${easing.reveal};
 
