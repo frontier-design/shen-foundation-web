@@ -133,7 +133,7 @@ const MetaLine = styled.p`
 const Description = styled(RichText)`
   ${type.body}
   color: ${colors.black};
-  margin-top: clamp(32px, 4vw, 56px);
+  margin-top: clamp(48px, 5.5vw, 80px);
   max-width: calc((5 * 100% - ${contentPad} - ${GRID.GAP}px) / 6);
   text-wrap: pretty;
 
