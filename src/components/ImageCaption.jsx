@@ -13,13 +13,13 @@ const Overlay = styled.figcaption`
   bottom: 0;
   z-index: 1;
   padding: clamp(48px, 8vw, 88px) clamp(16px, 2vw, 28px) clamp(16px, 2vw, 28px);
-  color: ${colors.gray};
+  color: ${colors.lightGray};
   opacity: 0;
   pointer-events: none;
   background: linear-gradient(
     to top,
-    rgba(18, 18, 18, 0.55) 0%,
-    rgba(18, 18, 18, 0.28) 45%,
+    rgba(18, 18, 18, 0.75) 0%,
+    rgba(18, 18, 18, 0.7) 40%,
     rgba(18, 18, 18, 0) 100%
   );
   transition: opacity ${duration.base}s ${easing.reveal};
