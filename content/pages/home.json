@@ -34,6 +34,10 @@
       "exhibition": "danh-vo-guldenhof.json"
     },
     {
+      "type": "event",
+      "event": "danh-vo-in-conversation-with-tom-mcdonough.json"
+    },
+    {
       "type": "exhibition",
       "exhibition": "dynamic-spaces.json"
     },
@@ -44,10 +48,6 @@
     {
       "type": "event",
       "event": "fogo-island-arts-residency.json"
-    },
-    {
-      "type": "event",
-      "event": "danh-vo-in-conversation-with-tom-mcdonough.json"
     }
   ]
 }
