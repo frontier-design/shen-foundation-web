@@ -134,6 +134,10 @@ const Description = styled(RichText)`
   ${type.body}
   color: ${colors.black};
   margin-top: clamp(48px, 5.5vw, 80px);
+
+  @media (min-width: 1500px) {
+    margin-top: 92px;
+  }
   max-width: calc((5 * 100% - ${contentPad} - ${GRID.GAP}px) / 6);
   text-wrap: pretty;
 
