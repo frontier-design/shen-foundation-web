@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { GRID } from '../grid'
 import { colors, type, easing, duration } from '../theme.js'
 
 // Caption over the bottom of an image: fades in while its parent is hovered,
@@ -25,8 +26,13 @@ const Overlay = styled.figcaption`
 
   span {
     display: block;
+    max-width: 70%;
     transform: translateY(1em);
     transition: transform ${duration.base}s ${easing.reveal};
+
+    @media ${GRID.MEDIA_TABLET} {
+      max-width: none;
+    }
   }
 
   *:hover > & {
