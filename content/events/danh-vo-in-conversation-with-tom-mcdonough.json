@@ -5,11 +5,6 @@
   "startDate": "2026-11-28",
   "captionLocation": "Art Gallery of Ontario, Toronto",
   "image": "/media/dv38884.jpg",
-  "sections": [
-    {
-      "content": "<p></p>"
-    }
-  ],
   "artists": [
     "danh-vo.json"
   ],
