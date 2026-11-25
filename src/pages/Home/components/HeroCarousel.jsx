@@ -14,7 +14,7 @@ gsap.registerPlugin(CustomEase)
 CustomEase.create('reveal', easing.gsapReveal)
 // One continuous wipe: a quick sweep to the middle, an almost-stop (very slow
 // creep through the middle half), then fast to the end.
-CustomEase.create('heroWipe', 'M0,0 C0.06,0.36 0.19,0.4628 0.25,0.47 C0.42,0.49 0.58,0.51 0.75,0.53 C0.81,0.5372 0.86,1 1,1')
+CustomEase.create('heroWipe', 'M0,0 C0.08,0.36 0.253,0.458 0.333,0.47 C0.444,0.49 0.556,0.51 0.667,0.53 C0.747,0.542 0.82,1 1,1')
 
 const HeroSection = styled.section`
   position: relative;
@@ -63,7 +63,7 @@ const HiddenLink = styled.a`
 `
 
 const HOLD_BEFORE = 4.5
-const WIPE = 2
+const WIPE = 1.5
 const HOLD_FULL = 4.5
 
 function HeroCarousel({ slides = [] }) {
