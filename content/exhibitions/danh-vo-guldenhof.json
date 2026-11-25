@@ -20,11 +20,6 @@
     },
     {
       "type": "image",
-      "image": "/media/danh-vo-guldenhof-landing.jpeg",
-      "caption": "Dahn Vo's garden in Güldenhof. Photo credit: Nick Ash."
-    },
-    {
-      "type": "image",
       "image": "/media/dv38914.jpg",
       "caption": "Danh Vo, All that prevents you from leaving, all that is your enemy, Kunsthall 44Møen, installation view, May 23 - September 20, 2026, ©44Møen. Photo credit: Nick Ash "
     },
@@ -40,6 +35,11 @@
     {
       "type": "image",
       "image": "/media/dv43192small.jpg"
+    },
+    {
+      "type": "image",
+      "image": "/media/danh-vo-guldenhof-landing.jpeg",
+      "caption": "Dahn Vo's garden in Güldenhof. Photo credit: Nick Ash."
     }
   ],
   "endDate": "2027-05-23"
