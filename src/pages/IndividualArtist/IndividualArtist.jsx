@@ -5,6 +5,7 @@ import { getArtist, mediaUrl, artistRelatedCards, toPlainText, focusPosition } f
 import RichText from '../../components/RichText.jsx'
 import { SIZES } from '../../images.js'
 import Media from '../../components/Media.jsx'
+import ImageCaption from '../../components/ImageCaption.jsx'
 import BackButton from '../../components/BackButton.jsx'
 import CardGrid from '../../components/CardGrid.jsx'
 
@@ -99,7 +100,7 @@ const Bio = styled(RichText)`
   text-wrap: pretty;
 `
 
-const Portrait = styled(GridCell)`
+const Portrait = styled(GridCell).attrs({ as: 'figure' })`
   grid-row: 1;
   position: sticky;
   top: 0;
@@ -161,6 +162,7 @@ function IndividualArtist({ slug }) {
         {thumbnail || thumbnailVideo ? (
           <Portrait $start={7} $end={-1} $startTablet={1} $spanTablet={8} $startMobile={1} $spanMobile={4}>
             <Media image={thumbnail} video={thumbnailVideo} focus={focusPosition(item.thumbnailFocus)} sizes={SIZES.halfTall} alt="" />
+            <ImageCaption>{item.thumbnailCaption}</ImageCaption>
           </Portrait>
         ) : null}
       </Intro>

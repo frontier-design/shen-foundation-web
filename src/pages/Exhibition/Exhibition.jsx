@@ -6,6 +6,7 @@ import RichText from '../../components/RichText.jsx'
 import { linkProps } from '../../router.jsx'
 import { SIZES } from '../../images.js'
 import Media from '../../components/Media.jsx'
+import ImageCaption from '../../components/ImageCaption.jsx'
 import { blobVideo } from '../../videos.js'
 import { useImageAccent } from '../../hooks/useImageAccent.js'
 
@@ -145,39 +146,6 @@ const GalleryFigure = styled.figure`
     width: 100%;
     height: auto;
   }
-
-  &:hover figcaption {
-    opacity: 1;
-  }
-
-  &:hover figcaption span {
-    transform: translateY(0);
-  }
-`
-
-const GalleryCaption = styled.figcaption`
-  ${type.caption}
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  padding: clamp(48px, 8vw, 88px) clamp(16px, 2vw, 28px) clamp(16px, 2vw, 28px);
-  color: ${colors.white};
-  opacity: 0;
-  pointer-events: none;
-  background: linear-gradient(
-    to top,
-    rgba(18, 18, 18, 0.55) 0%,
-    rgba(18, 18, 18, 0.28) 45%,
-    rgba(18, 18, 18, 0) 100%
-  );
-  transition: opacity ${duration.base}s ${easing.reveal};
-
-  span {
-    display: block;
-    transform: translateY(1em);
-    transition: transform ${duration.base}s ${easing.reveal};
-  }
 `
 
 function Exhibition({ slug }) {
@@ -245,11 +213,7 @@ function Exhibition({ slug }) {
               <GridCell key={index} {...placement}>
                 <GalleryFigure $side={side}>
                   <Media image={src} video={video} sizes={SIZES.card} alt={entry.caption || ''} />
-                  {entry.caption ? (
-                    <GalleryCaption>
-                      <span>{entry.caption}</span>
-                    </GalleryCaption>
-                  ) : null}
+                  <ImageCaption>{entry.caption}</ImageCaption>
                 </GalleryFigure>
               </GridCell>
             )

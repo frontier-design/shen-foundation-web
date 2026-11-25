@@ -5,6 +5,7 @@ import { getPage, mediaUrl, toPlainText, focusPosition } from '../../content.js'
 import RichText from '../../components/RichText.jsx'
 import { SIZES } from '../../images.js'
 import Media from '../../components/Media.jsx'
+import ImageCaption from '../../components/ImageCaption.jsx'
 
 const bleed = (side, padding) =>
   side === 'right'
@@ -147,7 +148,8 @@ const People = styled(Grid).attrs({ as: 'section' })`
 
 const Person = styled(GridCell).attrs({ as: 'article' })``
 
-const PersonMedia = styled.div`
+const PersonMedia = styled.figure`
+  position: relative;
   aspect-ratio: 4 / 3;
   overflow: hidden;
   background-color: ${colors.gray};
@@ -239,6 +241,7 @@ function PersonItem({ item, index }) {
       {src || video ? (
         <PersonMedia $side={side}>
           <Media image={src} video={video} focus={focusPosition(item?.photoFocus)} sizes={SIZES.card} posterWidth={1280} small alt={item?.name || ''} />
+          <ImageCaption>{item?.photoCaption}</ImageCaption>
         </PersonMedia>
       ) : null}
       {item?.name ? <PersonName>{item.name}</PersonName> : null}

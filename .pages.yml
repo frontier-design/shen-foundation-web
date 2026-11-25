@@ -298,6 +298,10 @@ content:
             options:
               cards: only
               image: photo
+          - name: photoCaption
+            label: Captions & Credits
+            type: string
+            description: "Shown over the photo when hovered (always shown on phones)."
 
   - name: artists
     label: Artists
@@ -349,6 +353,10 @@ content:
         options:
           cards: also
           image: thumbnail
+      - name: thumbnailCaption
+        label: Captions & Credits
+        type: string
+        description: "Shown over the portrait on the artist's page when hovered (always shown on phones). Not shown on the Artists page grid."
 
   - name: exhibitions
     label: Exhibitions
@@ -556,6 +564,10 @@ content:
         options:
           cards: also
           image: image
+      - name: imageCaption
+        label: Captions & Credits
+        type: string
+        description: "Shown over the image on the event's page when hovered (always shown on phones). Not shown on cards."
       - name: sections
         label: Sections
         type: object

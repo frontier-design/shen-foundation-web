@@ -7,6 +7,7 @@ import RichText from '../../components/RichText.jsx'
 import BackButton from '../../components/BackButton.jsx'
 import { SIZES } from '../../images.js'
 import Media from '../../components/Media.jsx'
+import ImageCaption from '../../components/ImageCaption.jsx'
 import { useWheelForward } from '../../hooks/useWheelForward.js'
 import { linkProps } from '../../router.jsx'
 
@@ -49,7 +50,7 @@ const ImageCell = styled(GridCell)`
   }
 `
 
-const ImageViewport = styled.div`
+const ImageViewport = styled.figure`
   position: relative;
   width: 100%;
   height: 100%;
@@ -247,6 +248,7 @@ function Event({ slug }) {
         <ImageCell $start={1} $span={6} $startTablet={1} $spanTablet={8}>
           <ImageViewport>
             <Media image={src} video={video} focus={focusPosition(item.imageFocus)} sizes={SIZES.halfTall} alt={item.title || ''} />
+            <ImageCaption>{item.imageCaption}</ImageCaption>
           </ImageViewport>
         </ImageCell>
 
