@@ -44,6 +44,10 @@
     {
       "type": "event",
       "event": "fogo-island-arts-residency.json"
+    },
+    {
+      "type": "event",
+      "event": "danh-vo-in-conversation-with-tom-mcdonough.json"
     }
   ]
 }
