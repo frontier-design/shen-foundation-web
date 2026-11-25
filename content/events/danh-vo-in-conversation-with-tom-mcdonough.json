@@ -5,8 +5,12 @@
   "startDate": "2026-11-28",
   "captionLocation": "Art Gallery of Ontario, Toronto",
   "image": "/media/dv38884.jpg",
-  "body": "<p>Join artist Danh Vo in conversation with art historian and critic Tom McDonough as they discuss Vo’s exhibition <em>Ships that pass in the night</em>, in Baille Court at the Art Gallery of Ontario.</p><p>See the <a href=\"https://ago.ca/events/danh-vo-conversation-tom-mcdonough\">Art Gallery of Ontario website</a> for further information</p><p></p><p><em>Danh Vo: Ships that pass in the night </em>is organized by The Shen Foundation in collaboration with the Art Gallery of Ontario. This presentation is curated by Adam Welch, Carol and Morton Rapp Curator of Modern and Contemporary Art, in collaboration with Kitty Scott, Director and Curator, The Shen Foundation.</p>",
-  "sections": [],
+  "sections": [
+    {
+      "title": "About",
+      "content": "<p>Join artist Danh Vo in conversation with art historian and critic Tom McDonough as they discuss Vo’s exhibition <em>Ships that pass in the night</em>, in Baille Court at the Art Gallery of Ontario.</p><p>See the <a href=\"https://ago.ca/events/danh-vo-conversation-tom-mcdonough\">Art Gallery of Ontario website</a> for further information</p><p></p><p><em>Danh Vo: Ships that pass in the night </em>is organized by The Shen Foundation in collaboration with the Art Gallery of Ontario. This presentation is curated by Adam Welch, Carol and Morton Rapp Curator of Modern and Contemporary Art, in collaboration with Kitty Scott, Director and Curator, The Shen Foundation.</p>"
+    }
+  ],
   "artists": [
     "danh-vo.json"
   ],

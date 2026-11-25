@@ -577,7 +577,7 @@ content:
           media: false
           switcher: false
       - name: sections
-        label: Extra sections (dropdowns or links)
+        label: Sections (dropdowns or links)
         type: object
         list:
           collapsible:
