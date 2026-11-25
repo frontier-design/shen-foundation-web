@@ -130,11 +130,25 @@ const MetaLine = styled.p`
   margin: 0;
 `
 
+const Description = styled(RichText)`
+  ${type.body}
+  color: ${colors.black};
+  margin-top: clamp(32px, 4vw, 56px);
+  max-width: calc((5 * 100% - ${contentPad} - ${GRID.GAP}px) / 6);
+  text-wrap: pretty;
+
+  @media ${GRID.MEDIA_TABLET} {
+    max-width: none;
+  }
+`
+
 const Sections = styled.div`
   margin-top: auto;
+  padding-top: clamp(40px, 5vw, 72px);
 
   @media ${GRID.MEDIA_MOBILE} {
     margin-top: clamp(40px, 12vw, 64px);
+    padding-top: 0;
   }
 `
 
@@ -260,6 +274,7 @@ function Event({ slug }) {
             {item.captionDate ? <MetaLine>{item.captionDate}</MetaLine> : null}
             {item.captionLocation ? <MetaLine>{item.captionLocation}</MetaLine> : null}
           </Meta>
+          {toPlainText(item.body) ? <Description html={item.body} /> : null}
 
           {sections.length > 0 ? (
             <Sections>

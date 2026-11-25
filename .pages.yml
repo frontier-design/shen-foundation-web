@@ -568,8 +568,16 @@ content:
         label: Captions & Credits
         type: string
         description: "Shown over the image on the event's page when hovered (always shown on phones). Not shown on cards."
+      - name: body
+        label: Description
+        type: rich-text
+        description: "Shown under the title and date as soon as the page opens. Supports bold, italic, links and lists. Headings, quotes, tables and code show as plain text."
+        options:
+          format: html
+          media: false
+          switcher: false
       - name: sections
-        label: Sections
+        label: Extra sections (dropdowns or links)
         type: object
         list:
           collapsible:
