@@ -47,7 +47,8 @@ export function formatDateRange(start, end) {
   const e = parseDate(end)
   if (!e) return `${startDay} ${MONTHS_SHORT[s.month]} ${s.year}`
   const endDay = String(e.day).padStart(2, '0')
-  return `${startDay} ${MONTHS_SHORT[s.month]} – ${endDay} ${MONTHS_SHORT[e.month]} ${e.year}`
+  const startYear = s.year === e.year ? '' : ` ${s.year}`
+  return `${startDay} ${MONTHS_SHORT[s.month]}${startYear} – ${endDay} ${MONTHS_SHORT[e.month]} ${e.year}`
 }
 
 function withDisplayDate(item) {
