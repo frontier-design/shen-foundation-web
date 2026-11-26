@@ -12,6 +12,9 @@ import { isLoadingDone, onLoadingDone } from '../../../loading.js'
 gsap.registerPlugin(CustomEase)
 
 CustomEase.create('reveal', easing.gsapReveal)
+// One continuous wipe: a quick sweep to the middle, an almost-stop (very slow
+// creep through the middle half), then fast to the end.
+CustomEase.create('heroWipe', 'M0,0 C0.06,0.36 0.19,0.4628 0.25,0.47 C0.42,0.49 0.58,0.51 0.75,0.53 C0.81,0.5372 0.86,1 1,1')
 
 const HeroSection = styled.section`
   position: relative;
@@ -60,8 +63,7 @@ const HiddenLink = styled.a`
 `
 
 const HOLD_BEFORE = 4.5
-// One full wipe to the next image on the reveal ease (cubic-bezier(0.16, 1, 0.3, 1)).
-const WIPE = 1.6
+const WIPE = 2
 const HOLD_FULL = 4.5
 
 function HeroCarousel({ slides = [] }) {
@@ -217,7 +219,7 @@ function HeroCarousel({ slides = [] }) {
         })
 
         tl.add(() => play(incoming), HOLD_BEFORE)
-          .to(incoming, { clipPath: 'inset(0 0 0 0%)', duration: WIPE, ease: 'reveal' })
+          .to(incoming, { clipPath: 'inset(0 0 0 0%)', duration: WIPE, ease: 'heroWipe' })
           .add(() => setCurrent(next))
           .to({}, { duration: HOLD_FULL })
       }
