@@ -258,7 +258,9 @@ function Event({ slug }) {
 
   const src = mediaUrl(item.image)
   const video = mediaUrl(item.imageVideo)
-  const sections = item.sections || []
+  const sections = (item.sections || []).filter(
+    (section) => section?.title?.trim() && (sectionHref(section.link) || toPlainText(section.content)),
+  )
 
   return (
     <Section ref={sectionRef} data-nav-tone-left="light" data-nav-tone-right="dark">
